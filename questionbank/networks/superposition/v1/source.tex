@@ -2,7 +2,7 @@
 Consider this circuit that you've solved in a previous assignment:
 
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{questionbank/networks/superposition/v1/schematic.png}
+    \includegraphics[width=0.8\textwidth]{schematic.png}
 \end{center}
 
 \begin{partquestion}{calculatevab}{Use superposition to find $V_A$ and $V_B$.}
@@ -12,7 +12,7 @@ Superposition tells us that we can consider the effect of each independent sourc
 
 \textbf{2V source only:} open the 10 mA source and short the 4 V source. The circuit becomes:
 \begin{center}
-    \includegraphics[width=0.6\textwidth]{questionbank/networks/superposition/v1/super_2v.png}
+    \includegraphics[width=0.6\textwidth]{super_2v.png}
 \end{center}
 
 The circuit is now just a resistor network with a single independent source. We see right away that $V_B$ is the output of a voltage divider:
@@ -30,7 +30,7 @@ The only solution is if $V_{4k\Omega}$ and $V_{500\Omega}$ are both \qty{0}{\vol
 
 \textbf{4 V source only:} open the 10 mA source and short the 2 V source. The circuit becomes:
 \begin{center}
-    \includegraphics[width=3in]{questionbank/networks/superposition/v1/super_4v.png}
+    \includegraphics[width=3in]{super_4v.png}
 \end{center}
 
 This is very similar to before, except now both $V_A$ and $V_B$ are voltage dividers:
@@ -45,7 +45,7 @@ V_B = 4\frac{1500}{1500 +250} = \frac{24}{7}\unit{\volt}
 
 \textbf{10 mA source only:} short both voltage sources. The circuit becomes:
 \begin{center}
-    \includegraphics[width=3in]{questionbank/networks/superposition/v1/super_10mA.png}
+    \includegraphics[width=3in]{super_10mA.png}
 \end{center}
 
 Let's take a second to figure out what we are looking at. The current from our 10mA source will pass through the \qty{4}{\kilo\ohm} resistor and the \qty{500}{\ohm} resistor in parallel before reaching ground. Then the current will pass through the \qty{1.5}{\kilo\ohm} resistor and the \qty{250}{\ohm} resistor in parallel on its way back to the current source. The other \qty{1.5}{\kilo\ohm} is shorted so the current won't bother to flow through it.

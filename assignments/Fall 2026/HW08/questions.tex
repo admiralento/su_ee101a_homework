@@ -1,42 +1,48 @@
 % Problem 1 - PMOS with gate resistor (18 points)
-\Point{pmosgateresistor}{smallsignal}{6}
-\Point{pmosgateresistor}{resistance}{6}
-\Point{pmosgateresistor}{voltgain}{6}
-\input{questionbank/amplifiers/pmos_gate_resistor/v1/source}
+\UseQuestion{pmos_gate_resistor}{v1}{
+    smallsignal = 6,
+    resistance  = 6,
+    voltgain    = 6,
+}
 
 % Problem 2 - Current amplifier design (15 points)
 \clearpage
-\Point{curramp}{minshortcircuitgain}{10}
-\Point{curramp}{maxinputres}{2}
-\Point{curramp}{equivalentvoltagegain}{3}
-\input{questionbank/amplifiers/current_amplifier_design/v0/source}
+\UseQuestion{current_amplifier_design}{v0}{
+    minshortcircuitgain   = 10,
+    maxinputres           = 2,
+    equivalentvoltagegain = 3,
+}
 
 % Problem 3 - Source follower measurement (10 points)
 \clearpage
-\Point{sourcefollower}{gm}{5}
-\Point{sourcefollower}{ro}{5}
-\input{questionbank/amplifiers/source_follower/v1/source}
+\UseQuestion{source_follower}{v1}{
+    gm = 5,
+    ro = 5,
+}
 
 % Problem 4 - High-frequency pulse amplifier (13 points)
 \clearpage
-\Point{hfpulse}{amplifiertypes}{2}
-\Point{hfpulse}{gm2}{2}
-\Point{hfpulse}{currentpulse}{3}
-\Point{hfpulse}{voltagepulse}{3}
-\Point{hfpulse}{rdvalue}{3}
-\input{questionbank/amplifiers/hf_pulse_amplifier/v0/source}
+\UseQuestion{hf_pulse_amplifier}{v0}{
+    amplifiertypes = 2,
+    gm2            = 2,
+    currentpulse   = 3,
+    voltagepulse   = 3,
+    rdvalue        = 3,
+}
 
 % Problem 5 - Cascaded CD and CG stages (14 points)
 \clearpage
-\Point{cascade}{cdgain}{5}
-\Point{cascade}{cgopenocgain}{6}
-\Point{cascade}{overallgain}{3}
-\input{questionbank/amplifiers/cascade_cd_cg/v1/source}
+\UseQuestion{cascade_cd_cg}{v1}{
+    cdgain       = 5,
+    cgopenocgain = 6,
+    overallgain  = 3,
+}
 
 % Problem 6- Two-stage amplifier power analysis (18 points)
 \clearpage
-\Point{twostage}{stage1}{6}
-\Point{twostage}{stage2}{6}
-\Point{twostage}{overallgain}{3}
-\Point{twostage}{power}{3}
-\input{questionbank/amplifiers/two_stage_power/v0/source}
+\UseQuestion{two_stage_power}{v0}{
+    stage1      = 6,
+    stage2      = 6,
+    overallgain = 3,
+    power       = 3,
+}

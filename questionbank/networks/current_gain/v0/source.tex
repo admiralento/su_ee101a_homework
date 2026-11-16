@@ -2,7 +2,7 @@
 Consider the circuit below:
 
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{questionbank/networks/current_gain/v0/super_cir.png}
+    \includegraphics[width=0.8\textwidth]{super_cir.png}
 \end{center}
 
 \begin{partquestion}{calculatevx}{Given the current gain $k = 0.25$, use superposition to determine $V_X$.}
@@ -12,7 +12,7 @@ Superposition tells us that we can consider the effect of each independent sourc
 
 \textbf{5 A source only:} short the 10 V and 8V sources. The \qty{4}{\ohm} and \qty{6}{\ohm} resistors can be combined and the whole circuit can be redrawn to look like a current divider as seen below:
 \begin{center}
-    \includegraphics[width=0.9\textwidth]{questionbank/networks/current_gain/v0/super_5A.png}
+    \includegraphics[width=0.9\textwidth]{super_5A.png}
 \end{center}
 
 KCL at the top node gives $5 = V_X/2 - I_X - I_X/4$. $I_X$ can be found with ohms law as $I_X = -V_X/10$. Substituting yields:
@@ -26,7 +26,7 @@ Thus $V_X = 8~\text{V}$ due to the 5 A current source.
 
 \textbf{8 V source only:} open the 5 A source and short the 10 V source. Combine the resistors as before and the circuit can be rewritten as follows:
 \begin{center}
-    \includegraphics[width=0.9\textwidth]{questionbank/networks/current_gain/v1/super_8V.png}
+    \includegraphics[width=0.9\textwidth]{../v1/super_8V.png}
 \end{center}
 
  This could be solved as before using a KCL equation at the top of the \qty{2}{\ohm} resistor: \[\frac{V_X}{2} - I_X - \frac{I_X}{4} = 0 \hspace{1cm} I_X = \frac{-8 - V_X}{10}\]
@@ -42,7 +42,7 @@ Thus $V_X = -\frac{8}{5}~\text{V}$ due to the 8 V voltage source.
 
 \textbf{10 V source only:} open the 5 A source and short the 8 V source. Combine the resistors as before and the circuit can be rewritten as follows:
 \begin{center}
-    \includegraphics[width=0.9\textwidth]{questionbank/networks/current_gain/v0/super_10V.png}
+    \includegraphics[width=0.9\textwidth]{super_10V.png}
 \end{center}
 
  This could be solved as before using a KCL equation at the top of the \qty{2}{\ohm} resistor: \[\frac{V_X}{2} + I_X + \frac{I_X}{4} = 0 \hspace{1cm} I_X = \frac{-10 - V_X}{10}\]

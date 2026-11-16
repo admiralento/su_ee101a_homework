@@ -2,7 +2,7 @@
 Consider the circuit shown below. An ammeter with an internal resistance of $R_{i}$ is used to measure the current flowing through a 560$\Omega$ resistor between points $A$ and $B$.
 
 \begin{center}
-    \includegraphics[width=5in]{questionbank/networks/ammeter_thevenin_norton/v1/circuit.png}
+    \includegraphics[width=5in]{circuit.png}
 \end{center}
 
 \begin{partquestion}{connection}{How should the ammeter be connected between $A$ and $B$? Show a sketch of the circuit (only include the portion between $A$ and $B$) which includes the ammeter with its internal resistance.}
@@ -10,7 +10,7 @@ Consider the circuit shown below. An ammeter with an internal resistance of $R_{
 The ammeter should be connected in series with the 560$\Omega$ resistor between terminals $A$ and $B$. This means the current through the load passes through the ammeter and its internal resistance.
 
 \begin{center}
-    \includegraphics[width=0.7\textwidth]{questionbank/networks/ammeter_thevenin_norton/v1/ammeter_conn.png}
+    \includegraphics[width=0.7\textwidth]{ammeter_conn.png}
 \end{center}
 \end{answer}
 \end{partquestion}
@@ -20,7 +20,7 @@ The ammeter should be connected in series with the 560$\Omega$ resistor between 
 To find the Thévenin resistance, we zero out all independent sources. The current source becomes an open circuit and the voltage source becomes a short circuit:
 
 \begin{center}
-    \includegraphics[width=0.7\textwidth]{questionbank/networks/ammeter_thevenin_norton/v1/rthev.png}
+    \includegraphics[width=0.7\textwidth]{rthev.png}
 \end{center}
 
 We can now combine the remaining resistors to find a single equivalent resistance.
@@ -32,7 +32,7 @@ We can now combine the remaining resistors to find a single equivalent resistanc
 \end{align*}
 
 \begin{center}
-    \includegraphics[width=4.5in]{questionbank/networks/ammeter_thevenin_norton/v1/thev_start.png}
+    \includegraphics[width=4.5in]{thev_start.png}
 \end{center}
 
 Now to find the Thévenin voltage, compute the open-circuit voltage at $A$ and $B$. Because no current flows through the 100$\Omega$ branch, its voltage is zero. The open-circuit voltage measured from $A$ to $B$ is therefore the voltage drop across the current source ($\qty{60}{\milli\ampere} \cdot\qty{400}{\ohm} = \qty{24}{\volt}$) minus the output of the voltage divider formed from the \qty{1.5}{\kilo\ohm} and \qty{300}{\ohm} resistors with the 9 V source ($9 \frac{3}{3+15} = \qty{1.5}{\volt}$). Thus $V_{\text{TH}} = 24 - 1.5 = 22.5~\text{V}$.
@@ -40,7 +40,7 @@ Now to find the Thévenin voltage, compute the open-circuit voltage at $A$ and $
 Now that we have both the Thévenin voltage and Thévenin resistance, we can combine them to find our equivalent circuit:
 
 \begin{center}
-    \includegraphics[width=2in]{questionbank/networks/ammeter_thevenin_norton/v1/thev_eq.png}
+    \includegraphics[width=2in]{thev_eq.png}
 \end{center}
 \end{answer}
 \end{partquestion}
@@ -50,7 +50,7 @@ Now that we have both the Thévenin voltage and Thévenin resistance, we can com
 Using the previously computed Thévenin equivalent, the Norton current is $I_{N} = V_{\text{TH}} / R_{\text{TH}} = 22.5~\text{V} / 750~\Omega = 30~\text{mA}$, and $R_{N} = 750\Omega$.
 
 \begin{center}
-    \includegraphics[width=2.2in]{questionbank/networks/ammeter_thevenin_norton/v1/norton_eq.png}
+    \includegraphics[width=2.2in]{norton_eq.png}
 \end{center}
 \end{answer}
 \end{partquestion}

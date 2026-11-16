@@ -1,34 +1,39 @@
 % Problem 1 - Impedance conversion table (12 points)
-\Point{impedanceforms}{filltable}{12}
-\input{questionbank/circuit_quantities/impedance_forms/v0/source}
+\UseQuestion{impedance_forms}{v0}{
+    filltable = 12,
+}
 
 % Problem 2 - Complex gain at a single frequency (10 points)
 \clearpage
-\Point{singlefreqgain}{complexforms}{3}
-\Point{singlefreqgain}{outputwaveform}{5}
-\Point{singlefreqgain}{otherfrequencies}{2}
-\input{questionbank/networks/single_frequency_gain/v0/source}
+\UseQuestion{single_frequency_gain}{v0}{
+    complexforms     = 3,
+    outputwaveform   = 5,
+    otherfrequencies = 2,
+}
 
 % Problem 3 - Bridge-circuit RC filter (16 points)
 \clearpage
-\Point{bridgefilter}{transferfunction}{5}
-\Point{bridgefilter}{functionality}{1}
-\Point{bridgefilter}{bodesketch}{4}
-\Point{bridgefilter}{cornerfrequency}{2}
-\Point{bridgefilter}{outputvoltage}{4}
-\input{questionbank/networks/bridge_rc_filter/v0/source}
+\UseQuestion{bridge_rc_filter}{v0}{
+    transferfunction = 5,
+    functionality    = 1,
+    bodesketch       = 4,
+    cornerfrequency  = 2,
+    outputvoltage    = 4,
+}
 
 % Problem 4 - RL high-pass design (10 points)
 \clearpage
-\Point{rlhighpass}{cornerfrequency}{3}
-\Point{rlhighpass}{inductance}{2}
-\Point{rlhighpass}{bodeplots}{5}
-\input{questionbank/networks/rl_high_pass_design/v0/source}
+\UseQuestion{rl_high_pass_design}{v0}{
+    cornerfrequency = 3,
+    inductance      = 2,
+    bodeplots       = 5,
+}
 
 % Problem 5 - Parallel RLC impedance (17 points)
 \clearpage
-\Point{parallelrlc}{deriveimpedance}{4}
-\Point{parallelrlc}{maxmagnitude}{4}
-\Point{parallelrlc}{extremephase}{4}
-\Point{parallelrlc}{bodeplots}{5}
-\input{questionbank/networks/parallel_rlc_impedance/v0/source}
+\UseQuestion{parallel_rlc_impedance}{v0}{
+    deriveimpedance = 4,
+    maxmagnitude    = 4,
+    extremephase    = 4,
+    bodeplots       = 5,
+}

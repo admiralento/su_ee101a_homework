@@ -1,7 +1,7 @@
 \begin{mainquestion}{dependentsource01}{Working with Dependent Sources}
 Consider the circuit below, which contains a dependent source.
 \begin{center}
-    \includegraphics[width=4in]{questionbank/networks/dependentsource01/v0/figure.png}
+    \includegraphics[width=4in]{figure.png}
 \end{center}
 
 \begin{partquestion}{units}{What type of dependent source is shown here?  What are the units of $g$?}
@@ -14,7 +14,7 @@ This is a voltage controlled current source (VCCS).  The variable $g$ is one of 
 \begin{answer}
 Because we are not destroying our definition of $V_x$, we can source transform the parallel combination of the current source and the $4\,k\Omega$ resistor into a Th\'evenin equivalent, with a voltage value of $(gV_x)(4000)$ in series with a resistor of value $4\,k\Omega$, as shown below.
 \begin{center}
-    \includegraphics[width=2in]{questionbank/networks/dependentsource01/v0/figure2.png}
+    \includegraphics[width=2in]{figure2.png}
 \end{center}
 \end{answer}
 \end{partquestion}
@@ -23,7 +23,7 @@ Because we are not destroying our definition of $V_x$, we can source transform t
 \begin{answer}
 We need to determine the effects of each independent source on the open-circuit voltage at the load terminals by zeroing out the remaining independent sources.  The dependent source must NOT be zeroed out, and remains present during each (of two) analyses. We start with the 8 V supply present and the 3 V supply zeroed out, leading to the following circuit:
 \begin{center}
-    \includegraphics[width=2in]{questionbank/networks/dependentsource01/v0/figure3.png}
+    \includegraphics[width=2in]{figure3.png}
 \end{center}
 Note that in this transformed circuit, with the load open circuited, there is no current flow through either the \qty{1}{\kilo\ohm} or the \qty{4}{\kilo\ohm} resistor.  By Ohm's Law, there must therefore be no voltage drop across these resistors, which forces $V_x=0$, and consequently the dependent source has a value of \qty{0}{\volt}.  The only contribution is from the voltage across the \qty{20}{\kilo\ohm} due to the 8 V source.  This implies
 \begin{align*}
@@ -32,7 +32,7 @@ V_{oc1}=(\qty{8}{\volt})\frac{\qty{20}{\kilo\ohm}}{\qty{5}{\kilo\ohm}+\qty{20}{\
 
 Next we use the 3 V supply with the 8 V supply zeroed out, leading to the following circuit:
 \begin{center}
-    \includegraphics[width=2in]{questionbank/networks/dependentsource01/v0/figure4.png}
+    \includegraphics[width=2in]{figure4.png}
 \end{center}
 Again in this transformed circuit, there is no current flow through either the \qty{4}{\kilo\ohm} or the \qty{1}{\kilo\ohm} resistor, nor the dependent source in this open-circuit configuration.  The only contribution is from the voltage across the \qty{20}{\kilo\ohm} due to the 3 V source and $\qty{-3}{volt}$ in series. This implies
 \begin{align*}
@@ -49,7 +49,7 @@ V_{\mathrm{th}}=V_{oc}=V_{oc1}+V_{oc2}=\qty{6.4}{\volt}-\qty{0.6}{\volt}=\qty{5.
 \begin{answer}
 To find $R_\mathrm{th}$, we zero out all independent sources, and are left with the following circuit.
 \begin{center}
-    \includegraphics[width=2in]{questionbank/networks/dependentsource01/v0/figure5.png}
+    \includegraphics[width=2in]{figure5.png}
 \end{center}
 The presence of the dependent source prevents us from simply being able to read the resistance seen at the load terminals by inspection, and we must use the test source method with $v_x$ and $i_x$.  The parallel \qty{5}{\kilo\ohm} and \qty{20}{\kilo\ohm} can be added to the $4\,k\Omega$ resistor to find an equivalent resistance of:
 \[
@@ -57,7 +57,7 @@ The presence of the dependent source prevents us from simply being able to read 
 \]
 Now we can input a test source to create the following circuit:
 \begin{center}
-    \includegraphics[width=2in]{questionbank/networks/dependentsource01/v0/figure6.png}
+    \includegraphics[width=2in]{figure6.png}
 \end{center}KVL around the loop gives:
 \[
 (\qty{8}{\kilo\ohm})i_x + 4000gV_x+V_x-v_x=0

@@ -3,8 +3,8 @@
 Consider cascading a common-drain and a common-gate stage, each of which has $g_m = 5\,\text{mS}$ and $r_o$ large enough to be ignored.
 
 \begin{center}
-\includegraphics[width=2.5in]{questionbank/amplifiers/cascade_cd_cg/v1/cd.png}\qquad
-\includegraphics[width=2.5in]{questionbank/amplifiers/cascade_cd_cg/v1/cg.png}
+\includegraphics[width=2.5in]{cd.png}\qquad
+\includegraphics[width=2.5in]{cg.png}
 \end{center}
 
 \begin{partquestion}{cdgain}{Find the voltage gain $\frac{v_{o1}}{v_{i}}$ of the CD amplifier and its output resistance $R_{o1}$.}
@@ -12,7 +12,7 @@ Consider cascading a common-drain and a common-gate stage, each of which has $g_
 The small signal model equivalent of this common drain stage is shown below:
 
 \begin{center}
-\includegraphics[width=2.5in]{questionbank/amplifiers/cascade_cd_cg/v1/sscd.png}
+\includegraphics[width=2.5in]{sscd.png}
 \end{center}
 
 Neglecting channel length modulation ($r_o \rightarrow \infty$), the gain of the common-drain stage is:
@@ -28,7 +28,7 @@ We note this is the same form as in the lecture notes, but when $R_S$ is conside
 The output resistance of the circuit can be found by shorting the input signal and applying a test source at the output terminals, as seen in the image below. The output resistance can be calculated by finding the current on the test voltage source.
 
 \begin{center}
-\includegraphics[width=2.5in]{questionbank/amplifiers/cascade_cd_cg/v1/rthcd.png}
+\includegraphics[width=2.5in]{rthcd.png}
 \end{center}
 
 We have:
@@ -47,7 +47,7 @@ We have:
 The small signal model equivalent of this common gate stage is shown below:
 
 \begin{center}
-\includegraphics[width=3.5in]{questionbank/amplifiers/cascade_cd_cg/v1/sscg1.png}
+\includegraphics[width=3.5in]{sscg1.png}
 \end{center}
 
 Neglecting channel length modulation, the gain of the common gate stage:
@@ -59,7 +59,7 @@ Neglecting channel length modulation, the gain of the common gate stage:
 
 Recall we let $R_L \rightarrow \infty$ when considering open-circuit gain, so the circuit looks like:
 \begin{center}
-\includegraphics[width=3.5in]{questionbank/amplifiers/cascade_cd_cg/v1/sscg1b.png}
+\includegraphics[width=3.5in]{sscg1b.png}
 \end{center}
 The gain is calculated as:
 \begin{align*}
@@ -84,7 +84,7 @@ R_{i2}=\frac{v_{i2}}{i_{i2}}=\frac{1}{\frac{1}{R_{S}}+g_{m}}=\frac{1}{\frac{1}{1
 The output resistance of the circuit can be found by shorting the input signal and applying a test source at the output terminals, as seen in the image below. 
 
 \begin{center}
-\includegraphics[width=4.5in]{questionbank/amplifiers/cascade_cd_cg/v1/sscg2.png}
+\includegraphics[width=4.5in]{sscg2.png}
 \end{center}
 
 From this circuit we can see that $v_{gs}=0$, so the dependent current source goes away.  Remember that we do not consider the load when calculating output resistance. It follows simply that:
@@ -99,7 +99,7 @@ From this circuit we can see that $v_{gs}=0$, so the dependent current source go
 The equivalent circuit of the cascaded amplifiers is shown below:
 
 \begin{center}
-\includegraphics[width=4.5in]{questionbank/amplifiers/cascade_cd_cg/v1/model.png}
+\includegraphics[width=4.5in]{model.png}
 \end{center}
 
 We can write:

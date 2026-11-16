@@ -2,7 +2,7 @@
 Calculate $V_X$ in the circuit below using superposition.
 
 \begin{center}
-    \includegraphics[width=5.2in]{questionbank/networks/superposition/v0/schematic.png}
+    \includegraphics[width=5.2in]{schematic.png}
 \end{center}
 
 \begin{partquestion}{calculatevx}{Use superposition to determine $V_X$.}
@@ -11,7 +11,7 @@ Superposition tells us that we can consider the effect of each independent sourc
 
 \textbf{1 A source only:} open the 2 A source and short the 3 V source. The circuit becomes:
 \begin{center}
-    \includegraphics[width=3in]{questionbank/networks/superposition/v0/super_1A.png}
+    \includegraphics[width=3in]{super_1A.png}
 \end{center}
 
 KCL at the top node gives $1 = I_X + \frac{V_X}{10}$. KVL around the outer loop gives $V_X + 4 I_X - I_X = 0$, so $I_X = -\frac{V_X}{3}$. Substituting yields:
@@ -22,7 +22,7 @@ Thus $V_X = -\frac{30}{7}~\text{V}$.
 
 \textbf{2 A source only:} open the 1 A source and short the 3 V source. The circuit becomes:
 \begin{center}
-    \includegraphics[width=3in]{questionbank/networks/superposition/v0/super_2A.png}
+    \includegraphics[width=3in]{super_2A.png}
 \end{center}
 
 KCL gives $2 = I_X + \frac{V_X}{10}$ and the same KVL relation $I_X = -\frac{V_X}{3}$. Therefore:
@@ -33,7 +33,7 @@ so $V_X = -\frac{60}{7}~\text{V}$.
 
 \textbf{3 V source only:} open both current sources. The circuit becomes:
 \begin{center}
-    \includegraphics[width=3in]{questionbank/networks/superposition/v0/super_3V.png}
+    \includegraphics[width=3in]{super_3V.png}
 \end{center}
 The remaining loop gives $I_X(1) - 4 I_X - V_X - 3 = 0$ and, because the 10~$\Omega$ resistor carries $-I_X$, $V_X = -10 I_X$. Eliminating $I_X$ yields:
 \[

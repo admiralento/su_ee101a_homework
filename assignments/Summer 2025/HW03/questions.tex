@@ -1,33 +1,38 @@
 % Problem 1 - LED I-V Curve Load-Line Analysis (10 points)
-\Point{ledloadline}{basicloadline}{3}
-\Point{ledloadline}{ledbrightness}{2}
-\Point{ledloadline}{resistorselection}{5}
-\input{questionbank/diodes/led_iv_curve/v0/source}
+\UseQuestion{led_iv_curve}{v0}{
+    basicloadline     = 3,
+    ledbrightness     = 2,
+    resistorselection = 5,
+}
 
 % Problem 2 - Zener Diode Voltage Regulator (12 points)
 \clearpage
-\Point{zenerregulator}{inadequatedesign}{5}
-\Point{zenerregulator}{maxresistor}{5}
-\Point{zenerregulator}{zenercurrent}{2}
-\input{questionbank/diodes/zener_regulator/v0/source}
+\UseQuestion{zener_regulator}{v0}{
+    inadequatedesign = 5,
+    maxresistor      = 5,
+    zenercurrent     = 2,
+}
 
 % Problem 3 - Capacitor Network DC Analysis (18 points)
 \clearpage
-\Point{capacitornetwork}{networksteadycurrent}{2}
-\Point{capacitornetwork}{networksteadyvoltage}{16}
-\input{questionbank/circuit_quantities/capacitor_network/v0/source}
+\UseQuestion{capacitor_network}{v0}{
+    networksteadycurrent = 2,
+    networksteadyvoltage = 16,
+}
 
 % Problem 4 - Capacitor Current, Voltage, Power, and Energy (15 points)
 \clearpage
-\Point{capacitorcurrent}{voltagepower}{9}
-\Point{capacitorcurrent}{waveformplots}{6}
-\input{questionbank/circuit_quantities/capacitor_current_energy/v0/source}
+\UseQuestion{capacitor_current_energy}{v0}{
+    voltagepower  = 9,
+    waveformplots = 6,
+}
 
 % Problem 5 - Ideal Transformer Power Transfer and Transmission Lines (22 points)
 \clearpage
-\Point{transformerpowertransfer}{resistancetransformation}{3}
-\Point{transformerpowertransfer}{directtransmission}{5}
-\Point{transformerpowertransfer}{withstepuptransformers}{8}
-\Point{transformerpowertransfer}{comparisonimplications}{2}
-\Point{transformerpowertransfer}{dcsource}{4}
-\input{questionbank/networks/transformer_power_transfer/v0/source}
+\UseQuestion{transformer_power_transfer}{v0}{
+    resistancetransformation = 3,
+    directtransmission       = 5,
+    withstepuptransformers   = 8,
+    comparisonimplications   = 2,
+    dcsource                 = 4,
+}

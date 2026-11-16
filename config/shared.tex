@@ -1,6 +1,8 @@
 \newif\ifextracreditassignment
 \extracreditassignmentfalse
+\newif\ifshowinstructor
+\showinstructorfalse
 \input{config/current_assignment}
-% Course code, title, and instructor are per semester
+% Course code, title, instructor, and header settings are per semester
 \input{assignments/\Semester/course}
 \input{assignments/\Semester/\AssignmentFolder/metadata}

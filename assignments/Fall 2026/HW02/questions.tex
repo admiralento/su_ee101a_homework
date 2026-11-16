@@ -1,49 +1,54 @@
 % Problem 1
 
-\Point{circuit_graph_and_circuit_001}{nodes}{1}
-\Point{circuit_graph_and_circuit_001}{loops}{2}
-\Point{circuit_graph_and_circuit_001}{branches}{1}
-\Point{circuit_graph_and_circuit_001}{series}{1}
-\Point{circuit_graph_and_circuit_001}{parallel}{1}
-\Point{circuit_graph_and_circuit_001}{unknowns}{1}
-\Point{circuit_graph_and_circuit_001}{kcl}{1}
-\Point{circuit_graph_and_circuit_001}{kvl}{1}
-\Point{circuit_graph_and_circuit_001}{ohm}{1}
-\Point{circuit_graph_and_circuit_001}{solve}{13}
-\input{questionbank/networks/circuit_graph_and_circuit_001/v0/source}
+\UseQuestion{circuit_graph_and_circuit_001}{v0}{
+    nodes    = 1,
+    loops    = 2,
+    branches = 1,
+    series   = 1,
+    parallel = 1,
+    unknowns = 1,
+    kcl      = 1,
+    kvl      = 1,
+    ohm      = 1,
+    solve    = 13,
+}
 
 % Problem 2
 \clearpage
-\Point{resistor_search}{findvalue}{10}
-\Point{resistor_search}{deviation}{3}
-\Point{resistor_search}{power}{3}
-\input{questionbank/simple_circuits/resistor_search/v1/source}
+\UseQuestion{resistor_search}{v1}{
+    findvalue = 10,
+    deviation = 3,
+    power     = 3,
+}
 
 % Problem 3 function generators and oscilloscope probes
 \clearpage
-\Point{function_generator_and_scope}{mag}{2}
-\Point{function_generator_and_scope}{power}{2}
-\Point{function_generator_and_scope}{mag2}{2}
-\Point{function_generator_and_scope}{voltadj}{2}
-\Point{function_generator_and_scope}{power2}{2}
-\Point{function_generator_and_scope}{sourcer}{2}
-\Point{function_generator_and_scope}{secondscope}{2}
-\input{questionbank/networks/function_generator_and_scope/v0/source}
+\UseQuestion{function_generator_and_scope}{v0}{
+    mag         = 2,
+    power       = 2,
+    mag2        = 2,
+    voltadj     = 2,
+    power2      = 2,
+    sourcer     = 2,
+    secondscope = 2,
+}
 
 % Problem 4
 \clearpage
-\Point{wye_delta_nodal_no_dependent_source}{delta}{6}
-\Point{wye_delta_nodal_no_dependent_source}{solve}{9}
-\Point{wye_delta_nodal_no_dependent_source}{findvx}{2}
-\Point{wye_delta_nodal_no_dependent_source}{deltakcl}{2}
-\Point{wye_delta_nodal_no_dependent_source}{vcom}{2}
-\Point{wye_delta_nodal_no_dependent_source}{wyekcl}{2}
-\input{questionbank/networks/wye_delta_nodal_no_dependent_source/v0/source}
+\UseQuestion{wye_delta_nodal_no_dependent_source}{v0}{
+    delta    = 6,
+    solve    = 9,
+    findvx   = 2,
+    deltakcl = 2,
+    vcom     = 2,
+    wyekcl   = 2,
+}
 
 % Problem 5 - Residential Power Distribution Mesh Analysis (24 points)
 \clearpage
-\Point{residentialpower}{load_estimate}{2}
-\Point{residentialpower}{meshanalysis}{12}
-\Point{residentialpower}{openneutral}{10}
-\Point{residentialpower}{deviceimpact}{2}
-\input{questionbank/networks/residential_power_distribution/v1/source}
+\UseQuestion{residential_power_distribution}{v1}{
+    load_estimate = 2,
+    meshanalysis  = 12,
+    openneutral   = 10,
+    deviceimpact  = 2,
+}

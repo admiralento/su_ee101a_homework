@@ -1,37 +1,42 @@
 % Problem 1 - CS amplifier transfer characteristic (18 points)
-\Point{cstransfer}{findpointsab}{4}
-\Point{cstransfer}{biaspoint}{3}
-\Point{cstransfer}{maxamplitude}{3}
-\Point{cstransfer}{gainandtransconductance}{4}
-\Point{cstransfer}{lambdaeffect}{4}
-\input{questionbank/amplifiers/cs_transfer_characteristic/v0/source}
+\UseQuestion{cs_transfer_characteristic}{v0}{
+    findpointsab            = 4,
+    biaspoint               = 3,
+    maxamplitude            = 3,
+    gainandtransconductance = 4,
+    lambdaeffect            = 4,
+}
 
 % Problem 2 - CS amplifier design (12 points)
 \clearpage
-\Point{csdesign}{mingm}{2}
-\Point{csdesign}{idanvov}{5}
-\Point{csdesign}{wlratio}{3}
-\Point{csdesign}{vgsrange}{2}
-\input{questionbank/amplifiers/cs_amplifier_design/v0/source}
+\UseQuestion{cs_amplifier_design}{v0}{
+    mingm    = 2,
+    idanvov  = 5,
+    wlratio  = 3,
+    vgsrange = 2,
+}
 
 % Problem 3 - CS amplifier with coupling and distortion (12 points)
 \clearpage
-\Point{cscoupling}{gainexpression}{3}
-\Point{cscoupling}{distortionlimit}{3}
-\Point{cscoupling}{currentchange}{3}
-\Point{cscoupling}{17dbgain}{3}
-\input{questionbank/amplifiers/cs_coupling_distortion/v0/source}
+\UseQuestion{cs_coupling_distortion}{v0}{
+    gainexpression  = 3,
+    distortionlimit = 3,
+    currentchange   = 3,
+    17dbgain        = 3,
+}
 
 % Problem 4 - Diode-connected transistor as pull-up (10 points)
 \clearpage
-\Point{diodepullup}{saturationrange}{2}
-\Point{diodepullup}{deriveoutput}{5}
-\Point{diodepullup}{gaincalc}{3}
-\input{questionbank/amplifiers/diode_connected_pullup/v0/source}
+\UseQuestion{diode_connected_pullup}{v0}{
+    saturationrange = 2,
+    deriveoutput    = 5,
+    gaincalc        = 3,
+}
 
 % Problem 5 - PMOS with gate resistor (18 points)
 \clearpage
-\Point{pmosgateresistor}{smallsignal}{6}
-\Point{pmosgateresistor}{resistance}{6}
-\Point{pmosgateresistor}{voltgain}{6}
-\input{questionbank/amplifiers/pmos_gate_resistor/v0/source}
+\UseQuestion{pmos_gate_resistor}{v0}{
+    smallsignal = 6,
+    resistance  = 6,
+    voltgain    = 6,
+}

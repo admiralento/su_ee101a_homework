@@ -2,8 +2,7 @@
 A typical CR2032 3 V coin-style battery (often used in watches or small electronic devices) has an internal source resistance $R_{s}$ of about $17~\si{\ohm}$ (seriously!) at room temperature. (While this value typically increases as the battery is depleted, we will consider it constant for this problem.)
 
 \begin{center}
-    \includegraphics[width=4in]{questionbank/networks/battery_internal_resistance/v0/circuit.png
-    }
+    \includegraphics[width=4in]{circuit.png}
 \end{center}
 
 \begin{partquestion}{peakcurrent}{Using this battery, what is the peak current that could be driven through an external load $R_{L}$? What is $R_{L}$ in this scenario?}
@@ -49,7 +48,7 @@ In the previous part, we derived the formula for the power dissipated in the loa
 This can be plotted using MATLAB or some equivalent graphing program; the figure is shown below.
 
 \begin{center}
-    \includegraphics[width=5in]{questionbank/networks/battery_internal_resistance/v0/plot.png}
+    \includegraphics[width=5in]{plot.png}
 \end{center}
 
 Note the peak occurs at $17~\si{\ohm}$, as we expect. The power delivered to the load rolls off to zero as $R_L$ goes to zero.

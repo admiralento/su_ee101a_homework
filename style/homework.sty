@@ -113,26 +113,132 @@
     \fi
 }
 
-% Store: \Point{question}{part}{value}
-\newcommand{\Point}[3]{%
-    \expandafter\gdef\csname pt@#1@#2\endcsname{#3}%
-}
-
-% Store: \ExtraCredit{question}{part}
-\newcommand{\MarkExtraCredit}[2]{%
-    \expandafter\gdef\csname extra@#1@#2\endcsname{true}
-}
-
-% Retrieve: \GetPoint{question}{part}
-\newcommand{\GetPoint}[2]{%
-    \ifcsname pt@#1@#2\endcsname
-        \csname pt@#1@#2\endcsname
-    \else
-        0 % fallback if undefined
-    \fi
-}
-
 \makeatother
+
+% =========================================================
+% QUESTION BANK: \RegisterQuestion and \UseQuestion
+% =========================================================
+% questionbank/index.tex maps each question id (= its folder name) to its folder:
+%     \RegisterQuestion{led_iv_curve}{diodes/led_iv_curve}
+% Assignment manifests then load a version of a question and assign its points:
+%     \UseQuestion{led_iv_curve}{v1}{
+%         basicloadline = 3,
+%         ambienthot    = 5 extra,     % "extra" marks an extra-credit part
+%     }
+% The source is loaded with \subimport (import package), so \includegraphics paths inside it
+% are relative to its version folder: {fig.png}, or {../v0/fig.png} for an earlier version.
+\RequirePackage{import}
+\newif\ifhwextrapart
+
+\ExplSyntaxOn
+\prop_new:N \g__hw_qpath_prop    % question id -> folder below questionbank/
+\prop_new:N \g__hw_points_prop   % part key -> points, for the question being loaded
+\seq_new:N  \g__hw_extra_seq     % extra-credit part keys, for the question being loaded
+\seq_new:N  \g__hw_unused_seq    % parts given points but not (yet) found in the source
+\seq_new:N  \g__hw_used_ids_seq  % question ids used in this homework
+\seq_new:N  \g__hw_used_keys_seq % mainquestion keys used in this homework
+\tl_new:N   \g__hw_qid_tl        % id of the question being loaded (empty outside \UseQuestion)
+\tl_new:N   \l__hw_dir_tl
+\tl_new:N   \l__hw_extra_tl
+\seq_new:N  \l__hw_match_seq
+\regex_const:Nn \c__hw_points_regex { \A \s* (\d+) \s* (extra)? \s* \Z }
+
+\msg_new:nnn {homework} {dup-id}
+  { Question~id~'#1'~is~registered~twice~in~questionbank/index.tex. }
+\msg_new:nnn {homework} {unknown-id}
+  { Unknown~question~id~'#1'.~Check~the~spelling~or~add~it~to~questionbank/index.tex. }
+\msg_new:nnn {homework} {id-twice}
+  { Question~'#1'~is~used~twice~in~this~homework. }
+\msg_new:nnn {homework} {key-twice}
+  { Question~key~'#1'~(question~'#2')~is~already~used~by~another~question~in~this~homework;~
+    points~and~labels~would~collide.~Give~one~of~them~a~different~mainquestion~key. }
+\msg_new:nnn {homework} {bad-points}
+  { Invalid~points~'#2'~for~part~'#1'~of~question~'#3'.~Use~a~whole~number,~
+    optionally~followed~by~'extra'~(for~example~'5~extra'). }
+\msg_new:nnn {homework} {no-value}
+  { Part~'#1'~of~question~'#2'~has~no~points~value~(write~'#1~=~<points>'). }
+\msg_new:nnn {homework} {no-points}
+  { Part~'#1'~of~question~'#2'~has~no~points~in~the~manifest;~counting~it~as~0. }
+\msg_new:nnn {homework} {unused-points}
+  { Points~were~given~for~part~'#1'~of~question~'#2',~but~its~source~has~no~such~part. }
+\msg_new:nnn {homework} {no-usequestion}
+  { Question~'#1'~was~not~loaded~with~\iow_char:N\\UseQuestion;~its~points~cannot~be~found. }
+\msg_new:nnn {homework} {old-macro}
+  { \iow_char:N\\#1~is~no~longer~supported:~give~points~in~the~third~argument~of~
+    \iow_char:N\\UseQuestion~(see~import/import_instructions_for_LLM.md). }
+
+\NewDocumentCommand {\RegisterQuestion} {mm}
+  {
+    \prop_if_in:NnT \g__hw_qpath_prop {#1} { \msg_error:nnn {homework} {dup-id} {#1} }
+    \prop_gput:Nnn \g__hw_qpath_prop {#1} {#2}
+  }
+
+\cs_new_protected:Npn \__hw_add_part:nn #1#2
+  {
+    \regex_extract_once:NnNTF \c__hw_points_regex {#2} \l__hw_match_seq
+      {
+        \prop_gput:Nnx \g__hw_points_prop {#1} { \seq_item:Nn \l__hw_match_seq {2} }
+        \tl_set:Nx \l__hw_extra_tl { \seq_item:Nn \l__hw_match_seq {3} }
+        \tl_if_empty:NF \l__hw_extra_tl { \seq_gput_right:Nn \g__hw_extra_seq {#1} }
+        \seq_gput_right:Nn \g__hw_unused_seq {#1}
+      }
+      { \msg_error:nnxxx {homework} {bad-points} {#1} {#2} { \g__hw_qid_tl } }
+  }
+\cs_new_protected:Npn \__hw_part_no_value:n #1
+  { \msg_error:nnnx {homework} {no-value} {#1} { \g__hw_qid_tl } }
+
+\cs_new_protected:Npn \__hw_subimport:n #1 { \subimport {#1} {source} }
+\cs_generate_variant:Nn \__hw_subimport:n { x }
+
+% \UseQuestion{id}{version}{part = points, ...}
+\NewDocumentCommand {\UseQuestion} {mm+m}
+  {
+    \prop_get:NnNTF \g__hw_qpath_prop {#1} \l__hw_dir_tl
+      {
+        \seq_if_in:NnTF \g__hw_used_ids_seq {#1}
+          { \msg_error:nnn {homework} {id-twice} {#1} }
+          { \seq_gput_right:Nn \g__hw_used_ids_seq {#1} }
+        \tl_gset:Nn \g__hw_qid_tl {#1}
+        \prop_gclear:N \g__hw_points_prop
+        \seq_gclear:N \g__hw_extra_seq
+        \seq_gclear:N \g__hw_unused_seq
+        \keyval_parse:NNn \__hw_part_no_value:n \__hw_add_part:nn {#3}
+        \__hw_subimport:x { questionbank/\l__hw_dir_tl/#2/ }
+        \seq_map_inline:Nn \g__hw_unused_seq
+          { \msg_warning:nnnn {homework} {unused-points} {##1} {#1} }
+        \tl_gclear:N \g__hw_qid_tl
+      }
+      { \msg_error:nnn {homework} {unknown-id} {#1} }
+  }
+
+% Called by mainquestion with its key.
+\cs_new_protected:Npn \hw_begin_question:n #1
+  {
+    \tl_if_empty:NT \g__hw_qid_tl { \msg_error:nnn {homework} {no-usequestion} {#1} }
+    \seq_if_in:NnTF \g__hw_used_keys_seq {#1}
+      { \msg_error:nnnx {homework} {key-twice} {#1} { \g__hw_qid_tl } }
+      { \seq_gput_right:Nn \g__hw_used_keys_seq {#1} }
+  }
+% Called by partquestion with its part key: sets \partpoints and \ifhwextrapart.
+\cs_new_protected:Npn \hw_lookup_part:n #1
+  {
+    \prop_get:NnNTF \g__hw_points_prop {#1} \l_tmpa_tl
+      { \cs_set:Npx \partpoints { \l_tmpa_tl } }
+      {
+        \tl_if_empty:NF \g__hw_qid_tl
+          { \msg_warning:nnnx {homework} {no-points} {#1} { \g__hw_qid_tl } }
+        \cs_set:Npn \partpoints {0}
+      }
+    \seq_gremove_all:Nn \g__hw_unused_seq {#1}
+    \seq_if_in:NnTF \g__hw_extra_seq {#1} { \hwextraparttrue } { \hwextrapartfalse }
+  }
+\NewDocumentCommand {\HwBeginQuestion} {m} { \hw_begin_question:n {#1} }
+\NewDocumentCommand {\HwLookupPart} {m} { \hw_lookup_part:n {#1} }
+
+% The old manifest macros: fail loudly instead of silently doing nothing.
+\NewDocumentCommand {\Point} {mmm} { \msg_error:nnn {homework} {old-macro} {Point} }
+\NewDocumentCommand {\MarkExtraCredit} {mm} { \msg_error:nnn {homework} {old-macro} {MarkExtraCredit} }
+\ExplSyntaxOff
 
 \newcommand{\PartPoints}{\pluralize{\partpoints}{point}{points}}
 
@@ -142,6 +248,9 @@
 \providecommand{\AssignmentTotal}{0}
 \providecommand{\ExtraCreditTotal}{0}
 \providecommand{\ProblemCount}{0}
+% Per-semester header settings; assignments/<Semester>/course.tex may override these.
+\providecommand{\DueTime}{11:59PM}
+\providecommand{\NameReminder}{Please be sure to write your name on the front page!}
 % Per-question total from the .aux file; 0 on the first pass, before the .aux exists.
 \newcommand{\GetProblemTotal}{%
     \ifcsname ProblemTotal\alph{questionCnt}\endcsname
@@ -168,13 +277,18 @@
             {\Large\bfseries Homework \#\HomeworkNumber}
             
         \fi
+        \ifshowinstructor
+        \vspace{0.3em}
+        Instructor: \Instructor
+
+        \fi
         \ifextracreditassignment
         \vspace{0.3em}
         {\Large\bfseries EXTRA CREDIT ASSIGNMENT}
-        
+
         \fi
         \vspace{0.3em}
-        Due 11:59PM \DueDate
+        Due \DueTime{} \DueDate
 
         \ifnum\ExtraCreditTotal>0
             Total: \pluralize{\AssignmentTotal}{Point}{Points} (\pluralize{\ExtraCreditTotal}{Point}{Points} Extra Credit)
@@ -186,7 +300,9 @@
 
         \ifsolutions
         \else
-            \textbf{Please be sure to write your name on the front page!}
+            \ifx\NameReminder\empty\else
+                \textbf{\NameReminder}
+            \fi
         \fi
 
     \end{center}
@@ -208,6 +324,7 @@
 
     % store current key
     \gdef\currquestionkey{#1}
+    \HwBeginQuestion{#1}
 
     % Make the Upper Right Corner Display which question we are on
     \markright{Question \arabic{questionCnt}/\ProblemCount}
@@ -233,15 +350,15 @@
 {
     \refstepcounter{partquestionCnt}
 
-    % lookup assignment-defined points
-    \edef\partpoints{\GetPoint{\currquestionkey}{#1}}
+    % lookup points assigned in \UseQuestion (sets \partpoints and \ifhwextrapart)
+    \HwLookupPart{#1}
 
     % Make a label to this portion of the question
     \edef\labelname{prob:\currquestionkey:#1}
     \label{\labelname}
 
     % Check if it is extra credit
-    \ifcsname extra@\currquestionkey@#1\endcsname
+    \ifhwextrapart
         % accumulate points
         \addtocounter{extracreditpoints}{\partpoints}
     
@@ -301,3 +418,7 @@
     \StoreProblemCount
     \StoreExtraCreditTotal
 }
+% =========================================================
+% Question index (question id -> folder); see \UseQuestion above
+% =========================================================
+\input{questionbank/index}

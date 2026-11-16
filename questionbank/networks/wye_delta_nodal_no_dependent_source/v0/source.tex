@@ -2,7 +2,7 @@
 Consider the following circuit. Note the top three resistors form a wye resistor network.
 
 \begin{center}
-    \includegraphics[width=0.6\textwidth]{questionbank/networks/wye_delta_nodal_no_dependent_source/v0/wye_sch.png}
+    \includegraphics[width=0.6\textwidth]{wye_sch.png}
 \end{center}
 
 % =========================================================
@@ -16,7 +16,7 @@ Looking at the Wye $\rightarrow$ Delta formulas, all of them use the same sum of
 Now we can calculate all the individual resistors. For the resistance between nodes $V_1$ and $V_2$, the equation will be $R_T/\qty{2}{\kilo\ohm} = \qty{4}{\kilo\ohm}$. For $V_2$ and $V_3$ we also have $R_T/\qty{2}{\kilo\ohm} = \qty{4}{\kilo\ohm}$ the odd one out will be the resistance between $V_1$ and $V_3$ which will be $R_T/\qty{1}{\kilo\ohm} = \qty{8}{\kilo\ohm}$. Here is the schematic with the new resistance values:
 
 \begin{center}
-    \includegraphics[width=0.5\textwidth]{questionbank/networks/wye_delta_nodal_no_dependent_source/v0/delta_sch_sol.png}
+    \includegraphics[width=0.5\textwidth]{delta_sch_sol.png}
 \end{center}
 
 This new schematic has 4 nodes total, with only 3 independent nodes that require KCL equations. The original schematic had 5 nodes, with 4 independent nodes that need KCL equations. The transform effectively dropped one node for us.
@@ -84,7 +84,7 @@ Gotcha :)
 
 \begin{answer}
 \begin{center}
-    \includegraphics[width=0.5\textwidth]{questionbank/networks/wye_delta_nodal_no_dependent_source/v0/delta_kcl_sol.png}
+    \includegraphics[width=0.5\textwidth]{delta_kcl_sol.png}
 \end{center}
 
 Calculating the branch currents only requires Ohm’s Law for most of the branches. For example, the current through the top \qty{8}{\kilo\ohm} resistor is
@@ -129,7 +129,7 @@ This could also be solved with similar math using the right (\qty{13}{\milli\amp
 {Repeat part (\cref{prob:wye_delta_nodal_no_dependent_source:deltakcl}) for the original schematic.}
 \begin{answer}
 \begin{center}
-    \includegraphics[width=0.5\textwidth]{questionbank/networks/wye_delta_nodal_no_dependent_source/v0/wye_kcl_sol.png}
+    \includegraphics[width=0.5\textwidth]{wye_kcl_sol.png}
 \end{center}
 
 Subbing in the voltages that we have already found, the problem proceeds just like part (\cref{prob:wye_delta_nodal_no_dependent_source:deltakcl}) for finding the current through the new resistors. Beautifully, the numbers are all familiar and the solution is undisturbed.

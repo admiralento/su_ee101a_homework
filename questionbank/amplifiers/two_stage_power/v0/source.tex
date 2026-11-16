@@ -3,7 +3,7 @@
 Consider the two-stage amplifier shown below. The coupling capacitors are "shorts" at the AC frequencies of interest. $V_t = 0.5\ \text{V}$ and $\lambda = 0.01\ \text{V}^{-1}$ for both transistors.
 
 \begin{center}
-\includegraphics[width=4.5in]{questionbank/amplifiers/two_stage_power/v0/image87.png}
+\includegraphics[width=4.5in]{image87.png}
 \end{center}
 
 \begin{partquestion}{stage1}{What is Stage 1? Assume M1 is in saturation and evaluate the voltage gain $A_{v1}$, input resistance $R_{i1}$, and output resistance $R_{o1}$ given $k_{n1} = 1\ \frac{\text{mA}}{\text{V}^{2}}$.}
@@ -24,7 +24,7 @@ r_{o1} = \frac{1}{\lambda I_{D1}} = \frac{1}{(0.01)(2)} = \qty{50}{\kilo\ohm}
 The problem reminds us that the capacitors will become shorts in our frequency of interest. Therefore, the source resistor R is not part of the small signal analysis—it is only there to provide DC biasing.  Furthermore, the DC current source becomes an open circuit in small-signal analysis. These points help codify the small-signal equivalent circuit, which is shown below.
 
 \begin{center}
-\includegraphics[width=4.5in]{questionbank/amplifiers/two_stage_power/v0/pic1.png}
+\includegraphics[width=4.5in]{pic1.png}
 \end{center}
 
 The gain of this stage is given by:
@@ -52,7 +52,7 @@ r_{o2} = \frac{1}{\lambda I_{D2}} = \frac{1}{(0.01)(14)} = 7.14\ \text{k}\Omega.
 For the AC analysis, the capacitor will be a short circuit in our frequency of interest, and the DC current source is an open circuit.  Our equivalent model is shown below:
 
 \begin{center}
-\includegraphics[width=4.5in]{questionbank/amplifiers/two_stage_power/v0/pic2.png}
+\includegraphics[width=4.5in]{pic2.png}
 \end{center}
 
 To find the gain of this stage we have:
@@ -74,7 +74,7 @@ The input resistance is given by the two 100 kΩ resistors:
 To find the output resistance, we short the input of the circuit and put a test source at the output, as shown below:
 
 \begin{center}
-\includegraphics[width=4.5in]{questionbank/amplifiers/two_stage_power/v0/pic3.png}
+\includegraphics[width=4.5in]{pic3.png}
 \end{center}
 
 We can calculate:
@@ -97,7 +97,7 @@ R_{o2}=\frac{v_{x}}{i_{x}}=\frac{r_{o2}}{1+g_{m}r_{o2}}=\frac{7.14}{1+\left(9.16
 Drawing the equivalent circuit based on the results of the previous items:
 
 \begin{center}
-\includegraphics[width=6in]{questionbank/amplifiers/two_stage_power/v0/pic5.png}
+\includegraphics[width=6in]{pic5.png}
 \end{center}
 
 We can calculate:
