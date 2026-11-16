@@ -1,0 +1,9 @@
+# Keep LF line endings in the working copy so files uploaded to Overleaf match.
+* text=auto eol=lf
+
+# Binary assets
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.pdf  binary
+*.wmf  binary

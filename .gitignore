@@ -1,0 +1,23 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.xdv
+*.bbl
+*.blg
+main_student.pdf
+main_solutions.pdf
+
+# Draw.io autosave/backup files
+*.drawio.bkp
+.$*.drawio*
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
