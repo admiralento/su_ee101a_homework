@@ -75,8 +75,8 @@ Compile `main_questionbank.tex` for a PDF of every version (with or without solu
 | [`circuit_001`](networks/circuit_001) | Circuit Solving | `circuit_001` | v0 | Jeff Stribling | 5 | Summer 2025 HW02 (17 pts) | kcl-kvl, circuit-topology |
 |  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW02 (17 pts) |  |
 | [`circuit_002`](networks/circuit_002) | Nodal Analysis | `circuit_002` | v0 | Jeff Stribling | 5 | Summer 2025 HW02 (23 pts) | nodal-analysis, power-energy |
-| [`circuit_graph`](networks/circuit_graph) | Loops, Nodes, and Elements Oh My! | `circuit_graph` | v0 | Jeff Stribling | 5 | — | circuit-topology |
-|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2025 HW01 (6 pts), Summer 2026 HW01 (6 pts) |  |
+| [`circuit_graph`](networks/circuit_graph) | Loops, Nodes, and Elements Oh My! | `circuit_graph` | v0 | Jeff Stribling | 5 | Summer 2025 HW01 (6 pts) | circuit-topology |
+|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW01 (6 pts) |  |
 | [`circuit_graph_and_circuit_001`](networks/circuit_graph_and_circuit_001) | Loops, Nodes, and Elements Oh My! | `circuit_graph_and_circuit_001` | v0 | Jeff Stribling | 10 | Fall 2026 HW02 (23 pts) | circuit-topology, kcl-kvl |
 | [`current_gain`](networks/current_gain) | Your Turn | `currentgain` | v0 | Jeff Stribling | 2 | — | dependent-sources, superposition, thevenin-norton, symbolic |
 |  | Your Choice |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW04 (16 pts + 5 EC) |  |
@@ -88,8 +88,8 @@ Compile `main_questionbank.tex` for a PDF of every version (with or without solu
 |  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW04 (26 pts), Fall 2026 HW02 (26 pts) |  |
 | [`rl_high_pass_design`](networks/rl_high_pass_design) | RL High-Pass Filter Design | `rlhighpass` | v0 | Jeff Stribling | 3 | Summer 2025 HW08 (10 pts), Summer 2026 HW08 (10 pts), Fall 2026 HW09 (10 pts) | filters, transfer-functions, bode-plots, design |
 | [`single_frequency_gain`](networks/single_frequency_gain) | Complex Gain at a Single Frequency | `singlefreqgain` | v0 | Jeff Stribling | 3 | Summer 2025 HW08 (10 pts), Summer 2026 HW08 (10 pts), Fall 2026 HW09 (10 pts) | transfer-functions, complex-numbers, phasors-impedance |
-| [`solderpaste`](networks/solderpaste) | Solderpasted | `solderpaste` | v0 | Jeff Stribling | 3 | — | power-energy, kcl-kvl |
-|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2025 HW01 (16 pts), Summer 2026 HW01 (17 pts), Fall 2026 HW01 (17 pts) |  |
+| [`solderpaste`](networks/solderpaste) | Solderpasted | `solderpaste` | v0 | Jeff Stribling | 3 | Summer 2025 HW01 (16 pts) | power-energy, kcl-kvl |
+|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW01 (17 pts), Fall 2026 HW01 (17 pts) |  |
 | [`source_transformations`](networks/source_transformations) | Source Transformations | `sourcetransform` | v0 | Jeff Stribling | 1 | Summer 2025 HW04 (18 pts) | source-transformation |
 |  |  |  | v1 | Ammon Wolfert | 1 | Summer 2026 HW04 (18 pts), Fall 2026 HW03 (18 pts) |  |
 | [`superposition`](networks/superposition) | Superposition | `superposition` | v0 | Jeff Stribling | 1 | Summer 2025 HW04 (10 pts) | superposition |
@@ -97,7 +97,7 @@ Compile `main_questionbank.tex` for a PDF of every version (with or without solu
 | [`thevenin_meas`](networks/thevenin_meas) | Measuring Thévenin | `thevenin_meas` | v0 | Jeff Stribling | 6 | Fall 2026 HW03 (20 pts) | thevenin-norton, load-line, measurement |
 | [`transformer_power_transfer`](networks/transformer_power_transfer) | Ideal Transformer Power | `transformerpowertransfer` | v0 | Jeff Stribling | 5 | Summer 2025 HW03 (22 pts) | ideal-transformer, power-energy, rms-waveforms, application |
 |  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW03 (22 pts), Fall 2026 HW05 (22 pts) |  |
-| [`wye_delta_nodal`](networks/wye_delta_nodal) | Nodal Analysis + Delta/Wye | `wye_delta_nodal` | v0 | Jeff Stribling | 6 | Summer 2026 HW02 (23 pts) | wye-delta, nodal-analysis, dependent-sources, kcl-kvl |
+| [`wye_delta_nodal`](networks/wye_delta_nodal) | Nodal Analysis + Delta/Wye | `wye_delta_nodal` | v0 | Ammon Wolfert | 6 | Summer 2026 HW02 (23 pts) | wye-delta, nodal-analysis, dependent-sources, kcl-kvl |
 | [`wye_delta_nodal_no_dependent_source`](networks/wye_delta_nodal_no_dependent_source) | Nodal Analysis + Delta/Wye | `wye_delta_nodal_no_dependent_source` | v0 | Jeff Stribling | 6 | Fall 2026 HW02 (23 pts) | wye-delta, nodal-analysis, kcl-kvl |
 
 ## simple_circuits
