@@ -22,6 +22,12 @@ assignments into it. It is written for an LLM assistant (or a new collaborator) 
   - Before starting, ask the user whether the local repo is up to date with Overleaf (edits made in
     Overleaf since the last sync must be brought into git first, or they will be overwritten).
 - Line endings: `.gitattributes` forces LF. Keep it that way; Overleaf uses LF.
+- **Local compile** (git copy only): `build.ps1` compiles the assignment selected in
+  `config/current_assignment.tex` with Tectonic (XeTeX engine, automatic reruns) to `out.pdf` in
+  the repo root. One-time setup: `powershell -ExecutionPolicy Bypass -File build.ps1 -Install`.
+  Then `powershell -ExecutionPolicy Bypass -File build.ps1 [-Mode student|solutions]`
+  (default: solutions), or Ctrl+Shift+B in VS Code. `build/`, `out.pdf`, and `.tools/` are
+  git-ignored. Overleaf remains the reference build; Tectonic's package snapshot can differ slightly.
 
 ---
 
