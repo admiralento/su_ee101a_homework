@@ -26,9 +26,9 @@ assignments into it. It is written for an LLM assistant (or a new collaborator) 
 
 | Command | What it does |
 |---|---|
-| `python tools/check.py` | Static checks (section 9). Run before every hand-back. `--fix-index` regenerates `questionbank/index.tex`; `--catalog` rewrites `questionbank/README.md`. |
+| `python tools/check.py` | Static checks (section 9). Run before every hand-back. `--fix-index` regenerates `questionbank/index.tex`; `--catalog` rewrites `questionbank/README.md` and `questionbank/catalog.tex` (it warns when either is stale). |
 | `python tools/build_all.py` | Compiles every homework in both modes **in a temporary copy** (never touches `config/current_assignment.tex`). `--only "Winter 2026/HW03"`, `--mode solutions`, `--save x.json` / `--compare x.json` for before/after regression checks, `--pdf-dir` to keep PDFs. |
-| `powershell -ExecutionPolicy Bypass -File build.ps1 [-Mode student\|solutions]` | Compiles the homework selected in `config/current_assignment.tex` to `out.pdf` (default: solutions). Ctrl+Shift+B in VS Code. One-time setup: `build.ps1 -Install`. |
+| `powershell -ExecutionPolicy Bypass -File build.ps1 [-Mode student\|solutions\|questionbank]` | Compiles the homework selected in `config/current_assignment.tex` to `out.pdf` (default: solutions), or with `-Mode questionbank` the question bank catalog (section 2.6). Ctrl+Shift+B in VS Code. One-time setup: `build.ps1 -Install`. |
 
 Both builders use Tectonic (XeTeX engine, automatic reruns) from `.tools/tectonic/`. Overleaf is the
 reference build; Tectonic's package snapshot is older (2022) and can differ slightly.
@@ -82,7 +82,8 @@ assignments/
       questions.tex           the manifest
 questionbank/
   index.tex                   question id -> folder; the ONLY place a question's location is written
-  README.md                   generated catalog (tools/check.py --catalog); do not edit by hand
+  README.md                   generated catalog table (tools/check.py --catalog); do not edit by hand
+  catalog.tex                 generated content of main_questionbank.tex (same command); do not edit
   <topic>/                    amplifiers, capacitors_and_inductors, circuit_quantities, diodes,
                               networks, simple_circuits, training, transistors
     <question_id>/            folder name = question id (snake_case, unique across the bank)
@@ -92,7 +93,7 @@ questionbank/
       v1/ ...                 later variants
       originals/              optional: standalone original documents (never \input)
       version_history.md      required once a v1 exists
-config/  style/  tools/  main_student.tex  main_solutions.tex
+config/  style/  tools/  main_student.tex  main_solutions.tex  main_questionbank.tex
 import/                       this document and conversion notes; per-import scratch folders
 ```
 
@@ -239,6 +240,26 @@ listings (Python style preset), verbatim, caption, import. Notably **not** loade
 booktabs, enumitem. If a source needs one of these, ask the user before adding it to
 `style/homework.sty` (it affects every homework).
 
+### 2.6 The question bank catalog (`main_questionbank.tex`)
+
+A third root document that renders **every version of every question** for browsing and choosing
+problems. Line 4 selects `config/student_mode` or `config/solutions_mode`.
+- Table of contents: one section per topic folder, one subsection per question folder
+  (title + id). Each version starts on its own page with an info box: id, version, folder,
+  author, date, homeworks that used it (with point totals), part keys in order (ready to copy into
+  `\UseQuestion`), and the version-history notes. Then the question itself, without points.
+- Pieces: `config/questionbank.tex` (course code/title for the title page; replaces
+  `config/shared.tex`), `style/questionbank.sty` (layout), and the generated
+  `questionbank/catalog.tex`. `homework.sty` supplies catalog mode (`\hwcatalogtrue`):
+  `\ShowQuestion{id}{vN}` loads a version without points and scopes its `\label`/`\cref`s to that
+  version, since all versions of a question share part labels.
+- Metadata comes from each question's `version_history.md` (Author, Date, Content). Missing or
+  `TODO` authors are shown as "Jeff Stribling (assumed)".
+- `catalog.tex` is committed so Overleaf can compile it, but only the local tool regenerates it:
+  after adding/moving questions or editing version histories, run `python tools/check.py --catalog`.
+  In Overleaf, compile it by setting the project's Main document to `main_questionbank.tex`
+  (that setting is project-wide, so switch it back afterwards).
+
 ---
 
 ## 3. Naming conventions
@@ -274,7 +295,10 @@ existing names and follow these conventions for new content.
   **older version folders must never be deleted**. Copy the figure into the new folder if you're
   also modifying it.
 - When creating vN > 0, add or update `<id>/version_history.md` in exactly this format (title =
-  the `mainquestion` title); write `TODO` for anything you don't know rather than guessing:
+  the `mainquestion` title); write `TODO` for anything you don't know rather than guessing. The
+  Author, Date and Content fields are shown in the question bank catalog (section 2.6), so for an
+  imported question record the instructor who wrote it — create the file even for a v0-only
+  question when the author is not Jeff Stribling (the catalog assumes Jeff Stribling otherwise):
   ```markdown
   # <Question Title>
 
@@ -373,7 +397,8 @@ Then:
 3. Register new questions: `python tools/check.py --fix-index`.
 4. Create `assignments/<Semester>/HWxx/questions.tex` (section 2.2).
 5. Add/update `version_history.md` for any new vN > 0 (section 4).
-6. Run the checks in section 9 and regenerate the catalog (`--catalog`).
+6. Run the checks in section 9 and regenerate the catalogs (`--catalog`), so the new questions
+   appear in `questionbank/README.md` and in the question bank PDF.
 7. Do **not** edit `config/current_assignment.tex`; tell the user the two values to set to compile.
 8. Commit on a branch and report the full list of added / modified / moved files for mirroring into
    Overleaf (section 0).
@@ -390,7 +415,9 @@ Then:
 3. If you changed anything shared (`style/`, `config/`, an existing question), run
    `tools/build_all.py --save before.json` before the change and `--compare before.json` after:
    page counts, totals, images loaded, and warnings must match except where intended.
-4. `python tools/check.py --catalog` to refresh `questionbank/README.md`.
+4. `python tools/check.py --catalog` to refresh `questionbank/README.md` and
+   `questionbank/catalog.tex`. (`tools/build_all.py` without `--only` also compiles the catalog,
+   which exercises every version of every question, including unused ones.)
 5. Ask the user to compile in Overleaf as the final check.
 
 ---

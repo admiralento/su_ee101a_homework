@@ -11,9 +11,10 @@
 .EXAMPLE
   .\build.ps1                 # solutions (default)
   .\build.ps1 -Mode student
+  .\build.ps1 -Mode questionbank   # every question in the bank (main_questionbank.tex)
 #>
 param(
-    [ValidateSet('solutions', 'student')]
+    [ValidateSet('solutions', 'student', 'questionbank')]
     [string]$Mode = 'solutions',
 
     # Download Tectonic into .tools\tectonic\ (one-time setup), then exit.

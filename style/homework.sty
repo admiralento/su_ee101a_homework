@@ -84,13 +84,14 @@
 }
 
 \newcommand{\StoreProblemTotal}{%
-    \ifnum\value{questionCnt}>0
+    % (not in catalog mode: no points there, and \alph only goes up to 26 questions)
+    \ifhwcatalog\else\ifnum\value{questionCnt}>0
         \protected@write\@auxout{}{%
             \string\gdef
             \string\ProblemTotal\alph{questionCnt}%
             {\arabic{problempoints}}%
         }%
-    \fi
+    \fi\fi
 }
 
 \newcommand{\StoreProblemCount}{%
@@ -129,6 +130,26 @@
 % are relative to its version folder: {fig.png}, or {../v0/fig.png} for an earlier version.
 \RequirePackage{import}
 \newif\ifhwextrapart
+% Catalog mode (main_questionbank.tex): questions are shown without points, every version of a
+% question may appear in one document, and labels are scoped per version (see \ShowQuestion).
+\newif\ifhwcatalog
+\providecommand{\HwCatalogTag}{}  % printed at the right of the question title in catalog mode
+
+% \HwPrefixRefs{prefix}: within the current group, prepend prefix to every \label, \ref, \cref and
+% \Cref, so v0 and v1 of the same question (which share part labels) can coexist in one document.
+\makeatletter
+\newcommand{\HwPrefixRefs}[1]{%
+    \edef\hw@pfx{#1}%
+    \let\hw@orig@label\label
+    \let\hw@orig@ref\ref
+    \let\hw@orig@cref\cref
+    \let\hw@orig@Cref\Cref
+    \renewcommand{\label}[1]{\hw@orig@label{\hw@pfx##1}}%
+    \renewcommand{\ref}[1]{\hw@orig@ref{\hw@pfx##1}}%
+    \renewcommand{\cref}[1]{\hw@orig@cref{\hw@pfx##1}}%
+    \renewcommand{\Cref}[1]{\hw@orig@Cref{\hw@pfx##1}}%
+}
+\makeatother
 
 \ExplSyntaxOn
 \prop_new:N \g__hw_qpath_prop    % question id -> folder below questionbank/
@@ -218,9 +239,11 @@
 \cs_new_protected:Npn \hw_begin_question:n #1
   {
     \tl_if_empty:NT \g__hw_qid_tl { \msg_error:nnn {homework} {no-usequestion} {#1} }
-    \seq_if_in:NnTF \g__hw_used_keys_seq {#1}
-      { \msg_error:nnnx {homework} {key-twice} {#1} { \g__hw_qid_tl } }
-      { \seq_gput_right:Nn \g__hw_used_keys_seq {#1} }
+    \ifhwcatalog \else
+      \seq_if_in:NnTF \g__hw_used_keys_seq {#1}
+        { \msg_error:nnnx {homework} {key-twice} {#1} { \g__hw_qid_tl } }
+        { \seq_gput_right:Nn \g__hw_used_keys_seq {#1} }
+    \fi
   }
 % Called by partquestion with its part key: sets \partpoints and \ifhwextrapart.
 \cs_new_protected:Npn \hw_lookup_part:n #1
@@ -228,12 +251,32 @@
     \prop_get:NnNTF \g__hw_points_prop {#1} \l_tmpa_tl
       { \cs_set:Npx \partpoints { \l_tmpa_tl } }
       {
-        \tl_if_empty:NF \g__hw_qid_tl
-          { \msg_warning:nnnx {homework} {no-points} {#1} { \g__hw_qid_tl } }
+        \ifhwcatalog \else
+          \tl_if_empty:NF \g__hw_qid_tl
+            { \msg_warning:nnnx {homework} {no-points} {#1} { \g__hw_qid_tl } }
+        \fi
         \cs_set:Npn \partpoints {0}
       }
     \seq_gremove_all:Nn \g__hw_unused_seq {#1}
     \seq_if_in:NnTF \g__hw_extra_seq {#1} { \hwextraparttrue } { \hwextrapartfalse }
+  }
+% \ShowQuestion{id}{version}: catalog mode only. Loads a question version without points, with its
+% labels and references scoped to that version.
+\NewDocumentCommand {\ShowQuestion} {mm}
+  {
+    \prop_get:NnNTF \g__hw_qpath_prop {#1} \l__hw_dir_tl
+      {
+        \group_begin:
+        \tl_gset:Nn \g__hw_qid_tl {#1}
+        \prop_gclear:N \g__hw_points_prop
+        \seq_gclear:N \g__hw_extra_seq
+        \seq_gclear:N \g__hw_unused_seq
+        \HwPrefixRefs {#1/#2:}
+        \__hw_subimport:x { questionbank/\l__hw_dir_tl/#2/ }
+        \group_end:
+        \tl_gclear:N \g__hw_qid_tl
+      }
+      { \msg_error:nnn {homework} {unknown-id} {#1} }
   }
 \NewDocumentCommand {\HwBeginQuestion} {m} { \hw_begin_question:n {#1} }
 \NewDocumentCommand {\HwLookupPart} {m} { \hw_lookup_part:n {#1} }
@@ -330,14 +373,22 @@
     \HwBeginQuestion{#1}
 
     % Make the Upper Right Corner Display which question we are on
-    \markright{Question \arabic{questionCnt}/\ProblemCount}
+    \ifhwcatalog\else
+        \markright{Question \arabic{questionCnt}/\ProblemCount}
+    \fi
 
     \bigskip
     \noindent
     {\Large\bfseries
-        Question \thequestionCnt{} - #2
-        \hfill
-        (\pluralize{\GetProblemTotal}{point}{points})
+        \ifhwcatalog
+            #2
+            \hfill
+            \HwCatalogTag
+        \else
+            Question \thequestionCnt{} - #2
+            \hfill
+            (\pluralize{\GetProblemTotal}{point}{points})
+        \fi
     }
 
     \medskip
@@ -379,7 +430,9 @@
         \textbf{(\alph{partquestionCnt})}\hspace{0.5em}%
     \fi
     #2
-    \textbf{(\PartPoints)}
+    \ifhwcatalog\else
+        \textbf{(\PartPoints)}
+    \fi
 }
 {
     \medskip

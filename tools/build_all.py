@@ -11,6 +11,8 @@ Examples
     python tools/build_all.py --compare baseline.json  # rebuild and diff against a recording
     python tools/build_all.py --pdf-dir pdfs           # also keep every PDF
 
+Unless --only is given, main_questionbank.tex (every version of every question) is built too.
+
 Recorded per build: success, page count, the totals written to the .aux file, the set of image
 files loaded (normalized paths), and LaTeX warnings.
 """
@@ -74,8 +76,9 @@ def parse_results(log_text, aux_text):
 
 
 def build(tectonic, work, sem, hw, mode, pdf_dir):
-    (work / 'config' / 'current_assignment.tex').write_text(
-        f'\\def\\Semester{{{sem}}}\n\\def\\AssignmentFolder{{{hw}}}\n', encoding='utf-8')
+    if mode != 'questionbank':
+        (work / 'config' / 'current_assignment.tex').write_text(
+            f'\\def\\Semester{{{sem}}}\n\\def\\AssignmentFolder{{{hw}}}\n', encoding='utf-8')
     out = work / '_out'
     shutil.rmtree(out, ignore_errors=True)
     out.mkdir()
@@ -93,7 +96,8 @@ def build(tectonic, work, sem, hw, mode, pdf_dir):
         re.findall(r'^!.*$', log_text, re.M)[:3]
     if ok and pdf_dir:
         pdf_dir.mkdir(parents=True, exist_ok=True)
-        shutil.copy(out / f'main_{mode}.pdf', pdf_dir / f'{sem}_{hw}_{mode}.pdf')
+        name = 'questionbank.pdf' if mode == 'questionbank' else f'{sem}_{hw}_{mode}.pdf'
+        shutil.copy(out / f'main_{mode}.pdf', pdf_dir / name)
     return {'ok': ok, 'pages': pages, 'totals': totals, 'graphics': graphics,
             'warnings': warnings, 'errors': errors}
 
@@ -122,6 +126,8 @@ def main():
     ap.add_argument('--save', type=Path, help='write results JSON here')
     ap.add_argument('--compare', type=Path, help='baseline JSON to diff against')
     ap.add_argument('--pdf-dir', type=Path, help='copy every PDF here')
+    ap.add_argument('--no-questionbank', action='store_true',
+                    help='skip main_questionbank.tex (built by default unless --only is given)')
     args = ap.parse_args()
 
     tectonic = find_tectonic()
@@ -140,6 +146,14 @@ def main():
                       f' warnings={len(r["warnings"])}', flush=True)
                 for line in r['errors'] + r['warnings']:
                     print(f'       {line}')
+        if not args.only and not args.no_questionbank:
+            # The question bank catalog compiles every version of every question, used or not.
+            key = 'Question bank [questionbank]'
+            r = build(tectonic, work, '', '', 'questionbank', args.pdf_dir)
+            results[key] = r
+            print(f'{"OK  " if r["ok"] else "FAIL"} {key:<32} pages={r["pages"]} warnings={len(r["warnings"])}', flush=True)
+            for line in r['errors'] + r['warnings']:
+                print(f'       {line}')
 
     failed = [k for k, r in results.items() if not r['ok']]
     print(f'\n{len(results) - len(failed)}/{len(results)} builds succeeded.')
