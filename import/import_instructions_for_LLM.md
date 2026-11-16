@@ -82,6 +82,7 @@ assignments/
       questions.tex           the manifest
 questionbank/
   index.tex                   question id -> folder; the ONLY place a question's location is written
+  tags.md                     concept tag vocabulary (human-edited; see section 4)
   README.md                   generated catalog table (tools/check.py --catalog); do not edit by hand
   catalog.tex                 generated content of main_questionbank.tex (same command); do not edit
   <topic>/                    amplifiers, capacitors_and_inductors, circuit_quantities, diodes,
@@ -92,7 +93,7 @@ questionbank/
         <figures: .png/.jpg/.jpeg, .drawio sources, .m scripts>
       v1/ ...                 later variants
       originals/              optional: standalone original documents (never \input)
-      version_history.md      required once a v1 exists
+      version_history.md      required: authors, dates, notes per version + Concepts tags
 config/  style/  tools/  main_student.tex  main_solutions.tex  main_questionbank.tex
 import/                       this document and conversion notes; per-import scratch folders
 ```
@@ -253,8 +254,10 @@ problems. Line 4 selects `config/student_mode` or `config/solutions_mode`.
   `questionbank/catalog.tex`. `homework.sty` supplies catalog mode (`\hwcatalogtrue`):
   `\ShowQuestion{id}{vN}` loads a version without points and scopes its `\label`/`\cref`s to that
   version, since all versions of a question share part labels.
-- Metadata comes from each question's `version_history.md` (Author, Date, Content). Missing or
-  `TODO` authors are shown as "Jeff Stribling (assumed)".
+- Metadata comes from each question's `version_history.md` (Author, Date, Content, Concepts).
+  Missing or `TODO` authors are shown as "Jeff Stribling (assumed)". A "Questions by concept"
+  index after the table of contents lists every tag in `questionbank/tags.md` order with links to
+  the questions using it (also at the end of `questionbank/README.md`).
 - `catalog.tex` is committed so Overleaf can compile it, but only the local tool regenerates it:
   after adding/moving questions or editing version histories, run `python tools/check.py --catalog`.
   In Overleaf, compile it by setting the project's Main document to `main_questionbank.tex`
@@ -294,13 +297,20 @@ existing names and follow these conventions for new content.
 - A new version may reuse unchanged figures from an earlier version (`../v0/fig.png`). This means
   **older version folders must never be deleted**. Copy the figure into the new folder if you're
   also modifying it.
-- When creating vN > 0, add or update `<id>/version_history.md` in exactly this format (title =
-  the `mainquestion` title); write `TODO` for anything you don't know rather than guessing. The
-  Author, Date and Content fields are shown in the question bank catalog (section 2.6), so for an
-  imported question record the instructor who wrote it — create the file even for a v0-only
-  question when the author is not Jeff Stribling (the catalog assumes Jeff Stribling otherwise):
+- **Every question has a `<id>/version_history.md`** (`check.py` warns otherwise), in exactly
+  this format (title = the `mainquestion` title). Add a `### vN` entry whenever you create a
+  version. Write `TODO` for anything you don't know rather than guessing. Author, Date, Content
+  and Concepts are shown in the question bank catalog (section 2.6); for an imported question
+  record the instructor who wrote it.
+- **Concepts** are tags from the vocabulary in `questionbank/tags.md` (grouped by syllabus topic,
+  plus skill tags such as `design`, `datasheet`, `measurement`). Use existing tags where they fit;
+  if a new concept is needed, add it to `tags.md` (one line: `` - `tag-id` — description ``) and
+  mention it to the user. `check.py` errors on tags not in the vocabulary;
+  `check.py --rename-tag old new` renames a tag everywhere.
   ```markdown
   # <Question Title>
+
+  Concepts: <tag>, <tag>, ...
 
   ## Version History
 
@@ -396,7 +406,7 @@ Then:
    figures in the same folder.
 3. Register new questions: `python tools/check.py --fix-index`.
 4. Create `assignments/<Semester>/HWxx/questions.tex` (section 2.2).
-5. Add/update `version_history.md` for any new vN > 0 (section 4).
+5. Create/update each question's `version_history.md`, including its `Concepts:` tags (section 4).
 6. Run the checks in section 9 and regenerate the catalogs (`--catalog`), so the new questions
    appear in `questionbank/README.md` and in the question bank PDF.
 7. Do **not** edit `config/current_assignment.tex`; tell the user the two values to set to compile.

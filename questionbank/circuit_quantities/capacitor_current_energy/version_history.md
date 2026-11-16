@@ -1,10 +1,12 @@
 # Capacitor Analysis
 
+Concepts: capacitors, power-energy
+
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: —
+- Date: Summer 2025 (first use)
 - Content: Analysis of capacitor dynamics with time-varying current, 2 parts
   - Part (a): Derive voltage, power, and energy functions (9 points)
   - Part (b): Plot waveforms showing relationships (6 points)

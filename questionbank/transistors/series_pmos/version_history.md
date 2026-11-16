@@ -1,11 +1,13 @@
 # Series NMOS Bias Voltages
 
+Concepts: mosfet-dc-bias, pmos
+
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: —
-- Content: TODO: describe the original problem
+- Date: Summer 2025 (first use)
+- Content: Two identical NMOS transistors in series: DC bias voltages V_1 to V_3 and the drain current.
 
 ### v1 - Updated
 - Author: Ammon Wolfert

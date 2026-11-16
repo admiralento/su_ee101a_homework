@@ -1,5 +1,7 @@
 # LED Load-Line
 
+Concepts: led, load-line, diode-temperature, standard-resistor-values, datasheet
+
 ## Version History
 
 ### v0 - Initial version

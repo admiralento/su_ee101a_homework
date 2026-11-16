@@ -1,11 +1,13 @@
 # PMOS Amplifier with Gate Resistor
 
+Concepts: common-source, pmos, small-signal-model, channel-length-modulation, amplifier-models
+
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: —
-- Content: TODO: describe the original problem
+- Date: Summer 2025 (first use)
+- Content: PMOS CS stage biased by a current source and a gate resistor: small-signal equivalent circuit, input and output resistance, and voltage gain.
 
 ### v1 - Updated
 - Author: Ammon Wolfert

@@ -1,13 +1,15 @@
 # Source Transformations
 
+Concepts: source-transformation
+
 ## Version History
 
 ### v0 - Initial version
-- Author: TODO
-- Date: TODO
-- Content: TODO: describe the original problem
+- Author: Jeff Stribling
+- Date: Summer 2025 (first use)
+- Content: Find V_O using successive source transformations.
 
-### v1 - TODO: short label
-- Author: TODO
-- Date: TODO
-- Content: TODO: describe what changed from the previous version
+### v1 - Updated
+- Author: Ammon Wolfert
+- Date: Summer 2026 (first use)
+- Content: Redrew the circuit with new component values (new figures and solution); same single part.

@@ -8,122 +8,215 @@ Compile `main_questionbank.tex` for a PDF of every version (with or without solu
 
 ## amplifiers
 
-| ID | Title | Key | Version | Author | Parts | Used in |
-|---|---|---|---|---|---|---|
-| [`cascade_cd_cg`](amplifiers/cascade_cd_cg) | Cascaded CD and CG Stages | `cascade` | v0 | Jeff Stribling (assumed) | 3 | Summer 2025 HW07 (14 pts) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 3 | Summer 2026 HW07 (14 pts), Fall 2026 HW08 (14 pts) |
-| [`cs_amplifier_design`](amplifiers/cs_amplifier_design) | Common Source Amplifier Design | `csdesign` | v0 | Jeff Stribling | 4 | Summer 2025 HW06 (12 pts) |
-|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW06 (12 pts), Fall 2026 HW07 (12 pts) |
-| [`cs_coupling_distortion`](amplifiers/cs_coupling_distortion) | Common Source Amplifier with Coupling Capacitors | `cscoupling` | v0 | Jeff Stribling (assumed) | 4 | Summer 2025 HW06 (12 pts) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 4 | Summer 2026 HW06 (12 pts), Fall 2026 HW07 (12 pts) |
-| [`cs_transfer_characteristic`](amplifiers/cs_transfer_characteristic) | Common Source Amplifier Transfer Characteristic | `cstransfer` | v0 | Jeff Stribling | 5 | Summer 2025 HW06 (18 pts) |
-|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW06 (18 pts), Fall 2026 HW07 (18 pts) |
-| [`current_amplifier_design`](amplifiers/current_amplifier_design) | Current Amplifier Design | `curramp` | v0 | Jeff Stribling (assumed) | 3 | Summer 2025 HW07 (15 pts), Summer 2026 HW07 (15 pts), Fall 2026 HW08 (15 pts) |
-| [`diode_connected_pullup`](amplifiers/diode_connected_pullup) | Diode-Connected Transistor as Pull-Up Resistor | `diodepullup` | v0 | Jeff Stribling | 3 | Summer 2025 HW06 (10 pts) |
-|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW06 (10 pts), Fall 2026 HW07 (10 pts) |
-| [`hf_pulse_amplifier`](amplifiers/hf_pulse_amplifier) | High-Frequency Pulse Amplifier | `hfpulse` | v0 | Jeff Stribling (assumed) | 5 | Summer 2025 HW07 (13 pts), Summer 2026 HW07 (13 pts), Fall 2026 HW08 (13 pts) |
-| [`pmos_gate_resistor`](amplifiers/pmos_gate_resistor) | PMOS Amplifier with Gate Resistor | `pmosgateresistor` | v0 | Jeff Stribling | 3 | Summer 2025 HW06 (18 pts) |
-|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW06 (18 pts), Fall 2026 HW08 (18 pts) |
-| [`source_follower`](amplifiers/source_follower) | Source Follower Measurement | `sourcefollower` | v0 | Jeff Stribling | 2 | Summer 2025 HW07 (10 pts) |
-|  |  |  | v1 | Ammon Wolfert | 2 | Summer 2026 HW07 (10 pts), Fall 2026 HW08 (10 pts) |
-| [`two_stage_power`](amplifiers/two_stage_power) | Two-Stage Amplifier Power Analysis | `twostage` | v0 | Jeff Stribling (assumed) | 4 | Summer 2025 HW07 (18 pts), Summer 2026 HW07 (18 pts), Fall 2026 HW08 (18 pts) |
+| ID | Title | Key | Version | Author | Parts | Used in | Concepts |
+|---|---|---|---|---|---|---|---|
+| [`cascade_cd_cg`](amplifiers/cascade_cd_cg) | Cascaded CD and CG Stages | `cascade` | v0 | Jeff Stribling | 3 | Summer 2025 HW07 (14 pts) | common-drain, common-gate, multistage-amplifiers, small-signal-model, amplifier-models |
+|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW07 (14 pts), Fall 2026 HW08 (14 pts) |  |
+| [`cs_amplifier_design`](amplifiers/cs_amplifier_design) | Common Source Amplifier Design | `csdesign` | v0 | Jeff Stribling | 4 | Summer 2025 HW06 (12 pts) | common-source, small-signal-model, mosfet-dc-bias, mosfet-process, design |
+|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW06 (12 pts), Fall 2026 HW07 (12 pts) |  |
+| [`cs_coupling_distortion`](amplifiers/cs_coupling_distortion) | Common Source Amplifier with Coupling Capacitors | `cscoupling` | v0 | Jeff Stribling | 4 | Summer 2025 HW06 (12 pts) | common-source, small-signal-model, signal-swing, mosfet-dc-bias |
+|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW06 (12 pts), Fall 2026 HW07 (12 pts) |  |
+| [`cs_transfer_characteristic`](amplifiers/cs_transfer_characteristic) | Common Source Amplifier Transfer Characteristic | `cstransfer` | v0 | Jeff Stribling | 5 | Summer 2025 HW06 (18 pts) | common-source, transfer-characteristic, signal-swing, small-signal-model, channel-length-modulation |
+|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW06 (18 pts), Fall 2026 HW07 (18 pts) |  |
+| [`current_amplifier_design`](amplifiers/current_amplifier_design) | Current Amplifier Design | `curramp` | v0 | Jeff Stribling | 3 | Summer 2025 HW07 (15 pts), Summer 2026 HW07 (15 pts), Fall 2026 HW08 (15 pts) | amplifier-models, design |
+| [`diode_connected_pullup`](amplifiers/diode_connected_pullup) | Diode-Connected Transistor as Pull-Up Resistor | `diodepullup` | v0 | Jeff Stribling | 3 | Summer 2025 HW06 (10 pts) | diode-connected-mosfet, common-source, transfer-characteristic, symbolic |
+|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW06 (10 pts), Fall 2026 HW07 (10 pts) |  |
+| [`hf_pulse_amplifier`](amplifiers/hf_pulse_amplifier) | High-Frequency Pulse Amplifier | `hfpulse` | v0 | Jeff Stribling | 5 | Summer 2025 HW07 (13 pts), Summer 2026 HW07 (13 pts), Fall 2026 HW08 (13 pts) | common-source, common-gate, multistage-amplifiers, small-signal-model, application |
+| [`pmos_gate_resistor`](amplifiers/pmos_gate_resistor) | PMOS Amplifier with Gate Resistor | `pmosgateresistor` | v0 | Jeff Stribling | 3 | Summer 2025 HW06 (18 pts) | common-source, pmos, small-signal-model, channel-length-modulation, amplifier-models |
+|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW06 (18 pts), Fall 2026 HW08 (18 pts) |  |
+| [`source_follower`](amplifiers/source_follower) | Source Follower Measurement | `sourcefollower` | v0 | Jeff Stribling | 2 | Summer 2025 HW07 (10 pts) | common-drain, small-signal-model, channel-length-modulation, measurement |
+|  |  |  | v1 | Ammon Wolfert | 2 | Summer 2026 HW07 (10 pts), Fall 2026 HW08 (10 pts) |  |
+| [`two_stage_power`](amplifiers/two_stage_power) | Two-Stage Amplifier Power Analysis | `twostage` | v0 | Jeff Stribling | 4 | Summer 2025 HW07 (18 pts), Summer 2026 HW07 (18 pts), Fall 2026 HW08 (18 pts) | multistage-amplifiers, small-signal-model, mosfet-dc-bias, channel-length-modulation, power-energy |
 
 ## capacitors_and_inductors
 
-| ID | Title | Key | Version | Author | Parts | Used in |
-|---|---|---|---|---|---|---|
-| [`c_and_l_experiment`](capacitors_and_inductors/c_and_l_experiment) | Capacitor and Inductor Experiment | `c_and_l_experiment` | v0 | Jeff Stribling (assumed) | 6 | Fall 2026 HW05 (20 pts + 3 EC) |
+| ID | Title | Key | Version | Author | Parts | Used in | Concepts |
+|---|---|---|---|---|---|---|---|
+| [`c_and_l_experiment`](capacitors_and_inductors/c_and_l_experiment) | Capacitor and Inductor Experiment | `c_and_l_experiment` | v0 | Jeff Stribling | 6 | Fall 2026 HW05 (20 pts + 3 EC) | inductors, capacitors, first-order-transients, measurement |
 
 ## circuit_quantities
 
-| ID | Title | Key | Version | Author | Parts | Used in |
-|---|---|---|---|---|---|---|
-| [`capacitor_current_energy`](circuit_quantities/capacitor_current_energy) | Capacitor Analysis | `capacitorcurrent` | v0 | Jeff Stribling | 2 | Summer 2025 HW03 (15 pts) |
-|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW03 (20 pts), Fall 2026 HW05 (20 pts) |
-| [`capacitor_network`](circuit_quantities/capacitor_network) | DC Capacitor Network | `capacitornetwork` | v0 | Jeff Stribling | 2 | Summer 2025 HW03 (18 pts) |
-|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW03 (24 pts), Fall 2026 HW05 (24 pts) |
-| [`ceiling_light`](circuit_quantities/ceiling_light) | Household Circuit | `ceilinglight` | v0 | Jeff Stribling | 2 | Summer 2025 HW01 (9 pts) |
-|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW01 (15 pts), Fall 2026 HW01 (15 pts) |
-| [`energy_box`](circuit_quantities/energy_box) | Energy, Power, and Charge | `energy_box` | v0 | Jeff Stribling (assumed) | 3 | Summer 2025 HW01 (17 pts), Summer 2026 HW01 (17 pts), Fall 2026 HW01 (17 pts) |
-| [`impedance_forms`](circuit_quantities/impedance_forms) | Impedance Conversion Table | `impedanceforms` | v0 | Jeff Stribling (assumed) | 1 | Summer 2025 HW08 (12 pts), Summer 2026 HW08 (12 pts), Fall 2026 HW09 (12 pts) |
-| [`resistor_code`](circuit_quantities/resistor_code) | Resistor Code | `resistor_code` | v0 | Jeff Stribling | 3 | Summer 2025 HW01 (16 pts + 8 EC) |
-|  |  |  | v1 | Ammon Wolfert | 6 | Summer 2026 HW01 (23 pts + 8 EC), Fall 2026 HW01 (23 pts + 8 EC) |
-| [`rms_trapezoid`](circuit_quantities/rms_trapezoid) | RMS Trapezoid | `rms_trap` | v0 | Jeff Stribling (assumed) | 3 | Summer 2025 HW01 (21 pts), Summer 2026 HW01 (22 pts), Fall 2026 HW01 (22 pts) |
+| ID | Title | Key | Version | Author | Parts | Used in | Concepts |
+|---|---|---|---|---|---|---|---|
+| [`capacitor_current_energy`](circuit_quantities/capacitor_current_energy) | Capacitor Analysis | `capacitorcurrent` | v0 | Jeff Stribling | 2 | Summer 2025 HW03 (15 pts) | capacitors, power-energy |
+|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW03 (20 pts), Fall 2026 HW05 (20 pts) |  |
+| [`capacitor_network`](circuit_quantities/capacitor_network) | DC Capacitor Network | `capacitornetwork` | v0 | Jeff Stribling | 2 | Summer 2025 HW03 (18 pts) | capacitors, capacitor-networks, series-parallel, power-energy |
+|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW03 (24 pts), Fall 2026 HW05 (24 pts) |  |
+| [`ceiling_light`](circuit_quantities/ceiling_light) | Household Circuit | `ceilinglight` | v0 | Jeff Stribling | 2 | Summer 2025 HW01 (9 pts) | circuit-quantities, resistance-resistivity, power-energy, application |
+|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW01 (15 pts), Fall 2026 HW01 (15 pts) |  |
+| [`energy_box`](circuit_quantities/energy_box) | Energy, Power, and Charge | `energy_box` | v0 | Jeff Stribling | 3 | Summer 2025 HW01 (17 pts), Summer 2026 HW01 (17 pts), Fall 2026 HW01 (17 pts) | circuit-quantities, power-energy |
+| [`impedance_forms`](circuit_quantities/impedance_forms) | Impedance Conversion Table | `impedanceforms` | v0 | Jeff Stribling | 1 | Summer 2025 HW08 (12 pts), Summer 2026 HW08 (12 pts), Fall 2026 HW09 (12 pts) | phasors-impedance, complex-numbers |
+| [`resistor_code`](circuit_quantities/resistor_code) | Resistor Code | `resistor_code` | v0 | Jeff Stribling | 3 | Summer 2025 HW01 (16 pts + 8 EC) | resistor-color-code, series-parallel, resistance-resistivity, power-energy |
+|  |  |  | v1 | Ammon Wolfert | 6 | Summer 2026 HW01 (23 pts + 8 EC), Fall 2026 HW01 (23 pts + 8 EC) |  |
+| [`rms_trapezoid`](circuit_quantities/rms_trapezoid) | RMS Trapezoid | `rms_trap` | v0 | Jeff Stribling | 3 | Summer 2025 HW01 (21 pts), Summer 2026 HW01 (22 pts), Fall 2026 HW01 (22 pts) | rms-waveforms |
 
 ## diodes
 
-| ID | Title | Key | Version | Author | Parts | Used in |
-|---|---|---|---|---|---|---|
-| [`diode_001`](diodes/diode_001) | Diode Circuit | `diode_001` | v0 | Jeff Stribling (assumed) | 4 | Summer 2025 HW02 (17 pts + 5 EC) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 4 | Summer 2026 HW02 (17 pts + 5 EC), Fall 2026 HW04 (17 pts + 5 EC) |
-| [`diode_conceptual`](diodes/diode_conceptual) | Diode Deep Dive | `diode_conceptual` | v0 | Jeff Stribling (assumed) | 7 | Summer 2025 HW02 (15 pts), Summer 2026 HW02 (15 pts), Fall 2026 HW04 (15 pts) |
-| [`diode_hogging`](diodes/diode_hogging) | Parallel Diodes | `diode_hogging` | v0 | Jeff Stribling (assumed) | 8 | Summer 2025 HW02 (28 pts) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 8 | Summer 2026 HW02 (28 pts), Fall 2026 HW04 (28 pts) |
-| [`led_iv_curve`](diodes/led_iv_curve) | LED Load-Line | `ledloadline` | v0 | Jeff Stribling | 3 | Summer 2025 HW03 (10 pts) |
-|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW03 (10 pts + 5 EC), Fall 2026 HW04 (10 pts + 5 EC) |
-| [`zener_regulator`](diodes/zener_regulator) | Zener Diode Voltage Regulator Design | `zenerregulator` | v0 | Jeff Stribling | 3 | Summer 2025 HW03 (12 pts) |
-|  | Solar Panel Zener Diode |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW03 (16 pts), Fall 2026 HW04 (16 pts) |
+| ID | Title | Key | Version | Author | Parts | Used in | Concepts |
+|---|---|---|---|---|---|---|---|
+| [`diode_001`](diodes/diode_001) | Diode Circuit | `diode_001` | v0 | Jeff Stribling | 4 | Summer 2025 HW02 (17 pts + 5 EC) | diode-models, symbolic |
+|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW02 (17 pts + 5 EC), Fall 2026 HW04 (17 pts + 5 EC) |  |
+| [`diode_conceptual`](diodes/diode_conceptual) | Diode Deep Dive | `diode_conceptual` | v0 | Jeff Stribling | 7 | Summer 2025 HW02 (15 pts), Summer 2026 HW02 (15 pts), Fall 2026 HW04 (15 pts) | diode-physics, conceptual |
+| [`diode_hogging`](diodes/diode_hogging) | Parallel Diodes | `diode_hogging` | v0 | Jeff Stribling | 8 | Summer 2025 HW02 (28 pts) | diode-models, diode-temperature, software |
+|  |  |  | v1 | Ammon Wolfert | 8 | Summer 2026 HW02 (28 pts), Fall 2026 HW04 (28 pts) |  |
+| [`led_iv_curve`](diodes/led_iv_curve) | LED Load-Line | `ledloadline` | v0 | Jeff Stribling | 3 | Summer 2025 HW03 (10 pts) | led, load-line, diode-temperature, standard-resistor-values, datasheet |
+|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW03 (10 pts + 5 EC), Fall 2026 HW04 (10 pts + 5 EC) |  |
+| [`zener_regulator`](diodes/zener_regulator) | Zener Diode Voltage Regulator Design | `zenerregulator` | v0 | Jeff Stribling | 3 | Summer 2025 HW03 (12 pts) | zener-regulator, design, datasheet, application |
+|  | Solar Panel Zener Diode |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW03 (16 pts), Fall 2026 HW04 (16 pts) |  |
 
 ## networks
 
-| ID | Title | Key | Version | Author | Parts | Used in |
-|---|---|---|---|---|---|---|
-| [`ammeter_thevenin_norton`](networks/ammeter_thevenin_norton) | Equivalent Circuits | `ammeter` | v0 | Jeff Stribling (assumed) | 5 | Summer 2025 HW04 (16 pts) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 6 | Summer 2026 HW04 (18 pts), Fall 2026 HW03 (18 pts) |
-| [`battery_internal_resistance`](networks/battery_internal_resistance) | Power Transfer | `battery` | v0 | Jeff Stribling (assumed) | 3 | Summer 2025 HW04 (10 pts), Summer 2026 HW04 (10 pts), Fall 2026 HW03 (10 pts) |
-| [`bridge_rc_filter`](networks/bridge_rc_filter) | Bridge-Circuit RC Filter | `bridgefilter` | v0 | Jeff Stribling (assumed) | 5 | Summer 2025 HW08 (16 pts), Summer 2026 HW08 (16 pts), Fall 2026 HW09 (16 pts) |
-| [`circuit_001`](networks/circuit_001) | Circuit Solving | `circuit_001` | v0 | Jeff Stribling (assumed) | 5 | Summer 2025 HW02 (17 pts) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 5 | Summer 2026 HW02 (17 pts) |
-| [`circuit_002`](networks/circuit_002) | Nodal Analysis | `circuit_002` | v0 | Jeff Stribling (assumed) | 5 | Summer 2025 HW02 (23 pts) |
-| [`circuit_graph`](networks/circuit_graph) | Loops, Nodes, and Elements Oh My! | `circuit_graph` | v0 | Jeff Stribling | 5 | — |
-|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2025 HW01 (6 pts), Summer 2026 HW01 (6 pts) |
-| [`circuit_graph_and_circuit_001`](networks/circuit_graph_and_circuit_001) | Loops, Nodes, and Elements Oh My! | `circuit_graph_and_circuit_001` | v0 | Jeff Stribling (assumed) | 10 | Fall 2026 HW02 (23 pts) |
-| [`current_gain`](networks/current_gain) | Your Turn | `currentgain` | v0 | Jeff Stribling (assumed) | 2 | — |
-|  | Your Choice |  | v1 | Jeff Stribling (assumed) | 4 | Summer 2026 HW04 (16 pts + 5 EC) |
-| [`dependentsource01`](networks/dependentsource01) | Working with Dependent Sources | `dependentsource01` | v0 | Jeff Stribling (assumed) | 8 | Fall 2026 HW06 (19 pts + 3 EC) |
-| [`double_dependent`](networks/double_dependent) | Double Dependent | `double_dependent` | v0 | Jeff Stribling (assumed) | 1 | — |
-| [`function_generator_and_scope`](networks/function_generator_and_scope) | Function Generators and Oscilloscope Probes | `function_generator_and_scope` | v0 | Jeff Stribling (assumed) | 7 | Fall 2026 HW02 (14 pts) |
-| [`parallel_rlc_impedance`](networks/parallel_rlc_impedance) | Parallel RLC Impedance | `parallelrlc` | v0 | Jeff Stribling (assumed) | 4 | Summer 2025 HW08 (17 pts), Summer 2026 HW08 (17 pts), Fall 2026 HW09 (17 pts) |
-| [`residential_power_distribution`](networks/residential_power_distribution) | Mesh Analysis | `residentialpower` | v0 | Jeff Stribling (assumed) | 3 | Summer 2025 HW04 (24 pts) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 4 | Summer 2026 HW04 (26 pts), Fall 2026 HW02 (26 pts) |
-| [`rl_high_pass_design`](networks/rl_high_pass_design) | RL High-Pass Filter Design | `rlhighpass` | v0 | Jeff Stribling (assumed) | 3 | Summer 2025 HW08 (10 pts), Summer 2026 HW08 (10 pts), Fall 2026 HW09 (10 pts) |
-| [`single_frequency_gain`](networks/single_frequency_gain) | Complex Gain at a Single Frequency | `singlefreqgain` | v0 | Jeff Stribling (assumed) | 3 | Summer 2025 HW08 (10 pts), Summer 2026 HW08 (10 pts), Fall 2026 HW09 (10 pts) |
-| [`solderpaste`](networks/solderpaste) | Solderpasted | `solderpaste` | v0 | Jeff Stribling | 3 | — |
-|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2025 HW01 (16 pts), Summer 2026 HW01 (17 pts), Fall 2026 HW01 (17 pts) |
-| [`source_transformations`](networks/source_transformations) | Source Transformations | `sourcetransform` | v0 | Jeff Stribling (assumed) | 1 | Summer 2025 HW04 (18 pts) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 1 | Summer 2026 HW04 (18 pts), Fall 2026 HW03 (18 pts) |
-| [`superposition`](networks/superposition) | Superposition | `superposition` | v0 | Jeff Stribling (assumed) | 1 | Summer 2025 HW04 (10 pts) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 2 | Summer 2026 HW04 (12 pts), Fall 2026 HW03 (12 pts) |
-| [`thevenin_meas`](networks/thevenin_meas) | Measuring Thévenin | `thevenin_meas` | v0 | Jeff Stribling (assumed) | 6 | Fall 2026 HW03 (20 pts) |
-| [`transformer_power_transfer`](networks/transformer_power_transfer) | Ideal Transformer Power | `transformerpowertransfer` | v0 | Jeff Stribling | 5 | Summer 2025 HW03 (22 pts) |
-|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW03 (22 pts), Fall 2026 HW05 (22 pts) |
-| [`wye_delta_nodal`](networks/wye_delta_nodal) | Nodal Analysis + Delta/Wye | `wye_delta_nodal` | v0 | Jeff Stribling (assumed) | 6 | Summer 2026 HW02 (23 pts) |
-| [`wye_delta_nodal_no_dependent_source`](networks/wye_delta_nodal_no_dependent_source) | Nodal Analysis + Delta/Wye | `wye_delta_nodal_no_dependent_source` | v0 | Jeff Stribling (assumed) | 6 | Fall 2026 HW02 (23 pts) |
+| ID | Title | Key | Version | Author | Parts | Used in | Concepts |
+|---|---|---|---|---|---|---|---|
+| [`ammeter_thevenin_norton`](networks/ammeter_thevenin_norton) | Equivalent Circuits | `ammeter` | v0 | Jeff Stribling | 5 | Summer 2025 HW04 (16 pts) | thevenin-norton, instrument-loading |
+|  |  |  | v1 | Ammon Wolfert | 6 | Summer 2026 HW04 (18 pts), Fall 2026 HW03 (18 pts) |  |
+| [`battery_internal_resistance`](networks/battery_internal_resistance) | Power Transfer | `battery` | v0 | Jeff Stribling | 3 | Summer 2025 HW04 (10 pts), Summer 2026 HW04 (10 pts), Fall 2026 HW03 (10 pts) | max-power-transfer, application |
+| [`bridge_rc_filter`](networks/bridge_rc_filter) | Bridge-Circuit RC Filter | `bridgefilter` | v0 | Jeff Stribling | 5 | Summer 2025 HW08 (16 pts), Summer 2026 HW08 (16 pts), Fall 2026 HW09 (16 pts) | transfer-functions, filters, bode-plots, thevenin-norton, phasors-impedance |
+| [`circuit_001`](networks/circuit_001) | Circuit Solving | `circuit_001` | v0 | Jeff Stribling | 5 | Summer 2025 HW02 (17 pts) | kcl-kvl, circuit-topology |
+|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW02 (17 pts) |  |
+| [`circuit_002`](networks/circuit_002) | Nodal Analysis | `circuit_002` | v0 | Jeff Stribling | 5 | Summer 2025 HW02 (23 pts) | nodal-analysis, power-energy |
+| [`circuit_graph`](networks/circuit_graph) | Loops, Nodes, and Elements Oh My! | `circuit_graph` | v0 | Jeff Stribling | 5 | — | circuit-topology |
+|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2025 HW01 (6 pts), Summer 2026 HW01 (6 pts) |  |
+| [`circuit_graph_and_circuit_001`](networks/circuit_graph_and_circuit_001) | Loops, Nodes, and Elements Oh My! | `circuit_graph_and_circuit_001` | v0 | Jeff Stribling | 10 | Fall 2026 HW02 (23 pts) | circuit-topology, kcl-kvl |
+| [`current_gain`](networks/current_gain) | Your Turn | `currentgain` | v0 | Jeff Stribling | 2 | — | dependent-sources, superposition, thevenin-norton, symbolic |
+|  | Your Choice |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW04 (16 pts + 5 EC) |  |
+| [`dependentsource01`](networks/dependentsource01) | Working with Dependent Sources | `dependentsource01` | v0 | Jeff Stribling | 8 | Fall 2026 HW06 (19 pts + 3 EC) | dependent-sources, source-transformation, superposition, thevenin-norton, max-power-transfer |
+| [`double_dependent`](networks/double_dependent) | Double Dependent | `double_dependent` | v0 | Jeff Stribling | 1 | — | dependent-sources, kcl-kvl |
+| [`function_generator_and_scope`](networks/function_generator_and_scope) | Function Generators and Oscilloscope Probes | `function_generator_and_scope` | v0 | Jeff Stribling | 7 | Fall 2026 HW02 (14 pts) | instrument-loading, max-power-transfer, measurement |
+| [`parallel_rlc_impedance`](networks/parallel_rlc_impedance) | Parallel RLC Impedance | `parallelrlc` | v0 | Jeff Stribling | 4 | Summer 2025 HW08 (17 pts), Summer 2026 HW08 (17 pts), Fall 2026 HW09 (17 pts) | phasors-impedance, resonance, bode-plots |
+| [`residential_power_distribution`](networks/residential_power_distribution) | Mesh Analysis | `residentialpower` | v0 | Jeff Stribling | 3 | Summer 2025 HW04 (24 pts) | mesh-analysis, power-energy, application |
+|  |  |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW04 (26 pts), Fall 2026 HW02 (26 pts) |  |
+| [`rl_high_pass_design`](networks/rl_high_pass_design) | RL High-Pass Filter Design | `rlhighpass` | v0 | Jeff Stribling | 3 | Summer 2025 HW08 (10 pts), Summer 2026 HW08 (10 pts), Fall 2026 HW09 (10 pts) | filters, transfer-functions, bode-plots, design |
+| [`single_frequency_gain`](networks/single_frequency_gain) | Complex Gain at a Single Frequency | `singlefreqgain` | v0 | Jeff Stribling | 3 | Summer 2025 HW08 (10 pts), Summer 2026 HW08 (10 pts), Fall 2026 HW09 (10 pts) | transfer-functions, complex-numbers, phasors-impedance |
+| [`solderpaste`](networks/solderpaste) | Solderpasted | `solderpaste` | v0 | Jeff Stribling | 3 | — | power-energy, kcl-kvl |
+|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2025 HW01 (16 pts), Summer 2026 HW01 (17 pts), Fall 2026 HW01 (17 pts) |  |
+| [`source_transformations`](networks/source_transformations) | Source Transformations | `sourcetransform` | v0 | Jeff Stribling | 1 | Summer 2025 HW04 (18 pts) | source-transformation |
+|  |  |  | v1 | Ammon Wolfert | 1 | Summer 2026 HW04 (18 pts), Fall 2026 HW03 (18 pts) |  |
+| [`superposition`](networks/superposition) | Superposition | `superposition` | v0 | Jeff Stribling | 1 | Summer 2025 HW04 (10 pts) | superposition |
+|  |  |  | v1 | Ammon Wolfert | 2 | Summer 2026 HW04 (12 pts), Fall 2026 HW03 (12 pts) |  |
+| [`thevenin_meas`](networks/thevenin_meas) | Measuring Thévenin | `thevenin_meas` | v0 | Jeff Stribling | 6 | Fall 2026 HW03 (20 pts) | thevenin-norton, load-line, measurement |
+| [`transformer_power_transfer`](networks/transformer_power_transfer) | Ideal Transformer Power | `transformerpowertransfer` | v0 | Jeff Stribling | 5 | Summer 2025 HW03 (22 pts) | ideal-transformer, power-energy, rms-waveforms, application |
+|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW03 (22 pts), Fall 2026 HW05 (22 pts) |  |
+| [`wye_delta_nodal`](networks/wye_delta_nodal) | Nodal Analysis + Delta/Wye | `wye_delta_nodal` | v0 | Jeff Stribling | 6 | Summer 2026 HW02 (23 pts) | wye-delta, nodal-analysis, dependent-sources, kcl-kvl |
+| [`wye_delta_nodal_no_dependent_source`](networks/wye_delta_nodal_no_dependent_source) | Nodal Analysis + Delta/Wye | `wye_delta_nodal_no_dependent_source` | v0 | Jeff Stribling | 6 | Fall 2026 HW02 (23 pts) | wye-delta, nodal-analysis, kcl-kvl |
 
 ## simple_circuits
 
-| ID | Title | Key | Version | Author | Parts | Used in |
-|---|---|---|---|---|---|---|
-| [`resistor_search`](simple_circuits/resistor_search) | Resistor Ratios | `resistor_search` | v0 | Jeff Stribling (assumed) | 3 | Summer 2025 HW02 (16 pts) |
-|  |  |  | v1 | Jeff Stribling (assumed) | 3 | Summer 2026 HW02 (16 pts), Fall 2026 HW02 (16 pts) |
+| ID | Title | Key | Version | Author | Parts | Used in | Concepts |
+|---|---|---|---|---|---|---|---|
+| [`resistor_search`](simple_circuits/resistor_search) | Resistor Ratios | `resistor_search` | v0 | Jeff Stribling | 3 | Summer 2025 HW02 (16 pts) | standard-resistor-values, series-parallel, power-energy, design |
+|  |  |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW02 (16 pts), Fall 2026 HW02 (16 pts) |  |
 
 ## training
 
-| ID | Title | Key | Version | Author | Parts | Used in |
-|---|---|---|---|---|---|---|
-| [`lab_training`](training/lab_training) | Required EE101A Training | `training` | v0 | Jeff Stribling (assumed) | 2 | Fall 2026 HW00 (2 pts) |
+| ID | Title | Key | Version | Author | Parts | Used in | Concepts |
+|---|---|---|---|---|---|---|---|
+| [`lab_training`](training/lab_training) | Required EE101A Training | `training` | v0 | Jeff Stribling | 2 | Fall 2026 HW00 (2 pts) | lab-safety |
 
 ## transistors
 
-| ID | Title | Key | Version | Author | Parts | Used in |
-|---|---|---|---|---|---|---|
-| [`diode_connected`](transistors/diode_connected) | Diode-Connected NMOS Transistor | `diodeconnected` | v0 | Jeff Stribling (assumed) | 2 | Summer 2025 HW05 (7 pts), Summer 2026 HW05 (7 pts), Fall 2026 HW06 (7 pts) |
-| [`nmos_bias`](transistors/nmos_bias) | NMOS Bias Point Calculation | `nmosbias` | v0 | Jeff Stribling | 2 | Summer 2025 HW05 (12 pts) |
-|  |  |  | v1 | Ammon Wolfert | 2 | Summer 2026 HW05 (12 pts), Fall 2026 HW06 (12 pts) |
-| [`pmos_iv_family`](transistors/pmos_iv_family) | PMOS I-V Family Plot | `pmosiv` | v0 | Jeff Stribling | 1 | Summer 2025 HW05 (14 pts) |
-|  |  |  | v1 | Ammon Wolfert | 1 | Summer 2026 HW05 (14 pts), Fall 2026 HW06 (14 pts) |
-| [`process_parameters`](transistors/process_parameters) | MOSFET Process Technology | `mosfetprocess` | v0 | Jeff Stribling | 5 | Summer 2025 HW05 (11 pts) |
-|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW05 (11 pts), Fall 2026 HW06 (11 pts) |
-| [`reverse_protection`](transistors/reverse_protection) | Reverse Polarity Protection | `reverse_protection` | v0 | Jeff Stribling (assumed) | 6 | — |
-| [`series_pmos`](transistors/series_pmos) | Series PMOS Bias Voltages | `seriespmos` | v0 | Jeff Stribling | 2 | Summer 2025 HW05 (11 pts) |
-|  | Series NMOS Bias Voltages |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW05 (16 pts), Fall 2026 HW06 (16 pts) |
+| ID | Title | Key | Version | Author | Parts | Used in | Concepts |
+|---|---|---|---|---|---|---|---|
+| [`diode_connected`](transistors/diode_connected) | Diode-Connected NMOS Transistor | `diodeconnected` | v0 | Jeff Stribling | 2 | Summer 2025 HW05 (7 pts), Summer 2026 HW05 (7 pts), Fall 2026 HW06 (7 pts) | diode-connected-mosfet, mosfet-iv, conceptual |
+| [`nmos_bias`](transistors/nmos_bias) | NMOS Bias Point Calculation | `nmosbias` | v0 | Jeff Stribling | 2 | Summer 2025 HW05 (12 pts) | mosfet-dc-bias |
+|  |  |  | v1 | Ammon Wolfert | 2 | Summer 2026 HW05 (12 pts), Fall 2026 HW06 (12 pts) |  |
+| [`pmos_iv_family`](transistors/pmos_iv_family) | PMOS I-V Family Plot | `pmosiv` | v0 | Jeff Stribling | 1 | Summer 2025 HW05 (14 pts) | mosfet-iv, pmos, software |
+|  |  |  | v1 | Ammon Wolfert | 1 | Summer 2026 HW05 (14 pts), Fall 2026 HW06 (14 pts) |  |
+| [`process_parameters`](transistors/process_parameters) | MOSFET Process Technology | `mosfetprocess` | v0 | Jeff Stribling | 5 | Summer 2025 HW05 (11 pts) | mosfet-process, mosfet-iv |
+|  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW05 (11 pts), Fall 2026 HW06 (11 pts) |  |
+| [`reverse_protection`](transistors/reverse_protection) | Reverse Polarity Protection | `reverse_protection` | v0 | Jeff Stribling | 6 | — | pmos, diode-models, mosfet-iv, power-energy, datasheet, application |
+| [`series_pmos`](transistors/series_pmos) | Series PMOS Bias Voltages | `seriespmos` | v0 | Jeff Stribling | 2 | Summer 2025 HW05 (11 pts) | mosfet-dc-bias, pmos |
+|  | Series NMOS Bias Voltages |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW05 (16 pts), Fall 2026 HW06 (16 pts) |  |
+
+## Questions by concept
+
+
+**1. Course Introduction**
+
+- `lab-safety` (Lab and soldering safety training): [`lab_training`](training/lab_training)
+
+**2. Circuit Abstraction**
+
+- `circuit-quantities` (Charge, current, voltage and their relationships (incl. drift velocity)): [`ceiling_light`](circuit_quantities/ceiling_light), [`energy_box`](circuit_quantities/energy_box)
+- `power-energy` (Power and energy, passive sign convention, power balance (Tellegen)): [`two_stage_power`](amplifiers/two_stage_power), [`capacitor_current_energy`](circuit_quantities/capacitor_current_energy), [`capacitor_network`](circuit_quantities/capacitor_network), [`ceiling_light`](circuit_quantities/ceiling_light), [`energy_box`](circuit_quantities/energy_box), [`resistor_code`](circuit_quantities/resistor_code), [`circuit_002`](networks/circuit_002), [`residential_power_distribution`](networks/residential_power_distribution), [`solderpaste`](networks/solderpaste), [`transformer_power_transfer`](networks/transformer_power_transfer), [`resistor_search`](simple_circuits/resistor_search), [`reverse_protection`](transistors/reverse_protection)
+- `resistance-resistivity` (Resistivity, wire resistance, temperature coefficient): [`ceiling_light`](circuit_quantities/ceiling_light), [`resistor_code`](circuit_quantities/resistor_code)
+- `resistor-color-code` (Reading resistor color codes and tolerances): [`resistor_code`](circuit_quantities/resistor_code)
+- `circuit-topology` (Counting nodes, branches, loops; series and parallel elements): [`circuit_001`](networks/circuit_001), [`circuit_graph`](networks/circuit_graph), [`circuit_graph_and_circuit_001`](networks/circuit_graph_and_circuit_001)
+- `rms-waveforms` (Periodic waveforms: amplitude, frequency, RMS value): [`rms_trapezoid`](circuit_quantities/rms_trapezoid), [`transformer_power_transfer`](networks/transformer_power_transfer)
+
+**3. Resistive Networks**
+
+- `kcl-kvl` (Kirchhoff's laws and Ohm's law on a whole circuit): [`circuit_001`](networks/circuit_001), [`circuit_graph_and_circuit_001`](networks/circuit_graph_and_circuit_001), [`double_dependent`](networks/double_dependent), [`solderpaste`](networks/solderpaste), [`wye_delta_nodal`](networks/wye_delta_nodal), [`wye_delta_nodal_no_dependent_source`](networks/wye_delta_nodal_no_dependent_source)
+- `series-parallel` (Series/parallel combination, voltage and current dividers): [`capacitor_network`](circuit_quantities/capacitor_network), [`resistor_code`](circuit_quantities/resistor_code), [`resistor_search`](simple_circuits/resistor_search)
+- `nodal-analysis` (Node-voltage analysis): [`circuit_002`](networks/circuit_002), [`wye_delta_nodal`](networks/wye_delta_nodal), [`wye_delta_nodal_no_dependent_source`](networks/wye_delta_nodal_no_dependent_source)
+- `mesh-analysis` (Mesh-current analysis): [`residential_power_distribution`](networks/residential_power_distribution)
+- `wye-delta` (Wye–delta transformations): [`wye_delta_nodal`](networks/wye_delta_nodal), [`wye_delta_nodal_no_dependent_source`](networks/wye_delta_nodal_no_dependent_source)
+- `dependent-sources` (Circuits with controlled sources): [`current_gain`](networks/current_gain), [`dependentsource01`](networks/dependentsource01), [`double_dependent`](networks/double_dependent), [`wye_delta_nodal`](networks/wye_delta_nodal)
+- `standard-resistor-values` (Choosing standard (E24) resistor values): [`led_iv_curve`](diodes/led_iv_curve), [`resistor_search`](simple_circuits/resistor_search)
+
+**4. Network Theorems**
+
+- `superposition` (Superposition): [`current_gain`](networks/current_gain), [`dependentsource01`](networks/dependentsource01), [`superposition`](networks/superposition)
+- `source-transformation` (Source transformations): [`dependentsource01`](networks/dependentsource01), [`source_transformations`](networks/source_transformations)
+- `thevenin-norton` (Thévenin and Norton equivalents): [`ammeter_thevenin_norton`](networks/ammeter_thevenin_norton), [`bridge_rc_filter`](networks/bridge_rc_filter), [`current_gain`](networks/current_gain), [`dependentsource01`](networks/dependentsource01), [`thevenin_meas`](networks/thevenin_meas)
+- `max-power-transfer` (Maximum power transfer and source resistance): [`battery_internal_resistance`](networks/battery_internal_resistance), [`dependentsource01`](networks/dependentsource01), [`function_generator_and_scope`](networks/function_generator_and_scope)
+- `instrument-loading` (Models of meters, function generators and probes, and their loading effects): [`ammeter_thevenin_norton`](networks/ammeter_thevenin_norton), [`function_generator_and_scope`](networks/function_generator_and_scope)
+- `ideal-transformer` (Ideal transformers and resistance transformation): [`transformer_power_transfer`](networks/transformer_power_transfer)
+
+**5. Diode Circuits**
+
+- `diode-physics` (pn junction: doping, carriers, depletion region): [`diode_conceptual`](diodes/diode_conceptual)
+- `diode-models` (Ideal, constant-drop and exponential diode models): [`diode_001`](diodes/diode_001), [`diode_hogging`](diodes/diode_hogging), [`reverse_protection`](transistors/reverse_protection)
+- `load-line` (Graphical load-line analysis): [`led_iv_curve`](diodes/led_iv_curve), [`thevenin_meas`](networks/thevenin_meas)
+- `diode-temperature` (Temperature dependence of diodes, derating, thermal runaway): [`diode_hogging`](diodes/diode_hogging), [`led_iv_curve`](diodes/led_iv_curve)
+- `zener-regulator` (Zener diodes and voltage regulation): [`zener_regulator`](diodes/zener_regulator)
+- `led` (Light-emitting diodes): [`led_iv_curve`](diodes/led_iv_curve)
+
+**6. Energy Storage Elements**
+
+- `capacitors` (Capacitor i–v relation, stored energy): [`c_and_l_experiment`](capacitors_and_inductors/c_and_l_experiment), [`capacitor_current_energy`](circuit_quantities/capacitor_current_energy), [`capacitor_network`](circuit_quantities/capacitor_network)
+- `inductors` (Inductor i–v relation, stored energy): [`c_and_l_experiment`](capacitors_and_inductors/c_and_l_experiment)
+- `capacitor-networks` (Series/parallel capacitor networks at DC steady state): [`capacitor_network`](circuit_quantities/capacitor_network)
+- `first-order-transients` (RC and RL step responses): [`c_and_l_experiment`](capacitors_and_inductors/c_and_l_experiment)
+
+**7. MOSFETs**
+
+- `mosfet-iv` (MOSFET i–v characteristics and operating regions): [`diode_connected`](transistors/diode_connected), [`pmos_iv_family`](transistors/pmos_iv_family), [`process_parameters`](transistors/process_parameters), [`reverse_protection`](transistors/reverse_protection)
+- `mosfet-process` (Process parameters: C_ox, k', W/L, channel resistance): [`cs_amplifier_design`](amplifiers/cs_amplifier_design), [`process_parameters`](transistors/process_parameters)
+- `mosfet-dc-bias` (DC bias point analysis): [`cs_amplifier_design`](amplifiers/cs_amplifier_design), [`cs_coupling_distortion`](amplifiers/cs_coupling_distortion), [`two_stage_power`](amplifiers/two_stage_power), [`nmos_bias`](transistors/nmos_bias), [`series_pmos`](transistors/series_pmos)
+- `pmos` (PMOS devices and sign conventions): [`pmos_gate_resistor`](amplifiers/pmos_gate_resistor), [`pmos_iv_family`](transistors/pmos_iv_family), [`reverse_protection`](transistors/reverse_protection), [`series_pmos`](transistors/series_pmos)
+- `diode-connected-mosfet` (Diode-connected transistors): [`diode_connected_pullup`](amplifiers/diode_connected_pullup), [`diode_connected`](transistors/diode_connected)
+
+**8. DC and AC Analysis of MOSFET Amplifiers**
+
+- `transfer-characteristic` (Voltage transfer characteristic and bias point): [`cs_transfer_characteristic`](amplifiers/cs_transfer_characteristic), [`diode_connected_pullup`](amplifiers/diode_connected_pullup)
+- `small-signal-model` (Small-signal model: g_m, r_o, equivalent circuits): [`cascade_cd_cg`](amplifiers/cascade_cd_cg), [`cs_amplifier_design`](amplifiers/cs_amplifier_design), [`cs_coupling_distortion`](amplifiers/cs_coupling_distortion), [`cs_transfer_characteristic`](amplifiers/cs_transfer_characteristic), [`hf_pulse_amplifier`](amplifiers/hf_pulse_amplifier), [`pmos_gate_resistor`](amplifiers/pmos_gate_resistor), [`source_follower`](amplifiers/source_follower), [`two_stage_power`](amplifiers/two_stage_power)
+- `signal-swing` (Allowed signal swing and distortion limits): [`cs_coupling_distortion`](amplifiers/cs_coupling_distortion), [`cs_transfer_characteristic`](amplifiers/cs_transfer_characteristic)
+- `channel-length-modulation` (Channel-length modulation (λ, V_A, r_o)): [`cs_transfer_characteristic`](amplifiers/cs_transfer_characteristic), [`pmos_gate_resistor`](amplifiers/pmos_gate_resistor), [`source_follower`](amplifiers/source_follower), [`two_stage_power`](amplifiers/two_stage_power)
+
+**9. Single-Stage MOSFET Amplifiers**
+
+- `amplifier-models` (Amplifier models: gain, input and output resistance): [`cascade_cd_cg`](amplifiers/cascade_cd_cg), [`current_amplifier_design`](amplifiers/current_amplifier_design), [`pmos_gate_resistor`](amplifiers/pmos_gate_resistor)
+- `common-source` (Common-source amplifiers): [`cs_amplifier_design`](amplifiers/cs_amplifier_design), [`cs_coupling_distortion`](amplifiers/cs_coupling_distortion), [`cs_transfer_characteristic`](amplifiers/cs_transfer_characteristic), [`diode_connected_pullup`](amplifiers/diode_connected_pullup), [`hf_pulse_amplifier`](amplifiers/hf_pulse_amplifier), [`pmos_gate_resistor`](amplifiers/pmos_gate_resistor)
+- `common-drain` (Common-drain (source-follower) amplifiers): [`cascade_cd_cg`](amplifiers/cascade_cd_cg), [`source_follower`](amplifiers/source_follower)
+- `common-gate` (Common-gate amplifiers): [`cascade_cd_cg`](amplifiers/cascade_cd_cg), [`hf_pulse_amplifier`](amplifiers/hf_pulse_amplifier)
+- `multistage-amplifiers` (Cascaded / multistage amplifiers): [`cascade_cd_cg`](amplifiers/cascade_cd_cg), [`hf_pulse_amplifier`](amplifiers/hf_pulse_amplifier), [`two_stage_power`](amplifiers/two_stage_power)
+
+**10. Sinusoidal Circuit Analysis**
+
+- `complex-numbers` (Complex numbers: Cartesian, polar and Euler forms): [`impedance_forms`](circuit_quantities/impedance_forms), [`single_frequency_gain`](networks/single_frequency_gain)
+- `phasors-impedance` (Phasors, impedance and admittance): [`impedance_forms`](circuit_quantities/impedance_forms), [`bridge_rc_filter`](networks/bridge_rc_filter), [`parallel_rlc_impedance`](networks/parallel_rlc_impedance), [`single_frequency_gain`](networks/single_frequency_gain)
+- `transfer-functions` (Frequency response and transfer functions): [`bridge_rc_filter`](networks/bridge_rc_filter), [`rl_high_pass_design`](networks/rl_high_pass_design), [`single_frequency_gain`](networks/single_frequency_gain)
+- `bode-plots` (Bode magnitude and phase plots): [`bridge_rc_filter`](networks/bridge_rc_filter), [`parallel_rlc_impedance`](networks/parallel_rlc_impedance), [`rl_high_pass_design`](networks/rl_high_pass_design)
+- `filters` (First-order filters and corner frequency): [`bridge_rc_filter`](networks/bridge_rc_filter), [`rl_high_pass_design`](networks/rl_high_pass_design)
+- `resonance` (RLC resonance): [`parallel_rlc_impedance`](networks/parallel_rlc_impedance)
+
+**Skills and format**
+
+- `design` (Open-ended design with constraints or bounds): [`cs_amplifier_design`](amplifiers/cs_amplifier_design), [`current_amplifier_design`](amplifiers/current_amplifier_design), [`zener_regulator`](diodes/zener_regulator), [`rl_high_pass_design`](networks/rl_high_pass_design), [`resistor_search`](simple_circuits/resistor_search)
+- `datasheet` (Requires reading a datasheet or part search): [`led_iv_curve`](diodes/led_iv_curve), [`zener_regulator`](diodes/zener_regulator), [`reverse_protection`](transistors/reverse_protection)
+- `measurement` (Lab context or interpreting measurements): [`source_follower`](amplifiers/source_follower), [`c_and_l_experiment`](capacitors_and_inductors/c_and_l_experiment), [`function_generator_and_scope`](networks/function_generator_and_scope), [`thevenin_meas`](networks/thevenin_meas)
+- `conceptual` (Mostly conceptual / explanation): [`diode_conceptual`](diodes/diode_conceptual), [`diode_connected`](transistors/diode_connected)
+- `software` (Requires plotting or numerical software (MATLAB, Excel, solvers)): [`diode_hogging`](diodes/diode_hogging), [`pmos_iv_family`](transistors/pmos_iv_family)
+- `symbolic` (Symbolic derivation): [`diode_connected_pullup`](amplifiers/diode_connected_pullup), [`diode_001`](diodes/diode_001), [`current_gain`](networks/current_gain)
+- `application` (Real-world application scenario): [`hf_pulse_amplifier`](amplifiers/hf_pulse_amplifier), [`ceiling_light`](circuit_quantities/ceiling_light), [`zener_regulator`](diodes/zener_regulator), [`battery_internal_resistance`](networks/battery_internal_resistance), [`residential_power_distribution`](networks/residential_power_distribution), [`transformer_power_transfer`](networks/transformer_power_transfer), [`reverse_protection`](transistors/reverse_protection)

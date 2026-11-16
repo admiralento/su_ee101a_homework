@@ -1,11 +1,13 @@
 # PMOS I-V Family Plot
 
+Concepts: mosfet-iv, pmos, software
+
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: —
-- Content: TODO: describe the original problem
+- Date: Summer 2025 (first use)
+- Content: Plot the PMOS i_D versus v_DS family with software, marking the three operating regions and the triode/saturation boundary.
 
 ### v1 - Updated
 - Author: Ammon Wolfert

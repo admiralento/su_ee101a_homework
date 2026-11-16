@@ -1,11 +1,13 @@
 # NMOS Bias Point Calculation
 
+Concepts: mosfet-dc-bias
+
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: —
-- Content: TODO: describe the original problem
+- Date: Summer 2025 (first use)
+- Content: Find the drain and source voltages, and the gate and drain currents, of an NMOS bias circuit.
 
 ### v1 - Updated
 - Author: Ammon Wolfert

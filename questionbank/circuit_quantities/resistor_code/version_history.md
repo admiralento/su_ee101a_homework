@@ -1,11 +1,13 @@
 # Resistor Code
 
+Concepts: resistor-color-code, series-parallel, resistance-resistivity, power-energy
+
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: —
-- Content: TODO: describe the original problem
+- Date: Summer 2025 (first use)
+- Content: Breadboarded network of mixed leftover resistors: read the color codes, find the min/max equivalent resistance from tolerances, the maximum voltage from power ratings, and (extra credit) thermal effects.
 
 ### v1 - Updated
 - Author: Ammon Wolfert

@@ -1,10 +1,12 @@
 # Ideal Transformer Power
 
+Concepts: ideal-transformer, power-energy, rms-waveforms, application
+
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: —
+- Date: Summer 2025 (first use)
 - Content: Ideal transformer analysis and power transfer efficiency, 5 parts
   - Part (a): Resistance transformation across ideal transformer (3 points)
   - Part (b): Power transfer without transformers (5 points)

@@ -1,10 +1,12 @@
 # DC Capacitor Network
 
+Concepts: capacitors, capacitor-networks, series-parallel, power-energy
+
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: —
+- Date: Summer 2025 (first use)
 - Content: DC steady-state analysis of complex capacitor network, 2 parts
   - Part (a): Calculate steady-state currents (2 points)
   - Part (b): Calculate steady-state voltages across each capacitor (16 points)
