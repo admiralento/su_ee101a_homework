@@ -142,6 +142,9 @@
 \tl_new:N   \l__hw_extra_tl
 \seq_new:N  \l__hw_match_seq
 \regex_const:Nn \c__hw_points_regex { \A \s* (\d+) \s* (extra)? \s* \Z }
+% Older expl3 releases (e.g. Tectonic's bundle) lack some message variants.
+\cs_generate_variant:Nn \msg_warning:nnnn { nnnx }
+\cs_generate_variant:Nn \msg_error:nnnn { nnnx }
 
 \msg_new:nnn {homework} {dup-id}
   { Question~id~'#1'~is~registered~twice~in~questionbank/index.tex. }
