@@ -141,6 +141,15 @@
 % =========================================================
 \providecommand{\AssignmentTotal}{0}
 \providecommand{\ExtraCreditTotal}{0}
+\providecommand{\ProblemCount}{0}
+% Per-question total from the .aux file; 0 on the first pass, before the .aux exists.
+\newcommand{\GetProblemTotal}{%
+    \ifcsname ProblemTotal\alph{questionCnt}\endcsname
+        \csname ProblemTotal\alph{questionCnt}\endcsname
+    \else
+        0%
+    \fi
+}
 \newcommand{\MakeHomeworkHeader}
 {
     \pagestyle{fancy}
@@ -208,7 +217,7 @@
     {\Large\bfseries
         Question \thequestionCnt{} - #2
         \hfill
-        (\pluralize{\csname ProblemTotal\alph{questionCnt}\endcsname}{point}{points})
+        (\pluralize{\GetProblemTotal}{point}{points})
     }
 
     \medskip
