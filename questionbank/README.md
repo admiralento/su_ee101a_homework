@@ -81,7 +81,7 @@ Compile `main_questionbank.tex` for a PDF of every version (with or without solu
 | [`current_gain`](networks/current_gain) | Your Turn | `currentgain` | v0 | Jeff Stribling | 2 | — | dependent-sources, superposition, thevenin-norton, symbolic |
 |  | Your Choice |  | v1 | Ammon Wolfert | 4 | Summer 2026 HW04 (16 pts + 5 EC) |  |
 | [`dependentsource01`](networks/dependentsource01) | Working with Dependent Sources | `dependentsource01` | v0 | Jeff Stribling | 8 | Fall 2026 HW06 (19 pts + 3 EC) | dependent-sources, source-transformation, superposition, thevenin-norton, max-power-transfer |
-| [`double_dependent`](networks/double_dependent) | Double Dependent | `double_dependent` | v0 | Jeff Stribling | 1 | — | dependent-sources, kcl-kvl |
+| [`double_dependent`](networks/double_dependent) | Double Dependent | `double_dependent` | v0 | Ammon Wolfert | 1 | — | dependent-sources, kcl-kvl |
 | [`function_generator_and_scope`](networks/function_generator_and_scope) | Function Generators and Oscilloscope Probes | `function_generator_and_scope` | v0 | Jeff Stribling | 7 | Fall 2026 HW02 (14 pts) | instrument-loading, max-power-transfer, measurement |
 | [`parallel_rlc_impedance`](networks/parallel_rlc_impedance) | Parallel RLC Impedance | `parallelrlc` | v0 | Jeff Stribling | 4 | Summer 2025 HW08 (17 pts), Summer 2026 HW08 (17 pts), Fall 2026 HW09 (17 pts) | phasors-impedance, resonance, bode-plots |
 | [`residential_power_distribution`](networks/residential_power_distribution) | Mesh Analysis | `residentialpower` | v0 | Jeff Stribling | 3 | Summer 2025 HW04 (24 pts) | mesh-analysis, power-energy, application |
@@ -124,7 +124,7 @@ Compile `main_questionbank.tex` for a PDF of every version (with or without solu
 |  |  |  | v1 | Ammon Wolfert | 1 | Summer 2026 HW05 (14 pts), Fall 2026 HW06 (14 pts) |  |
 | [`process_parameters`](transistors/process_parameters) | MOSFET Process Technology | `mosfetprocess` | v0 | Jeff Stribling | 5 | Summer 2025 HW05 (11 pts) | mosfet-process, mosfet-iv |
 |  |  |  | v1 | Ammon Wolfert | 5 | Summer 2026 HW05 (11 pts), Fall 2026 HW06 (11 pts) |  |
-| [`reverse_protection`](transistors/reverse_protection) | Reverse Polarity Protection | `reverse_protection` | v0 | Jeff Stribling | 6 | — | pmos, diode-models, mosfet-iv, power-energy, datasheet, application |
+| [`reverse_protection`](transistors/reverse_protection) | Reverse Polarity Protection | `reverse_protection` | v0 | Ammon Wolfert | 6 | — | pmos, diode-models, mosfet-iv, power-energy, datasheet, application |
 | [`series_pmos`](transistors/series_pmos) | Series PMOS Bias Voltages | `seriespmos` | v0 | Jeff Stribling | 2 | Summer 2025 HW05 (11 pts) | mosfet-dc-bias, pmos |
 |  | Series NMOS Bias Voltages |  | v1 | Ammon Wolfert | 3 | Summer 2026 HW05 (16 pts), Fall 2026 HW06 (16 pts) |  |
 
