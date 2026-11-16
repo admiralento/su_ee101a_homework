@@ -66,6 +66,16 @@
 % blank answer space in the student version. The base font size (11pt / 10pt) is chosen in
 % config/shared.tex before \documentclass.
 \ifdefined\HwStyle\else\def\HwStyle{style-jeff}\fi  % (\def, not \providecommand: compared with \ifx)
+% \boxedsolutionstrue (course.tex or metadata.tex): style-jeff solutions in a thin blue frame
+\makeatletter
+\@ifundefined{ifboxedsolutions}{\newif\ifboxedsolutions}{}
+% \HwNoFloats: within the current group, figure/table environments are typeset in place (no
+% floating), so they work inside boxes; \caption still works.
+\newcommand{\HwNoFloats}{%
+    \RenewDocumentEnvironment{figure}{o}{\par\medskip\noindent\begin{minipage}{\linewidth}\def\@captype{figure}}{\end{minipage}\par\medskip}%
+    \RenewDocumentEnvironment{table}{o}{\par\medskip\noindent\begin{minipage}{\linewidth}\def\@captype{table}}{\end{minipage}\par\medskip}%
+}
+\makeatother
 \newif\ifhwstylemark
 \def\HwStyleMarkName{style-mark}
 \def\HwStyleJeffName{style-jeff}
@@ -581,6 +591,14 @@
             \par
             \vspace{1\baselineskip}
             \begingroup
+            \ifboxedsolutions
+                % optional (\boxedsolutionstrue in course.tex): solution in a thin blue frame.
+                % Floats can't live inside a box, so figure/table are placed "here" (like [H]).
+                \HwNoFloats
+                \begin{mdframed}[linecolor=blue!70!black, linewidth=0.6pt,
+                    innerleftmargin=8pt, innerrightmargin=8pt,
+                    innertopmargin=6pt, innerbottommargin=6pt]
+            \fi
             \color{blue!70!black}
             % drawings (circuitikz, tikz, pgfplots) inside answers stay black, like image figures;
             % otherwise their wires, labels and axes would take the blue text color while
@@ -588,6 +606,7 @@
             \tikzset{every picture/.append style={black}}
         }
         {
+            \ifboxedsolutions\end{mdframed}\fi
             \endgroup
         }
     \fi

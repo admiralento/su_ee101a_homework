@@ -146,6 +146,7 @@ Course-level metadata and header settings for one offering; every semester folde
 \newcommand{\DueTime}{11:59PM}  % printed as "Due <DueTime> <DueDate>"
 \newcommand{\NameReminder}{Please be sure to write your name on the front page!}  % student version only; leave {} empty to hide
 \showinstructorfalse  % \showinstructortrue prints "Instructor: <Instructor>" under the title
+% \boxedsolutionstrue  % optional: style-jeff solutions in a thin blue frame (default off)
 ```
 `\CourseCode` appears in the page header ("EE101A/Fall 2026") and the PDF title. When creating a
 new semester folder, copy an existing `course.tex` and ask the user for the instructor, the style,
