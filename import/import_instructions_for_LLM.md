@@ -252,9 +252,8 @@ existing names and follow these conventions for new content.
 - **Question key** (`mainquestion` first argument): short, lowercase, no separators —
   `ledloadline`, `zenerregulator`, `cstransfer`. All versions of one question share the key.
   Keys must be unique across *different* questions: the key prefixes every part label, so two
-  questions with the same key in one homework are a compile error. Known existing overlap:
-  `superposition` is the key of both `networks/superposition` and `networks/current_gain/v0`.
-  `tools/check.py` lists overlaps.
+  questions with the same key in one homework are a compile error. `tools/check.py` reports any
+  key shared by different questions.
 - **Part keys**: short lowercase descriptions of the part — `basicloadline`, `maxresistor`. Unique
   within the question.
 - **Figure files**: descriptive lowercase names (`iv_curve.png`, `schematic.png`). Never leave
@@ -398,10 +397,8 @@ Then:
 
 ## 10. Known quirks / legacy items (don't imitate, don't "fix" unless asked)
 
-- `networks/solderpaste/v0` refers to `prob:solderpaste:power`, which doesn't exist (the parts are
-  `powerall` and `powersingle`). v0 isn't used by any homework; the intended part needs a human
-  decision. This is the one error `check.py` currently reports.
-- `superposition` is the key of two different questions (section 3).
+- Refer to parts only through the automatic `prob:<key>:<part>` labels; don't add hand-written
+  `\label{prob:...}` lines (one in `solderpaste/v0` was removed for this reason).
 - Standalone original documents live in `<id>/originals/` (`function_generator_and_scope`,
   `thevenin_meas`, `lab_training`). They have their own `\documentclass` and must never be loaded.
 - Some unused question versions exist (see "Used in: —" in `questionbank/README.md`). Unused ≠

@@ -122,6 +122,7 @@ def parse_source(src):
     for k in {p for p in info['parts'] if info['parts'].count(p) > 1}:
         err(where, f'part key "{k}" used more than once')
     info['refs'] = re.findall(r'\\[cC]ref\{(prob:[^}]*)\}', code)
+    info['labels'] = re.findall(r'\\label\{(prob:[^}]*)\}', code)  # hand-written labels
     info['graphics'] = [g.strip() for g in re.findall(r'\\includegraphics\s*(?:\[[^\]]*\])?\s*\{([^}]*)\}', code)]
     info['inputs'] = [g.strip() for g in re.findall(r'\\(?:verbatiminput|lstinputlisting(?:\[[^\]]*\])?|input)\s*\{([^}]*)\}', code)]
     for cmd in ('documentclass', 'usepackage', 'begin{document}'):
@@ -192,6 +193,7 @@ def check_index_and_bank():
         if info['key']:
             key_owners[info['key']].add(qid)
             labels.update(f'prob:{info["key"]}:{p}' for p in info['parts'])
+        labels.update(info['labels'])
     for key, owners in key_owners.items():
         if len(owners) > 1:
             warn('questionbank', f'question key "{key}" is used by different questions {sorted(owners)}; '

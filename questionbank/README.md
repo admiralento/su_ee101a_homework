@@ -77,7 +77,7 @@ Each question is loaded in a manifest with `\UseQuestion{<id>}{<version>}{...}`.
 | [`circuit_graph`](networks/circuit_graph) | Loops, Nodes, and Elements Oh My! | `circuit_graph` | v0 | 5 | — |
 |  |  |  | v1 | 5 | Summer 2025 HW01, Summer 2026 HW01 |
 | [`circuit_graph_and_circuit_001`](networks/circuit_graph_and_circuit_001) | Loops, Nodes, and Elements Oh My! | `circuit_graph_and_circuit_001` | v0 | 10 | Fall 2026 HW02 |
-| [`current_gain`](networks/current_gain) | Your Turn | `superposition` | v0 | 2 | — |
+| [`current_gain`](networks/current_gain) | Your Turn | `currentgain` | v0 | 2 | — |
 |  | Your Choice |  | v1 | 4 | Summer 2026 HW04 |
 | [`dependentsource01`](networks/dependentsource01) | Working with Dependent Sources | `dependentsource01` | v0 | 8 | Fall 2026 HW06 |
 | [`double_dependent`](networks/double_dependent) | Double Dependent | `double_dependent` | v0 | 1 | — |
