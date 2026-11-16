@@ -1,176 +1,369 @@
-# Importing or creating a new homework assignment in this project
+# EE101A homework project — structure, conventions, and import guide
 
-This workspace uses a small LaTeX build system that separates course metadata, assignment metadata, reusable question content, and shared formatting. The goal is to create a new homework in the same style as the existing assignments under the assignments/ folder.
+This document describes how the EE101A homework project is built and how to add or import homework
+assignments into it. It is written for an LLM assistant (or a new collaborator) doing an import.
 
-## 1. What each file is for
+**Always verify against the workspace.** This document was last reconciled with the project on
+2026-11-16. If the files disagree with this document, the files win — then update this document.
 
-### Top-level entry points
-- main_student.tex
-  - The student-facing build entry point.
-  - It loads student-mode settings, shared config, shared style, and the homework package.
-  - It then includes the currently selected assignment via:
-    - \input{assignments/\AssignmentFolder/\Semester/questions.tex}
-- main_solutions.tex
-  - The solutions build entry point.
-  - It is the same structure as main_student.tex, but it loads solutions_mode.tex instead of student_mode.tex.
+---
 
-### Configuration files
-- config/course.tex
-  - Course-level metadata only.
-  - Contains \CourseCode, \CourseTitle, and \Instructor.
-- config/current_assignment.tex
-  - Selects which homework folder and semester are compiled.
-  - This file must be updated when building a different homework.
-  - Example:
-    - \def\AssignmentFolder{HW03}
-    - \def\Semester{Summer 2026}
-- config/shared.tex
-  - Pulls in the course metadata and the currently selected assignment metadata.
-  - It is the bridge between the assignment selection and the rest of the document.
-- config/student_mode.tex
-  - Disables solutions output.
-- config/solutions_mode.tex
-  - Enables solutions output.
+## 0. Where the project lives and how changes flow
 
-### Assignment folders
-- assignments/HWXX/
-  - One folder per homework number.
-  - Contains the homework-specific metadata and the semester-specific subfolders.
-- assignments/HWXX/metadata.tex
-  - Defines the homework number, for example:
-    - \newcommand{\HomeworkNumber}{3}
-- assignments/HWXX/[Semester]/metadata.tex
-  - Defines the due date for that semester offering, for example:
-    - \newcommand{\DueDate}{July 12, 2026}
-- assignments/HWXX/[Semester]/questions.tex
-  - This is the assignment manifest.
-  - It should list each problem in order, assign point values using \Point, mark extra credit with \MarkExtraCredit, and include the corresponding questionbank source file.
-  - It is the file that tells the build which questions belong to this homework.
+- The **live project is a shared Overleaf project**. Instructors and TAs edit and compile there.
+- A **local git repository** mirrors the Overleaf project and is where scripted work (imports, bulk
+  fixes, checks) is done. Work happens on a branch, is reviewed as a diff, and is then copied into
+  Overleaf by hand (upload the changed/new files, delete/rename the moved ones).
+- Because changes are transferred manually, **keep every change set small and explicit**:
+  - At the end of an import, list every file that was **added**, **modified**, **renamed/moved**, or
+    **deleted**, so the user can mirror exactly those changes in Overleaf.
+  - Avoid renaming or moving existing files unless asked — each rename is an extra manual step in
+    Overleaf, and an incomplete mirror leaves broken paths.
+  - Before starting, ask the user whether the local repo is up to date with Overleaf (edits made in
+    Overleaf since the last sync must be brought into git first, or they will be overwritten).
+- Line endings: `.gitattributes` forces LF. Keep it that way; Overleaf uses LF.
 
-### Question bank
-- questionbank/<topic>/<question_name>/vN/source.tex
-  - This is where the actual problem statement and solution content live.
-  - Each problem source should usually begin with \begin{mainquestion}{key}{Title} and then use \begin{partquestion}{partkey}{Prompt} for each subpart.
-  - The key names used in \Point and \MarkExtraCredit should match the keys used in the question source.
-- questionbank/<topic>/<question_name>/vN/figures.drawio or other assets
-  - Keep related figures and supporting files in the same version folder.
-  - Use relative paths from the project root when including graphics.
-- questionbank/<topic>/<question_name>/version_history.md
-  - Optional but encouraged for documenting revisions.
+---
 
-### Style files
-- style/homework.sty
-  - Defines the custom homework macros and environments used throughout the question bank.
-  - This is where environments such as mainquestion and partquestion are implemented.
-  - Do not redefine these in individual questions unless you are intentionally extending the system.
-- style/shared.sty
-  - Contains shared LaTeX packages and utility definitions.
+## 1. Build chain
 
-## 2. How a new homework should be created
-
-1. Create a new assignment folder such as assignments/HW04/.
-2. Create the homework-level metadata file at assignments/HW04/metadata.tex with the homework number.
-3. Create a semester folder such as assignments/HW04/Summer 2026/ and add a metadata.tex file with the due date.
-4. Create questions.tex inside that semester folder.
-5. Add the problem list there, using the same pattern as the existing assignments:
-   - Add a comment for each problem.
-   - Use \Point{questionkey}{partkey}{points} for each graded subpart.
-   - Use \MarkExtraCredit{questionkey}{partkey} for extra credit parts.
-   - Use \clearpage between major problems.
-   - Use \input{questionbank/.../source} to include the problem source.
-6. Create or reuse a question source under questionbank/.
-7. Update config/current_assignment.tex so the build points to the new homework folder and semester.
-8. Compile with main_student.tex or main_solutions.tex.
-
-## 3. Folder hierarchy conventions
-
-The include paths are expected to be consistent with the directory structure.
-
-- The assignment manifest should be included from the top-level entry point using the macros from config/current_assignment.tex.
-- The question sources should be included from the assignment manifest with paths like:
-  - \input{questionbank/diodes/led_iv_curve/v1/source}
-- Graphics in those sources should use paths relative to the project root, such as:
-  - \includegraphics[width=4in]{questionbank/diodes/led_iv_curve/v1/fig4.png}
-
-Do not use absolute paths. Do not place files in a folder that does not match the logical topic/question hierarchy. If a problem is about LEDs, place it under questionbank/diodes/ or a sensible subtopic folder.
-
-- When importing a multi-question document, split each problem into its own questionbank folder and create a dedicated v0/ version folder for each source. Keep the associated figures in the same v0 folder so the relative graphics paths remain stable.
-
-## 4. LaTeX conventions encouraged in this project
-
-- Keep content modular: put reusable question content in questionbank/ and assignment-specific organization in assignments/.
-- Use the existing custom environments rather than inventing new ones.
-- Keep question keys and part keys short, descriptive, and consistent across the assignment manifest and the source file.
-- Keep point totals aligned between the assignment manifest and the problem content.
-- Use comments to organize the file and make it easier to maintain.
-- Prefer standard LaTeX constructs such as itemize, center, equation, and href.
-- Use the package utilities already loaded by style/homework.sty and style/shared.sty instead of adding new dependencies unless necessary.
-- When adding images, place them next to the source file or in the same version folder so the relative path remains stable.
-- If a source was revised, create a new version folder such as v1/ rather than overwriting v0/ blindly.
-- If a conversion from Word produced imperfect equations or figures, leave a note in the LaTeX source near the affected content so the user can manually fix it.
-- When possible use the siunitx package for si unit formatting. For example, use patterns like
-'''tex
-\qty{5}{\kilo\ohm}
-\frac{5}{3}\unit{\volt}
-'''
-
-## 5. Additional Instructions
-
-- Do not change the wording of the problems, nor the solutions. Your role is to import the text only, not revise.
-- If a .wmf image file would be included in the latex, do not add it. This will block compliation. Instead, add placeholder text that makes it clear that an image was unable to be imported and the user need to address it.
-
-## 6. Minimal template pattern
-
-### Assignment manifest
-```tex
-% Problem 1
-\Point{questionkey}{partone}{5}
-\Point{questionkey}{parttwo}{5}
-\input{questionbank/topic/questionname/v1/source}
+```
+main_student.tex / main_solutions.tex
+ ├─ config/student_mode.tex | config/solutions_mode.tex   → defines \ifsolutions
+ ├─ config/shared.tex
+ │    ├─ \newif\ifextracreditassignment (default false)
+ │    ├─ config/course.tex                 → \CourseCode, \CourseTitle, \Instructor
+ │    ├─ config/current_assignment.tex     → \Semester, \AssignmentFolder
+ │    └─ assignments/\Semester/\AssignmentFolder/metadata.tex
+ ├─ style/shared.sty                       → \dd, \pluralize
+ ├─ style/homework.sty                     → environments, point bookkeeping, header
+ └─ \MakeHomeworkHeader
+    \input{assignments/\Semester/\AssignmentFolder/questions.tex}
 ```
 
-### Question source
+Key facts:
+- **Engine: XeLaTeX or LuaLaTeX** (required by `fontspec`/`unicode-math`). pdfLaTeX will fail.
+  The main font is `Times New Roman` via `\setmainfont`.
+- **Two compile passes are needed.** Point totals, per-question totals, and the "Question n/N"
+  header are written to the `.aux` file at the end of the run and read back on the next run.
+  Overleaf's latexmk handles this automatically. A first-pass PDF may show 0 points.
+- Student vs. solutions differ only in `\ifsolutions`. In student mode the `answer` environment is
+  removed entirely via the `comment` package (`\excludecomment{answer}`).
+- `config/current_assignment.tex` selects which homework is compiled, e.g.:
+  ```tex
+  \def\Semester{Fall 2026}
+  \def\AssignmentFolder{HW07}
+  ```
+  **This file is shared state.** Changing it changes what every collaborator compiles in Overleaf.
+  Do not change it as part of an import unless the user asks; tell the user what to set it to in order
+  to compile the new homework.
+- `\Instructor` is defined in `config/course.tex` but is **not currently printed** anywhere.
+
+---
+
+## 2. Directory layout
+
+```
+assignments/
+  <Semester>/                 e.g. "Summer 2025", "Summer 2026", "Fall 2026"  (note the space)
+    HWxx/                     two-digit, zero-padded: HW00, HW01, ... HW09
+      metadata.tex
+      questions.tex
+questionbank/
+  <topic>/                    amplifiers, capacitors_and_inductors, circuit_quantities, diodes,
+                              networks, simple_circuits, training, transistors
+    <question_name>/          snake_case, descriptive (e.g. led_iv_curve)
+      v0/                     original version
+        source.tex
+        <figures: .png/.jpg/.jpeg, .drawio sources, .m scripts>
+      v1/ ...                 later variants
+      version_history.md      optional, recommended when vN > 0 exists
+config/  style/  main_student.tex  main_solutions.tex
+import/                       this document, conversion notes, and scratch output of the last import
+```
+
+Note: `questionbank/training/` has no `<question_name>` level (`training/v0/source.tex`); it is an
+exception, do not copy that pattern.
+
+### 2.1 `assignments/<Semester>/HWxx/metadata.tex`
+
+One file holds everything assignment-specific:
+```tex
+\newcommand{\HomeworkNumber}{7}
+\newcommand{\DueDate}{November 15, 2026}
+```
+For an all-extra-credit homework (prints "EXTRA CREDIT ASSIGNMENT" in the header), add:
+```tex
+\extracreditassignmenttrue
+```
+Order of the lines does not matter. `\HomeworkNumber` must match the folder number (HW07 → 7);
+`\DueDate`'s year must match the semester. Both have been wrong before — double-check.
+
+The header prints "Due 11:59PM \DueDate", so `\DueDate` is just the date.
+
+### 2.2 `assignments/<Semester>/HWxx/questions.tex` — the manifest
+
+Exact pattern used by every existing assignment:
+```tex
+% Problem 1 - LED I-V Curve Load-Line Analysis (10 points)
+\Point{ledloadline}{basicloadline}{3}
+\Point{ledloadline}{ledbrightness}{2}
+\Point{ledloadline}{resistorselection}{5}
+\Point{ledloadline}{ambienthot}{5}
+\MarkExtraCredit{ledloadline}{ambienthot}
+\input{questionbank/diodes/led_iv_curve/v1/source}
+
+% Problem 2 - Zener Diode Voltage Regulator (12 points)
+\clearpage
+\Point{zenerregulator}{inadequatedesign}{5}
+...
+\input{questionbank/diodes/zener_regulator/v1/source}
+```
+Rules:
+- Comment line `% Problem N - <Title> (<X> points)` before each problem. X excludes extra credit.
+- `\clearpage` before every problem except the first.
+- One `\Point{questionkey}{partkey}{points}` for **every** `partquestion` in the included source. A
+  part with no `\Point` silently gets 0 points; a `\Point` with a typo'd key is silently ignored.
+- `\MarkExtraCredit{questionkey}{partkey}` after the `\Point` for extra-credit parts. Extra-credit
+  points are excluded from the problem/assignment totals and reported separately in the header.
+- `\input{questionbank/<topic>/<question_name>/vN/source}` — no `.tex` extension, path from the
+  project root.
+- A manifest may pin any version (v0, v1, ...). Past semesters keep pointing at the version they used.
+
+### 2.3 `questionbank/.../vN/source.tex` — question content
+
 ```tex
 \begin{mainquestion}{questionkey}{Question Title}
 
-\begin{partquestion}{partone}
-{Prompt text here.}
+Shared problem statement, givens, figures...
+
+\begin{center}
+\includegraphics[width=4in]{questionbank/<topic>/<question_name>/vN/figure.png}
+\end{center}
+
+% =========================================================
+\begin{partquestion}{partkey}
+{Prompt text for this part.}
+
 \begin{answer}
-Answer text here.
+Solution text.
+\end{answer}
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{otherpart}
+{Prompt that refers back to part (\cref{prob:questionkey:partkey}).}
+
+\begin{answer}
+...
 \end{answer}
 \end{partquestion}
 
 \end{mainquestion}
 ```
+- The prompt is the **second mandatory argument** of `partquestion` (in braces, may be on the next
+  line). The part letter and "(n points)" are generated automatically — never type them.
+- Every part gets the label `prob:<questionkey>:<partkey>`; refer to other parts with
+  `part (\cref{prob:<questionkey>:<partkey>})`, which prints the part letter.
+- Every part should have an `answer` environment, even if empty (see `training/v0/source.tex`).
+- Do not put `\documentclass`, `\usepackage`, `\begin{document}`, `\section*{Problem 4}`, or point
+  values in a source file.
+- Figure captions inside answers use `\captionof*{figure}{...}` within a `center` environment.
+  If you use a `figure` float, give it a meaningful label like `fig:<questionkey>:<name>`.
 
-## 7. Practical reminder
+### 2.4 Environments and macros available (from `style/`)
 
-Before creating new files, briefly summarize:
-- which new files will be created,
-- which questionbank source will be used,
-- and the intended total point value of the assignment.
+| Name | Purpose |
+|---|---|
+| `mainquestion{key}{title}` | One problem. Prints "Question n - title (X points)". |
+| `partquestion{partkey}{prompt}` | One graded part, auto-lettered (a), (b), ... |
+| `answer` | Solution text; blue in solutions mode, removed in student mode. |
+| `kaitlyn` | Green-colored TA commentary (e.g. a boxed "Why we're doing this problem"), used inside `answer` in a few amplifier solutions. Only use it when the source material has equivalent TA commentary. |
+| `\Point`, `\MarkExtraCredit` | Manifest-only, see 2.2. |
+| `\pluralize{n}{point}{points}` | Number + singular/plural word. |
+| `\dd` | Upright differential: `\int f(t)\dd t`. |
 
-This project is easiest to maintain when every new homework follows the same structure: metadata in assignments/, content in questionbank/, and selection in config/current_assignment.tex.
+Packages already loaded (do not add `\usepackage` in sources): amsmath, amssymb, graphicx, xcolor,
+xparse, comment, fancyhdr, fontspec, unicode-math, datetime2, siunitx, hyperref, cleveref, pgfkeys,
+listings (Python style preset), verbatim, caption. Notably **not** loaded: circuitikz, tikz,
+booktabs, enumitem. If a source needs one of these, ask the user before adding it to
+`style/homework.sty` (it affects every homework).
 
-You should review the workspace to make sure you see actual examples of how these standards are implemented.
+---
 
-## 8. Export directory for Overleaf import
+## 3. Naming conventions
 
-When the import is complete, create a small export directory that contains only the new homework files and assets. Preserve the same relative folder hierarchy so the export can be imported cleanly into Overleaf. For example:
-- assignments/HW05/metadata.tex
-- assignments/HW05/Summer 2025/metadata.tex
-- assignments/HW05/Summer 2025/questions.tex
-- questionbank/<topic>/<questionname>/v0/source.tex
-- questionbank/<topic>/<questionname>/v0/<image assets>
+The existing bank is not fully consistent; follow the **preferred** convention for new content and
+do not rename existing content.
 
-Copy usable raster assets (PNG/JPEG) into the same questionbank v0 folders. Do not include WMF files in the export; instead leave a clear placeholder in the LaTeX source where the figure needs conversion or replacement.
+- **Question folder** (`<question_name>`): descriptive snake_case naming the physics/skill —
+  `led_iv_curve`, `zener_regulator`, `cs_amplifier_design`. Avoid numbered names (`circuit_001`,
+  `dependentsource01`) and combined folders (`circuit_graph_and_circuit_001`).
+- **Question key** (`mainquestion` first arg): short, lowercase, no separators, usually the folder
+  name compressed — `ledloadline`, `zenerregulator`, `cstransfer`. (Some older keys use
+  snake_case, e.g. `diode_hogging`; don't copy that.)
+- **Part keys**: short lowercase descriptions of the part — `basicloadline`, `maxresistor`. Unique
+  within the question.
+- **Keys must be unique across the whole question bank**, except that v0/v1/... of the *same*
+  question share a key. Points (`pt@key@part`) and labels (`prob:key:part`) are global; two
+  different questions with the same key in one homework would merge their points and clash labels,
+  with no error. Known existing exception: `superposition` is used by both `networks/superposition`
+  and `networks/current_gain/v0` — never put both in one homework. Before choosing a key, grep:
+  ```
+  grep -rn "begin{mainquestion}{<key>}" questionbank
+  ```
+- **Figure files**: descriptive lowercase names (`iv_curve.png`, `schematic.png`,
+  `sine_swing_limits.png`). Never leave camera/screenshot names (`IMG_1234.jpeg`,
+  `Screenshot ... AM.png`) — macOS screenshot names contain a non-breaking space that breaks paths.
+  No spaces in any new file or folder name.
+- Keep a `.drawio` source next to any figure drawn in draw.io (`figures.drawio`, or `figure.drawio`).
 
-## 9. Ask for missing details
+---
 
-If the homework number, semester, due date, or source file location is not provided, ask for that information before proceeding. Useful questions include:
-- "Which homework assignment should this be imported as? (for example, HW05)"
-- "What semester offering and due date should be used?"
-- "Where are the source markdown and image asset files located?"
-- "Where should the export directory be created, and what should it be called?"
+## 4. Versioning
 
-If the export folder or file location is not specified, ask for the intended destination and naming convention so the package can be created in the correct place.
+- `v0` is the original. Create `v1`, `v2`, ... when the **problem content changes** (new values,
+  new parts, different circuit) — especially if any past assignment manifest points at the current
+  version. Past semesters must keep compiling to what students actually received.
+- Small corrections that don't change what students were asked (typos, a broken font command, a
+  wrong path) may be fixed in place.
+- A new version may reference unchanged figures from an earlier version folder
+  (e.g. `.../cs_transfer_characteristic/v1/source.tex` uses `.../v0/Picture1.png`). This is
+  accepted practice, but it means **older version folders must never be deleted**. Prefer copying a
+  figure into the new folder if you're also modifying it.
+- When creating vN > 0, add or update `<question_name>/version_history.md`:
+  ```markdown
+  # <Question Title>
+
+  ## Version History
+
+  ### v0 - Initial version
+  - Author: <name>
+  - Date: <YYYY-MM-DD or semester>
+  - Content: <short description; parts and points>
+
+  ### v1 - <short label>
+  - Author: <name>
+  - Date: <YYYY-MM-DD>
+  - Content: <what changed and why>
+  ```
+
+---
+
+## 5. LaTeX style conventions
+
+- Units: prefer `siunitx` — `\qty{5}{\kilo\ohm}`, `\qty{0.4}{\milli\ampere\per\celsius}`,
+  `\frac{5}{3}\unit{\volt}`. Older sources mix in `\text{ V}`, `1~k$\Omega$`, etc.; converting
+  existing content is not required, but new/imported content should use `siunitx`.
+- Text-mode emphasis: `\textit{...}`, `\textbf{...}`, `\emph{...}`. Never `\it{...}` / `\bf{...}`
+  in text — they are switches, and the braces don't limit them.
+- Display math: `\[ ... \]` or `align*`; never `$$ ... $$`.
+- Local `\def`/`\renewcommand` for convenience is acceptable only inside a group (e.g. inside an
+  `answer` or `{...}`) so it doesn't leak into later questions.
+- Graphics paths always from the project root: `questionbank/<topic>/<question_name>/vN/<file>`.
+  Never relative to the source file, never absolute, never files in the project root.
+- Use `itemize`, `enumerate`, `center`, `tabular`, `\href{url}{text}`, `\url{...}` as normal.
+- Separate parts with a `% =====...` comment line for readability.
+
+---
+
+## 6. Importing from a Word document (.docx)
+
+Conversion (see `import/how_to_convert.md`):
+1. In Word, convert all equations to Office Math format (so they become machine-readable).
+2. `pandoc --extract-media=. input.docx -o output.md`
+3. The resulting `output.md` plus `media/` folder are the input to the LLM import step.
+   Equations that still did not convert appear as `.wmf` images.
+
+`import/output.md` and `import/media/` in the repo are scratch output from a previous import
+(Summer 2025 HW04). Ask the user before overwriting or deleting them; ideally put each new
+conversion in its own subfolder, e.g. `import/<semester>_<HWxx>/`.
+
+Import rules:
+- **Do not change the wording of problems or solutions.** Import only; do not revise, correct, or
+  "improve" content. If something looks wrong (inconsistent numbers, garbled OCR), keep it and add
+  a `% NOTE: ...` comment next to it for the user to review (see `networks/bridge_rc_filter/v0`).
+- pandoc tends to bold everything in problem statements (`\mathbf{R}_{\mathbf{w}}`, `**...**`).
+  Earlier imports sometimes kept this (e.g. `amplifiers/cascade_cd_cg/v0`). Ask the user at the
+  start of an import whether to strip conversion-artifact bolding (keeping intentional emphasis and
+  bold phasors/vectors) or preserve it verbatim.
+- Strip point annotations like "(12 points)" or "(24 points total)" from the text — they go in the
+  manifest as `\Point`s. Check that the manifest's sum matches the document's stated total.
+- Split a multi-problem document into one `questionbank/<topic>/<question_name>/v0/` per problem.
+- Copy usable raster figures (PNG/JPEG) into that problem's `v0/` folder with descriptive names.
+- **Never `\includegraphics` a `.wmf` file** — it breaks compilation. Instead leave a visible
+  placeholder plus a comment, e.g.
+  ```tex
+  % TODO(import): equation/figure from media/image3.wmf could not be converted.
+  \textbf{[MISSING EQUATION/FIGURE — see image3.wmf in the original document]}
+  ```
+  If the `.wmf` was an equation and the surrounding text makes the equation unambiguous, ask the
+  user whether to transcribe it by hand.
+- If the source document has problems that already exist in the question bank (same or very
+  similar problem), **stop and ask** whether to reuse the existing version, create a new version of
+  the existing question, or create a separate question.
+
+## 7. Importing from another LaTeX project
+
+- Do not copy the other project's preamble, packages, or custom environments. Translate its problem
+  structure into `mainquestion`/`partquestion`/`answer`. If it relies on packages not loaded here
+  (circuitikz, tikz, enumitem, booktabs, ...), list them and ask the user before adding anything to
+  `style/`.
+- Map its solution mechanism (`\ifsolution`, `solution` env, `exam` class `solution`, etc.) to
+  `answer`.
+- Convert its image paths to project-root paths in the new `vN/` folders.
+- Check every new question key against the whole question bank for collisions (section 3).
+
+---
+
+## 8. Step-by-step: adding a new homework
+
+Before creating any files, **ask for anything missing** and then **summarize the plan**:
+- Semester (e.g. `Winter 2026`) and homework number (e.g. `HW03`).
+- Due date.
+- Where the source material is (docx/markdown + media, or LaTeX files).
+- For each problem: target topic folder, question folder name, question key, part keys, points per
+  part, extra credit parts, and whether it reuses/extends an existing question.
+- The intended total points (and extra credit total).
+
+Then:
+1. Create `assignments/<Semester>/HWxx/metadata.tex` (`\HomeworkNumber`, `\DueDate`, optional
+   `\extracreditassignmenttrue`).
+2. Create or reuse question sources under `questionbank/` (section 2.3), with figures in the same
+   `vN/` folder.
+3. Create `assignments/<Semester>/HWxx/questions.tex` (section 2.2).
+4. Run the checks in section 9.
+5. Do **not** edit `config/current_assignment.tex`; tell the user the two values to set to compile.
+6. Commit on a branch and report the full list of added / modified / moved files for mirroring into
+   Overleaf (section 0).
+
+---
+
+## 9. Checks before handing back
+
+There is no LaTeX engine guaranteed in the local environment, so do these static checks (and ask
+the user to compile both `main_student.tex` and `main_solutions.tex` in Overleaf):
+- Every `\input{...}` in the manifest resolves to an existing `.tex` file.
+- Every non-commented `\includegraphics{...}` path exists (exact case — Overleaf is case-sensitive).
+- For each manifest: the set of `(questionkey, partkey)` pairs in `\Point` equals the set of
+  `partquestion` keys in the included sources; no `mainquestion` key appears twice in one homework.
+- The new question keys are not used by any *other* question in the bank.
+- `\Point` sum per problem matches the `% Problem N - ... (X points)` comment and the source
+  document's stated totals.
+- No `.wmf` is included; no `\documentclass`/`\usepackage` in sources; no files added at the
+  project root; no spaces in new file/folder names.
+- `metadata.tex`: `\HomeworkNumber` matches the folder; `\DueDate` year matches the semester.
+
+---
+
+## 10. Known quirks / legacy items (don't imitate, don't "fix" unless asked)
+
+- Some sources reuse figures from an earlier version folder (by design, see section 4).
+- Unused standalone documents remain in the bank as historical originals:
+  `training/v0/HW0_overleaf.tex`, `networks/thevenin_meas/v0/problem4_with_solution.tex`,
+  `networks/function_generator_and_scope/v0/source_problem4.tex`. They have their own
+  `\documentclass` and must never be `\input`.
+- Some unused question sources exist (e.g. `networks/double_dependent/v0`,
+  `networks/current_gain/v0`). Unused ≠ obsolete; leave them.
+- Unit formatting and key naming are mixed in older content (sections 3 and 5).
+- `\Instructor` is defined but not printed.
