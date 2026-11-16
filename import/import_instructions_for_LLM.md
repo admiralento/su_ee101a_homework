@@ -38,8 +38,8 @@ main_student.tex / main_solutions.tex
  ├─ config/student_mode.tex | config/solutions_mode.tex   → defines \ifsolutions
  ├─ config/shared.tex
  │    ├─ \newif\ifextracreditassignment (default false)
- │    ├─ config/course.tex                 → \CourseCode, \CourseTitle, \Instructor
  │    ├─ config/current_assignment.tex     → \Semester, \AssignmentFolder
+ │    ├─ assignments/\Semester/course.tex  → \CourseCode, \CourseTitle, \Instructor
  │    └─ assignments/\Semester/\AssignmentFolder/metadata.tex
  ├─ style/shared.sty                       → \dd, \pluralize
  ├─ style/homework.sty                     → environments, point bookkeeping, header
@@ -63,7 +63,8 @@ Key facts:
   **This file is shared state.** Changing it changes what every collaborator compiles in Overleaf.
   Do not change it as part of an import unless the user asks; tell the user what to set it to in order
   to compile the new homework.
-- `\Instructor` is defined in `config/course.tex` but is **not currently printed** anywhere.
+- `\Instructor` is defined in `assignments/<Semester>/course.tex` but is **not currently printed**
+  anywhere.
 
 ---
 
@@ -72,6 +73,7 @@ Key facts:
 ```
 assignments/
   <Semester>/                 e.g. "Summer 2025", "Summer 2026", "Fall 2026"  (note the space)
+    course.tex                course code, title, instructor for this offering (required)
     HWxx/                     two-digit, zero-padded: HW00, HW01, ... HW09
       metadata.tex
       questions.tex
@@ -90,6 +92,17 @@ import/                       this document, conversion notes, and scratch outpu
 
 Note: `questionbank/training/` has no `<question_name>` level (`training/v0/source.tex`); it is an
 exception, do not copy that pattern.
+
+### 2.0 `assignments/<Semester>/course.tex`
+
+Course-level metadata for one offering; every semester folder must have one:
+```tex
+\newcommand{\CourseCode}{EE101A}
+\newcommand{\CourseTitle}{Circuits I}
+\newcommand{\Instructor}{Jeff Stribling}
+```
+`\CourseCode` appears in the page header ("EE101A/Fall 2026") and the PDF title. When creating a
+new semester folder, copy an existing `course.tex` and ask the user for the instructor.
 
 ### 2.1 `assignments/<Semester>/HWxx/metadata.tex`
 
@@ -325,7 +338,8 @@ Import rules:
 ## 8. Step-by-step: adding a new homework
 
 Before creating any files, **ask for anything missing** and then **summarize the plan**:
-- Semester (e.g. `Winter 2026`) and homework number (e.g. `HW03`).
+- Semester (e.g. `Winter 2026`) and homework number (e.g. `HW03`); for a new semester, the
+  instructor (and course code/title if different).
 - Due date.
 - Where the source material is (docx/markdown + media, or LaTeX files).
 - For each problem: target topic folder, question folder name, question key, part keys, points per
@@ -333,6 +347,7 @@ Before creating any files, **ask for anything missing** and then **summarize the
 - The intended total points (and extra credit total).
 
 Then:
+0. If the semester folder is new, create `assignments/<Semester>/course.tex` (section 2.0).
 1. Create `assignments/<Semester>/HWxx/metadata.tex` (`\HomeworkNumber`, `\DueDate`, optional
    `\extracreditassignmenttrue`).
 2. Create or reuse question sources under `questionbank/` (section 2.3), with figures in the same
