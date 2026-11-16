@@ -44,14 +44,14 @@ For any linear system, plotting these data points on an I-V curve should result 
 We can see that there is one data point which is not co-linear with the other three; this point at (10 V, 1 A) must be invalid data.
 \end{answer}
 \end{partquestion}
-\begin{partquestion}{iandv}{Find $I$ and $V$ when $R=17\,\Omega$.}
+\begin{partquestion}{iandv}{Find $I$ and $V$ when $R=\qty{17}{\ohm}$.}
 \begin{answer}
 Replace the black box by its Th\'evenin equivalent, consisting of a source $V_{\mathrm{th}}$ in series with a resistance $R_{\mathrm{th}}$. For a load
   resistance $R$,
   \[
     \frac{V}{V_{\mathrm{th}}}=\frac{R}{R+R_{\mathrm{th}}}.
   \]
-  Using the measurements for $R=4\,\Omega$ and $R=6\,\Omega$ gives
+  Using the measurements for $R=\qty{4}{\ohm}$ and $R=\qty{6}{\ohm}$ gives
   \[
     \frac{6}{V_{\mathrm{th}}}=\frac{4}{4+R_{\mathrm{th}}},
     \qquad
@@ -63,26 +63,26 @@ Replace the black box by its Th\'evenin equivalent, consisting of a source $V_{\
       &= \frac{8}{6}(6+R_{\mathrm{th}}),\\
     6+\frac{3}{2}R_{\mathrm{th}}
       &= 8+\frac{4}{3}R_{\mathrm{th}},\\
-    R_{\mathrm{th}} &= 12\,\Omega.
+    R_{\mathrm{th}} &= \qty{12}{\ohm}.
   \end{align*}
   It follows that
   \[
     V_{\mathrm{th}}
       =\frac{6}{4}(4+12)
-      =24\,\mathrm{V}.
+      =\qty{24}{\volt}.
   \]
-  Therefore, with $R=17\,\Omega$,
+  Therefore, with $R=\qty{17}{\ohm}$,
   \[
     V=V_{\mathrm{th}}\frac{R}{R+R_{\mathrm{th}}}
       =24\frac{17}{17+12}
       =\frac{408}{29}\,\mathrm{V}
-      \approx 14.1\,\mathrm{V},
+      \approx \qty{14.1}{\volt},
   \]
   and
   \[
     I=\frac{V}{R}
       =\frac{24}{29}\,\mathrm{A}
-      \approx 0.83\,\mathrm{A}.
+      \approx \qty{0.83}{\ampere}.
   \]
 \end{answer}
 \end{partquestion}
@@ -100,7 +100,7 @@ The equation is:
 Maximum power transfer occurs when the load resistance equals the Th\'evenin
   resistance:
   \[
-    \boxed{R=R_{\mathrm{th}}=12\,\Omega.}
+    \boxed{R=R_{\mathrm{th}}=\qty{12}{\ohm}.}
   \]
 \end{answer}
 \end{partquestion}
@@ -109,8 +109,8 @@ Maximum power transfer occurs when the load resistance equals the Th\'evenin
  With $R=R_{\mathrm{th}}$, the maximum load power is
   \[
     P_{\max}=\frac{V_{\mathrm{th}}^2}{4R_{\mathrm{th}}}
-      =\frac{(24\,\mathrm{V})^2}{4(12\,\Omega)}
-      =\boxed{12\,\mathrm{W}}.
+      =\frac{(\qty{24}{\volt})^2}{4(\qty{12}{\ohm})}
+      =\boxed{\qty{12}{\watt}}.
   \]
 \end{answer}
 \end{partquestion}

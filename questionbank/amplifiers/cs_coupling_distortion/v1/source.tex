@@ -1,12 +1,12 @@
 \begin{mainquestion}{cscoupling}{Common Source Amplifier with Coupling Capacitors}
 
-A more realistic CS amplifier features coupling capacitors $C_{C1}$ and $C_{C2}$ which are ``large,'' placed there to act as shorts at the small-signal frequencies of interest, without disturbing the DC bias current and voltage. The power supply is set to $V_{DD} = 12\ \text{V}$.
+A more realistic CS amplifier features coupling capacitors $C_{C1}$ and $C_{C2}$ which are ``large,'' placed there to act as shorts at the small-signal frequencies of interest, without disturbing the DC bias current and voltage. The power supply is set to $V_{DD} = \qty{12}{\volt}$.
 
 \begin{center}
 \includegraphics[width=4in]{../v0/schematic.png}
 \end{center}
 
-\begin{partquestion}{gainexpression}{The transistor is first biased such that $\frac{1}{3}V_{DD}$ drops across the resistor $R_{D}$. Give a simple expression for the small-signal voltage gain from gate to drain ($A_{v} = \frac{v_{d}}{v_{g}}$) only as a function of $V_{OV} = V_{GS} - V_{t}$. If $V_{OV} \geq 0.4\ \text{V}$, what is the maximum small-signal gain from gate to drain?}
+\begin{partquestion}{gainexpression}{The transistor is first biased such that $\frac{1}{3}V_{DD}$ drops across the resistor $R_{D}$. Give a simple expression for the small-signal voltage gain from gate to drain ($A_{v} = \frac{v_{d}}{v_{g}}$) only as a function of $V_{OV} = V_{GS} - V_{t}$. If $V_{OV} \geq \qty{0.4}{\volt}$, what is the maximum small-signal gain from gate to drain?}
 \begin{answer}
 Since one-third of the supply voltage $V_{DD}$ drops across the resistor $R_{D}$, we have:
 
@@ -28,7 +28,7 @@ For $V_{OV} \geq 0.4$, we have:
 \end{answer}
 \end{partquestion}
 
-\begin{partquestion}{distortionlimit}{With $V_{OV} = 0.4\ \text{V}$, what is the limit to the ``small signal'' amplitude at the gate if we accept a second-order distortion term that is no more than 4\% of the first-order linear term (note this is stricter than the 10\% tolerance we discussed in class)?}
+\begin{partquestion}{distortionlimit}{With $V_{OV} = \qty{0.4}{\volt}$, what is the limit to the ``small signal'' amplitude at the gate if we accept a second-order distortion term that is no more than 4\% of the first-order linear term (note this is stricter than the 10\% tolerance we discussed in class)?}
 \begin{answer}
 We saw from the lecture that the second-order (distortion) term is $\frac{1}{2}k v_{gs}^{2}$, and the first-order (linear) term is $g_{m}v_{gs} = kV_{OV}v_{gs}$. Comparing these two, if we want the second-order term to be less than 0.04 times the first-order term, we have:
 
@@ -61,18 +61,18 @@ Which is about 17\%! Amazing!
 A gain of 17 dB is equivalent to a linear gain magnitude of $10^{\frac{17}{20}} = 7.08$. (Recall that the CS amplifier is an inverting amplifier, so we have a minus sign for the actual gain expression.) At this gain, we know from part (a) that
 
 \[
-V_{OV} = \frac{-8}{A_{v}} = \frac{-8}{-7.08} = 1.13\ \text{V}.
+V_{OV} = \frac{-8}{A_{v}} = \frac{-8}{-7.08} = \qty{1.13}{\volt}.
 \]
 
-This satisfies the constraint that $V_{OV} \geq 0.4\ \text{V}$, and $V_{DS} = \frac{2}{3}V_{DD} = 8\ \text{V} > V_{OV}$ so the device stays in saturation. It is clear that 17 dB of gain is achievable. Since from part (b) we know:
+This satisfies the constraint that $V_{OV} \geq \qty{0.4}{\volt}$, and $V_{DS} = \frac{2}{3}V_{DD} = \qty{8}{\volt} > V_{OV}$ so the device stays in saturation. It is clear that 17 dB of gain is achievable. Since from part (b) we know:
 
 \begin{align*}
 v_{gs} &\leq 2(0.04)V_{OV}\\
-v_{gs} &\leq (0.08)(1.13\ \text{V})\\
-v_{gs} &\leq 0.0904\ \text{V}.
+v_{gs} &\leq (0.08)(\qty{1.13}{\volt})\\
+v_{gs} &\leq \qty{0.0904}{\volt}.
 \end{align*}
 
-$v_{gs} = 0.0904\ \text{V}$ will achieve the desired gain.
+$v_{gs} = \qty{0.0904}{\volt}$ will achieve the desired gain.
 \end{answer}
 \end{partquestion}
 

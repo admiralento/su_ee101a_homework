@@ -1,6 +1,6 @@
 \begin{mainquestion}{cstransfer}{Common Source Amplifier Transfer Characteristic}
 
-Consider a common source (CS) amplifier as shown below. The key parameters are $V_{DD} = 10\ \text{V}$, $R_{D} = 8.5\ \text{k}\Omega$, $k_{n} = k_{n}^{\prime}\frac{W}{L} = 5\ \frac{\text{mA}}{V^{2}}$, and $V_{t} = 1\ \text{V}$. Assume $\lambda = 0$ for parts (a)-(d).
+Consider a common source (CS) amplifier as shown below. The key parameters are $V_{DD} = \qty{10}{\volt}$, $R_{D} = \qty{8.5}{\kilo\ohm}$, $k_{n} = k_{n}^{\prime}\frac{W}{L} = 5\ \frac{\text{mA}}{V^{2}}$, and $V_{t} = \qty{1}{\volt}$. Assume $\lambda = 0$ for parts (a)-(d).
 
 \begin{center}
 \includegraphics[width=2in]{Picture1.png}
@@ -10,9 +10,9 @@ Consider a common source (CS) amplifier as shown below. The key parameters are $
 
 \begin{partquestion}{findpointsab}{Find the coordinates of points A and B (i.e., $V_{I}$ and $V_{O}$) on the sketch above.}
 \begin{answer}
-Point A on the sketch corresponds to the moment when the transistor transitions from cut-off to saturation. This occurs when $v_{I} = v_{GS} = V_{t} = 1\ \text{V}$. At this point, current is just beginning to flow so $v_{DS} = v_{O} = V_{DD}$. So, point A is (1 V, 10 V).
+Point A on the sketch corresponds to the moment when the transistor transitions from cut-off to saturation. This occurs when $v_{I} = v_{GS} = V_{t} = \qty{1}{\volt}$. At this point, current is just beginning to flow so $v_{DS} = v_{O} = V_{DD}$. So, point A is (1 V, 10 V).
 
-Point B corresponds to the moment where the transistor goes from saturation to triode. In this case, $V_{DS} = V_{GS} - V_{t}$ so $v_{O} = v_{I} - V_{t} = v_{I} - 1\ \text{V}$. Because at point B we are at the boundary of two regions, either formula for $I_{D}$ should work (also because $\lambda = 0$, which ensures continuity between regions with our standard formulas for $I_{D}$). Choosing that of saturation gives:
+Point B corresponds to the moment where the transistor goes from saturation to triode. In this case, $V_{DS} = V_{GS} - V_{t}$ so $v_{O} = v_{I} - V_{t} = v_{I} - \qty{1}{\volt}$. Because at point B we are at the boundary of two regions, either formula for $I_{D}$ should work (also because $\lambda = 0$, which ensures continuity between regions with our standard formulas for $I_{D}$). Choosing that of saturation gives:
 
 \[
 I_{D} = \frac{V_{DD} - v_{O}}{R_{D}} = \frac{1}{2} k \left(V_{GS} - V_{t}\right)^{2}
@@ -30,16 +30,16 @@ this leads to the quadratic:
 2.5 v_{O}^{2} + 0.1176 v_{O} - 1.1765 = 0
 \]
 
-which has solutions $v_{O} = -0.710$ and $v_{O} = 0.663$. Only the second is a valid solution. From here, $v_{I} = v_{O} + 1 = 1.663\ \text{V}$, so point B is (1.663 V, 0.663 V).
+which has solutions $v_{O} = -0.710$ and $v_{O} = 0.663$. Only the second is a valid solution. From here, $v_{I} = v_{O} + 1 = \qty{1.663}{\volt}$, so point B is (1.663 V, 0.663 V).
 \end{answer}
 \end{partquestion}
 
-\begin{partquestion}{biaspoint}{If the amplifier is biased to operate with an overdrive voltage $V_{OV} = V_{GS} - V_{t} = 0.4\ \text{V}$, find the bias point Q on the transfer characteristic. What is the value of $I_{D}$ when operating at the bias point Q?}
+\begin{partquestion}{biaspoint}{If the amplifier is biased to operate with an overdrive voltage $V_{OV} = V_{GS} - V_{t} = \qty{0.4}{\volt}$, find the bias point Q on the transfer characteristic. What is the value of $I_{D}$ when operating at the bias point Q?}
 \begin{answer}
 We know with this overdrive voltage level:
 
 \[
-v_{I} = V_{GS} = V_{OV} + V_{t} = 0.4 + 1.0 = 1.4\ \text{V}.
+v_{I} = V_{GS} = V_{OV} + V_{t} = 0.4 + 1.0 = \qty{1.4}{\volt}.
 \]
 
 We can use the same equation as in part (a) to find the output voltage:
@@ -52,14 +52,14 @@ We can use the same equation as in part (a) to find the output voltage:
 The point Q is therefore (1.4 V, 6.6 V). It follows that:
 
 \[
-I_{D} = \frac{10 - v_{o}}{8.5} = \frac{10 - 6.6}{8.5} = 0.4\ \text{mA}.
+I_{D} = \frac{10 - v_{o}}{8.5} = \frac{10 - 6.6}{8.5} = \qty{0.4}{\milli\ampere}.
 \]
 \end{answer}
 \end{partquestion}
 
 \begin{partquestion}{maxamplitude}{At the bias point Q, what is the largest amplitude of a sine-wave voltage signal that can be applied at the input while the transistor remains in saturation? What is the peak-to-peak voltage of the output signal that results?}
 \begin{answer}
-Since our quiescent point Q has an input voltage which is closer to point B's input voltage than it is to point A's input voltage, a sine wave centered on point Q (about 1.4 V) will hit a limiting point at B (1.663 V) when the amplitude of that wave is $1.663 - 1.4 = 0.263\ \text{V}$. While there will be distortion due to the square-law relationship of the current in the saturation regime, it will remain in saturation. With an input sine wave of amplitude of 0.263 V, at the maximum input, the output will dip to 0.663 V (since we are touching point B). At the minimum input, the output will rise to a value determined by an input $v_{I} = 1.4 - 0.263 = 1.137\ \text{V}$ as follows:
+Since our quiescent point Q has an input voltage which is closer to point B's input voltage than it is to point A's input voltage, a sine wave centered on point Q (about 1.4 V) will hit a limiting point at B (1.663 V) when the amplitude of that wave is $1.663 - 1.4 = \qty{0.263}{\volt}$. While there will be distortion due to the square-law relationship of the current in the saturation regime, it will remain in saturation. With an input sine wave of amplitude of 0.263 V, at the maximum input, the output will dip to 0.663 V (since we are touching point B). At the minimum input, the output will rise to a value determined by an input $v_{I} = 1.4 - 0.263 = \qty{1.137}{\volt}$ as follows:
 
 \begin{align*}
     \frac{10 - v_o}{8.5} &= \frac{1}{2}(5)(v_I - 1)^2 \\
@@ -68,7 +68,7 @@ Since our quiescent point Q has an input voltage which is closer to point B's in
     &= \qty{9.60}{\volt}
 \end{align*}
 
-The peak-to-peak voltage of the output signal is then $9.60 - 0.663 = 8.938\ \text{V}$.
+The peak-to-peak voltage of the output signal is then $9.60 - 0.663 = \qty{8.938}{\volt}$.
 \end{answer}
 \end{partquestion}
 
@@ -126,7 +126,7 @@ Since $r_{o} = \frac{1}{\lambda I_{D}}$, we have:
 so, it follows that
 
 \[
-r_{o} \geq \frac{1}{\lambda_{\max} I_{D}} = \frac{1}{(0.0214)(0.4)} = 117\ \text{k}\Omega.
+r_{o} \geq \frac{1}{\lambda_{\max} I_{D}} = \frac{1}{(0.0214)(0.4)} = \qty{117}{\kilo\ohm}.
 \]
 \end{answer}
 \end{partquestion}

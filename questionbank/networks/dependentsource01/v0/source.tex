@@ -12,7 +12,7 @@ This is a voltage controlled current source (VCCS).  The variable $g$ is one of 
 
 \begin{partquestion}{xform}{Perform a single source transformation with the dependent source, and redraw the circuit.}
 \begin{answer}
-Because we are not destroying our definition of $V_x$, we can source transform the parallel combination of the current source and the $4\,k\Omega$ resistor into a Th\'evenin equivalent, with a voltage value of $(gV_x)(4000)$ in series with a resistor of value $4\,k\Omega$, as shown below.
+Because we are not destroying our definition of $V_x$, we can source transform the parallel combination of the current source and the $\qty{4}{\kilo\ohm}$ resistor into a Th\'evenin equivalent, with a voltage value of $(gV_x)(4000)$ in series with a resistor of value $\qty{4}{\kilo\ohm}$, as shown below.
 \begin{center}
     \includegraphics[width=2in]{figure2.png}
 \end{center}
@@ -51,7 +51,7 @@ To find $R_\mathrm{th}$, we zero out all independent sources, and are left with 
 \begin{center}
     \includegraphics[width=2in]{figure5.png}
 \end{center}
-The presence of the dependent source prevents us from simply being able to read the resistance seen at the load terminals by inspection, and we must use the test source method with $v_x$ and $i_x$.  The parallel \qty{5}{\kilo\ohm} and \qty{20}{\kilo\ohm} can be added to the $4\,k\Omega$ resistor to find an equivalent resistance of:
+The presence of the dependent source prevents us from simply being able to read the resistance seen at the load terminals by inspection, and we must use the test source method with $v_x$ and $i_x$.  The parallel \qty{5}{\kilo\ohm} and \qty{20}{\kilo\ohm} can be added to the $\qty{4}{\kilo\ohm}$ resistor to find an equivalent resistance of:
 \[
 \qty{5}{\kilo\ohm}||\qty{20}{\kilo\ohm}+\qty{4}{\kilo\ohm}=\frac{\qty{250}{\kilo\ohm}\cdot\qty{20}{\kilo\ohm}}{\qty{5}{\kilo\ohm}+\qty{20}{\kilo\ohm}}+\qty{4}{\kilo\ohm}=\qty{4}{\kilo\ohm}+\qty{4}{\kilo\ohm}=\qty{8}{\kilo\ohm}
 \]

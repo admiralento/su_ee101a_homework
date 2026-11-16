@@ -1,6 +1,6 @@
 \begin{mainquestion}{nmosbias}{NMOS Bias Point Calculation}
 
-Consider the circuit below, where $k_{n} = 5\ \frac{\text{mA}}{V^{2}}$ and $V_{tn} = 0.8\ \text{V}$.
+Consider the circuit below, where $k_{n} = 5\ \frac{\text{mA}}{V^{2}}$ and $V_{tn} = \qty{0.8}{\volt}$.
 
 \begin{center}
 \includegraphics[height=4in]{circuit.png}
@@ -31,7 +31,7 @@ Since $i_{D} = \frac{1}{8}V_{S}$, we can write:
     0 &= 12.1 -11.125V_S + 2.5V_S^2
 \end{align}
 
-which has two possible solutions, $V_{S} = 2.558\ \text{V}$ and $V_{S} = 1.892\ \text{V}$. Since $V_{D} = V_{DD} - \frac{6}{8}V_{S}$, this results in $V_{D} = 7.081\ \text{V}$ and $V_{D} = 7.581\ \text{V}$ respectively. In saturation, we have a condition that $v_{DS} > v_{GS} - V_{t}$ that we will want to validate. The first solution gives $v_{DS} = V_{D} - V_{S} = 7.081 - 2.558 = 4.524\ \text{V}$ and $v_{GS} - V_{t} = V_{G} - V_{S} - V_{t} = 3 - 2.558 - 0.8 = -0.358\ \text{V}$. Because this last value is negative, the transistor would need to be in cutoff which contradicts our original assumption. The second solution gives $v_{DS} = V_{D} - V_{S} = 7.581 - 1.892 = 5.688\ \text{V}$ and $v_{GS} - V_{t} = V_{G} - V_{S} - V_{t} = 3 - 1.892 - 0.8 = 0.308\ \text{V}$, which is a valid solution for saturation since $5.688 > 0.308$. Hence $V_{D} = 7.581\ \text{V}$ and $V_{S} = 1.892\ \text{V}$ are the bias points.
+which has two possible solutions, $V_{S} = \qty{2.558}{\volt}$ and $V_{S} = \qty{1.892}{\volt}$. Since $V_{D} = V_{DD} - \frac{6}{8}V_{S}$, this results in $V_{D} = \qty{7.081}{\volt}$ and $V_{D} = \qty{7.581}{\volt}$ respectively. In saturation, we have a condition that $v_{DS} > v_{GS} - V_{t}$ that we will want to validate. The first solution gives $v_{DS} = V_{D} - V_{S} = 7.081 - 2.558 = \qty{4.524}{\volt}$ and $v_{GS} - V_{t} = V_{G} - V_{S} - V_{t} = 3 - 2.558 - 0.8 = -\qty{0.358}{\volt}$. Because this last value is negative, the transistor would need to be in cutoff which contradicts our original assumption. The second solution gives $v_{DS} = V_{D} - V_{S} = 7.581 - 1.892 = \qty{5.688}{\volt}$ and $v_{GS} - V_{t} = V_{G} - V_{S} - V_{t} = 3 - 1.892 - 0.8 = \qty{0.308}{\volt}$, which is a valid solution for saturation since $5.688 > 0.308$. Hence $V_{D} = \qty{7.581}{\volt}$ and $V_{S} = \qty{1.892}{\volt}$ are the bias points.
 \end{answer}
 \end{partquestion}
 
@@ -40,7 +40,7 @@ which has two possible solutions, $V_{S} = 2.558\ \text{V}$ and $V_{S} = 1.892\ 
 We expect no gate current in a MOSFET, so $i_{G} = 0$. For the drain current:
 
 \[
-i_{D} = \frac{V_{S}}{8} = \frac{1.892\ \text{V}}{8\ \text{k}\Omega} = 0.237\ \text{mA}.
+i_{D} = \frac{V_{S}}{8} = \frac{\qty{1.892}{\volt}}{\qty{8}{\kilo\ohm}} = \qty{0.237}{\milli\ampere}.
 \]
 \end{answer}
 \end{partquestion}

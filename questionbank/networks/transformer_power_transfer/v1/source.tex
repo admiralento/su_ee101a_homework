@@ -28,35 +28,35 @@ The resistance as seen from the primary side is scaled by the square of the turn
 
 % =========================================================
 \begin{partquestion}{directtransmission}
-{Consider a 340 V peak-to-peak sinusoidal source connected to a resistive load of 17 $\Omega$ via a transmission line without transformers, having a total line resistance of 17 $\Omega$. Determine the power delivered by the source, the power dissipated in the line, the power delivered to the load, and the efficiency $\eta = P_{\text{load}} / P_{\text{source}} \times 100\%$.}
+{Consider a 340 V peak-to-peak sinusoidal source connected to a resistive load of \qty{17}{\ohm} via a transmission line without transformers, having a total line resistance of \qty{17}{\ohm}. Determine the power delivered by the source, the power dissipated in the line, the power delivered to the load, and the efficiency $\eta = P_{\text{load}} / P_{\text{source}} \times 100\%$.}
 
 \begin{center}
 \includegraphics[width=0.6\textwidth]{XFOR_matched.png}
 \end{center}
 
 \begin{answer}
-The power delivered by the source is $P = v_{\text{source,rms}}^2 / (R_{\text{line}} + R_L)$. The voltage is given as peak-to-peak, so the amplitude is 170~V and the RMS value is $170/\sqrt{2}$~V $\approx 120$~V.
+The power delivered by the source is $P = v_{\text{source,rms}}^2 / (R_{\text{line}} + R_L)$. The voltage is given as peak-to-peak, so the amplitude is \qty{170}{\volt} and the RMS value is $170/\sqrt{2}$~V $\approx 120$~V.
 
 \[
-P_{\text{delivered}} = \frac{v_{s,\text{rms}}^2}{R_{\text{line}} + R_L} = \frac{120^2}{17 + 17} = \frac{14400}{34} \approx 424\text{ W}
+P_{\text{delivered}} = \frac{v_{s,\text{rms}}^2}{R_{\text{line}} + R_L} = \frac{120^2}{17 + 17} = \frac{14400}{34} \approx \qty{424}{\watt}
 \]
 
 The power dissipated in the line is:
 
 \[
-P_{\text{line}} = \frac{v_{\text{line,rms}}^2}{R_{\text{line}}} = \left(\frac{R_{\text{line}}}{R_{\text{line}} + R_L} v_{\text{source, rms}}\right)^2 \frac{1}{R_{\text{line}}} = \left(\frac{17}{34} \cdot 120\right)^2 \frac{1}{17} = \frac{3600}{17} = 212\text{ W}
+P_{\text{line}} = \frac{v_{\text{line,rms}}^2}{R_{\text{line}}} = \left(\frac{R_{\text{line}}}{R_{\text{line}} + R_L} v_{\text{source, rms}}\right)^2 \frac{1}{R_{\text{line}}} = \left(\frac{17}{34} \cdot 120\right)^2 \frac{1}{17} = \frac{3600}{17} = \qty{212}{\watt}
 \]
 
 The remaining power is dissipated in the load:
 
 \[
-P_{\text{load}} = 424\text{ W} - 212\text{ W} = 212\text{ W}
+P_{\text{load}} = \qty{424}{\watt} - \qty{212}{\watt} = \qty{212}{\watt}
 \]
 
 The efficiency is:
 
 \[
-\eta = \frac{212\text{ W}}{424\text{ W}} \times 100\% = 50\%
+\eta = \frac{\qty{212}{\watt}}{\qty{424}{\watt}} \times 100\% = 50\%
 \]
 
 This circuit delivers maximum power transfer to the load because line resistance is equal to that of the source resistance.
@@ -77,25 +77,25 @@ The load needs to be transformed across the step-down transformer, and then both
 First resistance transformation (load across step-down transformer):
 
 \[
-R_L'' = R_L \left(\frac{10}{1}\right)^2 = 100 R_L = 1700\text{ }\Omega
+R_L'' = R_L \left(\frac{10}{1}\right)^2 = 100 R_L = \qty{1700}{\ohm}
 \]
 
 Second resistance transformation (both resistors across step-up transformer):
 
 \[
-R_L' = \left(R_{\text{line}} + R_L''\right) \left(\frac{1}{10}\right)^2 = \frac{R_{\text{line}}}{100} + R_L = \frac{17}{100} + 17 = 17.17\text{ }\Omega
+R_L' = \left(R_{\text{line}} + R_L''\right) \left(\frac{1}{10}\right)^2 = \frac{R_{\text{line}}}{100} + R_L = \frac{17}{100} + 17 = \qty{17.17}{\ohm}
 \]
 
 The power delivered is:
 
 \[
-P_{\text{delivered}} = \frac{120^2}{0.17 + 17} \approx 839\text{ W}
+P_{\text{delivered}} = \frac{120^2}{0.17 + 17} \approx \qty{839}{\watt}
 \]
 
 The power dissipated in the line (which now sees voltage stepped up by factor of 10):
 
 \[
-P_{\text{line}} = \frac{[v_{\text{source,rms}} \cdot \frac{R_{\text{line}}/100}{ R_{\text{line}}/100 + R_L}]^2}{R_{\text{line}}/100} = \frac{120^2(17/100)}{(17/100 + 17)^2} \approx 8.30\text{ W}
+P_{\text{line}} = \frac{[v_{\text{source,rms}} \cdot \frac{R_{\text{line}}/100}{ R_{\text{line}}/100 + R_L}]^2}{R_{\text{line}}/100} = \frac{120^2(17/100)}{(17/100 + 17)^2} \approx \qty{8.30}{\watt}
 \]
 
 The remaining power is dissipated in the load:

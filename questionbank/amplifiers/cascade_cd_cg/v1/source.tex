@@ -1,6 +1,6 @@
 \begin{mainquestion}{cascade}{Cascaded CD and CG Stages}
 
-Consider cascading a common-drain and a common-gate stage, each of which has $g_m = 5\,\text{mS}$ and $r_o$ large enough to be ignored.
+Consider cascading a common-drain and a common-gate stage, each of which has $g_m = \qty{5}{\milli\siemens}$ and $r_o$ large enough to be ignored.
 
 \begin{center}
 \includegraphics[width=2.5in]{cd.png}\qquad
@@ -35,7 +35,7 @@ We have:
 \begin{align*}
     v_{gs} &= 0 - v_{x} \\
     i_{x} - \frac{v_{x}}{R_S} &= g_m v_{gs} = - g_m v_{x} \\
-    R_{o1} &= \frac{v_{x}}{i_{x}} = \frac{R_S}{1+ g_m R_S} = \frac{3}{1 + (5)(3)} = \qty{0.188}{\kilo\ohm} = 188\Omega
+    R_{o1} &= \frac{v_{x}}{i_{x}} = \frac{R_S}{1+ g_m R_S} = \frac{3}{1 + (5)(3)} = \qty{0.188}{\kilo\ohm} = \qty{188}{\ohm}
 \end{align*}
 
 \end{answer}
@@ -78,7 +78,7 @@ i_{i2}=\frac{v_{i2}}{R_{S}}-g_{m}v_{gs}=\frac{v_{i2}}{R_{S}}+g_{m}v_{i2}
 
 And therefore:
 \[
-R_{i2}=\frac{v_{i2}}{i_{i2}}=\frac{1}{\frac{1}{R_{S}}+g_{m}}=\frac{1}{\frac{1}{10}+5}= \qty{0.196}{\kilo\ohm}=196\ \Omega
+R_{i2}=\frac{v_{i2}}{i_{i2}}=\frac{1}{\frac{1}{R_{S}}+g_{m}}=\frac{1}{\frac{1}{10}+5}= \qty{0.196}{\kilo\ohm}=\qty{196}{\ohm}
 \]
 
 The output resistance of the circuit can be found by shorting the input signal and applying a test source at the output terminals, as seen in the image below. 

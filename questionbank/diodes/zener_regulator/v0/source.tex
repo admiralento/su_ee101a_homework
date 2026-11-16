@@ -8,7 +8,7 @@ As a consultant, you are hired to evaluate a zener diode in a power supply that 
 
 % =========================================================
 \begin{partquestion}{inadequatedesign}
-{Initially you are told that $R_s = 100\text{ }\Omega$. Show it is not possible to maintain $v_L$ in the desired range considering the range of fluctuating circuit parameters provided.}
+{Initially you are told that $R_s = \qty{100}{\ohm}$. Show it is not possible to maintain $v_L$ in the desired range considering the range of fluctuating circuit parameters provided.}
 
 \begin{answer}
 The zener diode can maintain the desired voltage as long as we keep it in breakdown mode. This is possible unless the voltage drop across the resistor is such that the zener diode voltage drops under its rated breakdown value. In equation form:
@@ -30,7 +30,7 @@ which will be much less than the desired voltage level near 5.1 V. (Note that $i
 
 % =========================================================
 \begin{partquestion}{maxresistor}
-{What is the maximum value of $R_s$ that prevents $v_L$ from dropping below the desired range if the zener diode breakdown voltage is $V_{Z0} = 5.1\text{ V}$ (an industry standard value)?}
+{What is the maximum value of $R_s$ that prevents $v_L$ from dropping below the desired range if the zener diode breakdown voltage is $V_{Z0} = \qty{5.1}{\volt}$ (an industry standard value)?}
 
 \begin{answer}
 We can reuse the formula from the previous part:
@@ -39,7 +39,7 @@ We can reuse the formula from the previous part:
 v_L = V_s - (i_z + i_{L,\max}) R_s
 \]
 
-and consider the case where we are in breakdown, such that $v_L \geq V_{Z0} = 5.1\text{ V}$. We have:
+and consider the case where we are in breakdown, such that $v_L \geq V_{Z0} = \qty{5.1}{\volt}$. We have:
 
 \begin{align*}
 V_{s,\text{min}} - (i_z + i_{L,\max}) R_s &\geq V_{Z0} \\

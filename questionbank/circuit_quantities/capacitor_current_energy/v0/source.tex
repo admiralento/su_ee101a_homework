@@ -20,13 +20,13 @@ i_C(t) = C \frac{dv_C(t)}{dt} \quad \Rightarrow \quad v_C(t) = \frac{1}{C}\int i
 From 0 ms to 2 ms:
 
 \[
-v_C(t) = \frac{1}{0.5 \times 10^{-6}} \int_0^t 15 \times 10^{-3} \,dt' + 10 = 3 \times 10^4 t + 10 \quad (0 \leq t \leq 0.002\text{ s})
+v_C(t) = \frac{1}{0.5 \times 10^{-6}} \int_0^t 15 \times 10^{-3} \,dt' + 10 = 3 \times 10^4 t + 10 \quad (0 \leq t \leq \qty{0.002}{\second})
 \]
 
 At $t = 0.002$~s, $v_C(0.002) = 70$~V. Because the current becomes zero between 2 ms and 3 ms, the voltage stays constant at 70~V. From 3 ms to 5 ms the voltage in the capacitor is given by the expression below. Notice that we are using (t – 3 ms) because of the shift in time:
 
 \[
-v_C(t) = \frac{1}{0.5 \times 10^{-6}} \int_{0.003}^t -15 \times 10^{-3} \,dt' + 70 = -3 \times 10^4 (t - 0.003) + 70 \quad (0.003 \leq t \leq 0.005\text{ s})
+v_C(t) = \frac{1}{0.5 \times 10^{-6}} \int_{0.003}^t -15 \times 10^{-3} \,dt' + 70 = -3 \times 10^4 (t - 0.003) + 70 \quad (0.003 \leq t \leq \qty{0.005}{\second})
 \]
 
 Consolidating these results gives:

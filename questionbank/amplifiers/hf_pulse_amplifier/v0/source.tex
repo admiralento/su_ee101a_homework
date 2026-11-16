@@ -1,6 +1,6 @@
 \begin{mainquestion}{hfpulse}{High-Frequency Pulse Amplifier}
 
-The figure below shows a scheme for coupling and amplifying a high-frequency pulse signal. The circuit uses two MOSFETs whose details are not shown and a 50-$\Omega$ coaxial cable. For proper operation (with no signal reflections coming back down the cable), transistor $Q_{2}$ is required to present a 50-$\Omega$ resistance to the cable. That is, the input resistance for $Q_{2}$ is 50 $\Omega$.
+The figure below shows a scheme for coupling and amplifying a high-frequency pulse signal. The circuit uses two MOSFETs whose details are not shown and a 50-$\Omega$ coaxial cable. For proper operation (with no signal reflections coming back down the cable), transistor $Q_{2}$ is required to present a 50-$\Omega$ resistance to the cable. That is, the input resistance for $Q_{2}$ is \qty{50}{\ohm}.
 
 \begin{center}
 \includegraphics[width=4.5in]{pic6.png}
@@ -14,16 +14,16 @@ $Q_{1}$ is a common source amplifier, with the input at the gate and the output 
 
 \begin{partquestion}{gm2}{What is $\mathbf{g}_{\mathbf{m2}}$?}
 \begin{answer}
-The input resistance to a common gate (CG) amplifier is $R_{\text{in}} = 1/g_{m} = 50\ \Omega$, so $g_{m2} = 0.02\ \text{S}$.
+The input resistance to a common gate (CG) amplifier is $R_{\text{in}} = 1/g_{m} = \qty{50}{\ohm}$, so $g_{m2} = \qty{0.02}{\siemens}$.
 \end{answer}
 \end{partquestion}
 
 \begin{partquestion}{currentpulse}{If $Q_{1}$ and $Q_{2}$ are biased (operating) at the same point, what is the amplitude of the high-frequency current pulses in the drain of $Q_{1}$?}
 \begin{answer}
-Note that the current flowing through $Q_2$ all flows through $Q_1$. If the two transistors have the same current and the same overdrive voltage, then $g_{m1} = g_{m2} = 0.02\ \text{S}$. For an input amplitude of 3 mV, the output current amplitude is:
+Note that the current flowing through $Q_2$ all flows through $Q_1$. If the two transistors have the same current and the same overdrive voltage, then $g_{m1} = g_{m2} = \qty{0.02}{\siemens}$. For an input amplitude of 3 mV, the output current amplitude is:
 
 \[
-0.003 \cdot 0.02 = 0.06\ \text{mA}.
+0.003 \cdot 0.02 = \qty{0.06}{\milli\ampere}.
 \]
 
 Note that because the CS is an inverting amplifier, the pulses will be negative.
@@ -35,7 +35,7 @@ Note that because the CS is an inverting amplifier, the pulses will be negative.
 Assuming $r_{o}$ is large enough to be ignored, the pulse amplitude is:
 
 \[
-g_{m} R v_{i} = (0.02)(50)(3\ \text{mV}) = 3\ \text{mV}.
+g_{m} R v_{i} = (0.02)(50)(\qty{3}{\milli\volt}) = \qty{3}{\milli\volt}.
 \]
 
 Again, the pulses will be negative due to the inverting amplifier.

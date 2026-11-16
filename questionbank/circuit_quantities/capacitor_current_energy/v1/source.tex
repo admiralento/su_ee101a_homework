@@ -17,13 +17,13 @@ The equation that relates the current and the voltage in a capacitor is given by
 i_C(t) = C \frac{dv_C(t)}{dt} \quad \Rightarrow \quad v_C(t) = \frac{1}{C}\int i_C(t)\,dt + v_C(0)
 \]
 
-Nothing happens until 1~ms when the current source begins to output 5~mA.
-From 1~ms to 3~ms:
+Nothing happens until \qty{1}{\milli\second} when the current source begins to output \qty{5}{\milli\ampere}.
+From \qty{1}{\milli\second} to \qty{3}{\milli\second}:
 
 \begin{align*}
 v_C(t) &= \frac{1}{\num{200e-9}} \int_{0.001}^t \num{5e-3} \,dt' - 16\\
 &= \frac{1}{\num{200e-9}} \int_{0}^{t-0.001} \num{5e-3} \,dt' - 16\\
-&= (\num{25e3})(t-0.001) - 16 \quad (0.001 \leq t \leq 0.003\text{ s}) \\
+&= (\num{25e3})(t-0.001) - 16 \quad (0.001 \leq t \leq \qty{0.003}{\second}) \\
 v_C(0.003) &= 50 - 16 = \qty{34}{\volt}
 \end{align*}
 
@@ -31,7 +31,7 @@ From 3 ms to 5 ms the current is reversed, which should cause the voltage to fal
 \begin{align*}
 v_C(t) &= \frac{1}{\num{200e-9}} \int_{0.003}^t \num{-5e-3} \,dt' +34\\
 &= \frac{1}{\num{200e-9}} \int_{0}^{t-0.003} \num{-5e-3} \,dt' +34\\
-&= (\num{-25e3})(t-0.003) +34 \quad (0.003 \leq t \leq 0.005\text{ s}) \\
+&= (\num{-25e3})(t-0.003) +34 \quad (0.003 \leq t \leq \qty{0.005}{\second}) \\
 v_C(0.005) &= -50 + 34 = \qty{-16}{\volt}
 \end{align*}
 

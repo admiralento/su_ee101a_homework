@@ -96,7 +96,7 @@ Calculating the branch currents only requires Ohm’s Law for most of the branch
 \( I = \frac{V}{R} = \frac{\qty{68}{\volt} - \qty{22}{\volt}}{\qty{8}{\kilo\ohm}} = \qty{5.75}{\milli\ampere} \) and the current through the rightmost \qty{4}{\kilo\ohm} resistor is \( I = \frac{V}{R} = \frac{\qty{68}{\volt} - \qty{39}{\volt}}{\qty{4}{\kilo\ohm}} = \qty{7.25}{\milli\ampere} \). In a resistor, passive sign convention tells us that positive current flows in the direction of the voltage drop, so from left to right in this case. This can be repeated for the other resistors quite easily now that we have all of the voltage values. The only current that requires additional thought is the current through the dependent current source, which can be solved from the KCL equation at node 3.
 
 \[
-I_{4V_X} = I_{8k\Omega} + I_{4k\Omega} = \qty{5.75}{\milli\ampere} + \qty{7.25}{\milli\ampere} = \qty{13}{\milli\ampere}
+I_{4V_X} = I_{\qty{8}{\kilo\ohm}} + I_{\qty{4}{\kilo\ohm}} = \qty{5.75}{\milli\ampere} + \qty{7.25}{\milli\ampere} = \qty{13}{\milli\ampere}
 \]
 
 Now we check that KCL is satisfied everywhere. There are 4 nodes where KCL needs to hold in this schematic. We’ll use positive values for currents flowing into a node:

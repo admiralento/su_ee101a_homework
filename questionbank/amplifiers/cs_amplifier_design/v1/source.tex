@@ -1,6 +1,6 @@
 \begin{mainquestion}{csdesign}{Common Source Amplifier Design}
 
-A CS amplifier must be designed to provide an output signal with 1.0 V amplitude using a load $R_{D} = 82\ \text{k}\Omega$. Note: This is a design problem; please provide lower \& upper bounds for answers to parts (b)-(d).
+A CS amplifier must be designed to provide an output signal with 1.0 V amplitude using a load $R_{D} = \qty{82}{\kilo\ohm}$. Note: This is a design problem; please provide lower \& upper bounds for answers to parts (b)-(d).
 
 \begin{partquestion}{mingm}{If a voltage gain $\left|A_{v}\right| \geq 14\ \frac{\text{V}}{\text{V}}$ is desired, what minimum transconductance $g_{m}$ is required? You may use this $g_{m}$ value to answer the parts below.}
 \begin{answer}
@@ -13,12 +13,12 @@ If $\lambda = 0$, the gain magnitude of a common source amplifier is:
 so
 
 \[
-g_{m} \geq \frac{14}{R_{D}} = \frac{14}{82} = 0.171\ \text{mS}.
+g_{m} \geq \frac{14}{R_{D}} = \frac{14}{82} = \qty{0.171}{\milli\siemens}.
 \]
 \end{answer}
 \end{partquestion}
 
-\begin{partquestion}{idanvov}{Using a DC supply $V_{DD} = 3.3\ \text{V}$, what values of $I_{D}$ and $V_{OV} = V_{GS} - V_{t}$ would you choose?}
+\begin{partquestion}{idanvov}{Using a DC supply $V_{DD} = \qty{3.3}{\volt}$, what values of $I_{D}$ and $V_{OV} = V_{GS} - V_{t}$ would you choose?}
 \begin{answer}
 \begin{kaitlyn}
 
@@ -70,7 +70,7 @@ V_{DD} - \frac{1}{2}g_{m}V_{OV}R_{D} - v_{ds} &\geq V_{OV} + \frac{v_{ds}}{A_{v}
 V_{DD} - v_{ds} - \frac{v_{ds}}{A_{v}} &\geq V_{OV}\left(1 + \frac{1}{2}g_{m}R_{D}\right) \\
 V_{OV} &\leq \frac{V_{DD} - v_{ds} - \frac{v_{ds}}{A_{v}}}{1 + \frac{1}{2}g_{m}R_{D}}\\
 V_{OV} &\leq \frac{3.3 - 1.0 - \frac{1.0}{14}}{1 + \frac{1}{2}(0.171)(82)}\\
-V_{OV} &\leq 0.279\ \text{V}
+V_{OV} &\leq \qty{0.279}{\volt}
 \end{align*}
 
 and
@@ -81,19 +81,19 @@ and
     &\leq \qty{0.0238}{\milli\ampere} \\
 \end{align*}
 
-At the high end, we can't be too close to the rail in order to allow the small signal output to vary across its maximum amplitude. $V_{DS} \leq V_{DD} - v_{ds} = 3.3 - 1.0 = 2.3\ \text{V}$. The constraints on the current becomes:
+At the high end, we can't be too close to the rail in order to allow the small signal output to vary across its maximum amplitude. $V_{DS} \leq V_{DD} - v_{ds} = 3.3 - 1.0 = \qty{2.3}{\volt}$. The constraints on the current becomes:
 
 \[
-I_{D} \geq \frac{V_{DD} - V_{DS}}{R_{D}} = \frac{3.3 - 2.3}{82} = 0.0122\ \text{mA}
+I_{D} \geq \frac{V_{DD} - V_{DS}}{R_{D}} = \frac{3.3 - 2.3}{82} = \qty{0.0122}{\milli\ampere}
 \]
 
 and
 
 \[
-V_{OV} = \frac{2I_{D}}{g_{m}} \geq \frac{2(0.0122)}{0.171} = 0.143\ \text{V}.
+V_{OV} = \frac{2I_{D}}{g_{m}} \geq \frac{2(0.0122)}{0.171} = \qty{0.143}{\volt}.
 \]
 
-Putting all this together gives the acceptable current range of $12\ \mu\text{A} \leq I_{D} \leq 24\ \mu\text{A}$ and acceptable overdrive voltage range of $0.143\ \text{V} \leq V_{OV} \leq 0.279\ \text{V}$.
+Putting all this together gives the acceptable current range of $\qty{12}{\micro\ampere} \leq I_{D} \leq \qty{24}{\micro\ampere}$ and acceptable overdrive voltage range of $\qty{0.143}{\volt} \leq V_{OV} \leq \qty{0.279}{\volt}$.
 \end{answer}
 \end{partquestion}
 
@@ -109,9 +109,9 @@ Given the range of $V_{OV}$ from part (\cref{prob:csdesign:idanvov}), we can see
 \end{answer}
 \end{partquestion}
 
-\begin{partquestion}{vgsrange}{If $V_{t} = 0.6\ \text{V}$, find the range of $V_{GS}$.}
+\begin{partquestion}{vgsrange}{If $V_{t} = \qty{0.6}{\volt}$, find the range of $V_{GS}$.}
 \begin{answer}
-Since $V_{GS} = V_{OV} + V_{t} = V_{OV} + 0.6$, we can use the range of $V_{OV}$ from part (\cref{prob:csdesign:idanvov}) to find $0.743\ \text{V} \leq V_{GS} \leq 0.879\ \text{V}$.
+Since $V_{GS} = V_{OV} + V_{t} = V_{OV} + 0.6$, we can use the range of $V_{OV}$ from part (\cref{prob:csdesign:idanvov}) to find $\qty{0.743}{\volt} \leq V_{GS} \leq \qty{0.879}{\volt}$.
 \end{answer}
 \end{partquestion}
 

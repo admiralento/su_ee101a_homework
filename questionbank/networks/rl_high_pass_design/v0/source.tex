@@ -7,7 +7,7 @@ Suppose you are tasked with attenuating a 60 Hz input component signal by a fact
 We want the input to be reduced by a factor of 100, which in decibels is $-20\log 100 = -20(2) = -40\text{ dB}$. Using the asymptotic Bode approximation, the high-pass circuit will have a roll-off at $-20$ dB/decade from the corner frequency, so the corner frequency must be 2 decades above 60 Hz, namely:
 
 \[
-f_{c} = \left(60\text{ Hz}\right)\left(100\right) = 6\text{ kHz.}
+f_{c} = \left(\qty{60}{\hertz}\right)\left(100\right) = 6\text{ kHz.}
 \]
 
 Since $\omega_{c} = 2\pi f_{c} = \frac{R}{L} = \frac{1}{\tau}$, it follows that:
@@ -18,12 +18,12 @@ f_{c} = \frac{1}{2\pi\tau}.
 \end{answer}
 \end{partquestion}
 
-\begin{partquestion}{inductance}{You wish to design this circuit, and of course you have on hand a 17 k$\Omega$ resistor for the job. What is the necessary value of $L$?}
+\begin{partquestion}{inductance}{You wish to design this circuit, and of course you have on hand a \qty{17}{\kilo\ohm} resistor for the job. What is the necessary value of $L$?}
 \begin{answer}
 Since $2\pi f_{c} = \frac{R}{L}$, we can solve for $L$ and find:
 
 \[
-L = \frac{R}{2\pi f_{c}} = \frac{17\text{ k}\Omega}{2\pi\left(6\text{ kHz}\right)} = 0.451\text{ H.}
+L = \frac{R}{2\pi f_{c}} = \frac{\qty{17}{\kilo\ohm}}{2\pi\left(\qty{6}{\kilo\hertz}\right)} = 0.451\text{ H.}
 \]
 \end{answer}
 \end{partquestion}

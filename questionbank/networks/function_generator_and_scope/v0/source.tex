@@ -1,26 +1,26 @@
 \begin{mainquestion}{function_generator_and_scope}{Function Generators and Oscilloscope Probes} As you may have seen in Lab 1, the function generators in the
-laboratory can be simply configured with an output magnitude $V_m$.  Internally, this value is used to model a voltage source with amplitude $V_{\mathrm{gen}}$ which is placed in series with a $50\,\Omega$ source resistance; this is illustrated in the accompanying circuit diagram.
+laboratory can be simply configured with an output magnitude $V_m$.  Internally, this value is used to model a voltage source with amplitude $V_{\mathrm{gen}}$ which is placed in series with a $\qty{50}{\ohm}$ source resistance; this is illustrated in the accompanying circuit diagram.
 By default, the function generator ``assumes'' it will be connected to a matched load; that is, a load $R_L$ whose resistance matches that of the source---namely
-$50\,\Omega$.
+$\qty{50}{\ohm}$.
 
 
 \begin{center}
     \includegraphics[width=4.7in]{circuit.png}
 \end{center}
 
-\begin{partquestion}{mag}{In a matched-load scenario, if the output (load) voltage is configured to have an amplitude of $10\,\mathrm{V}$, what is the actual value of $V_\mathrm{gen}$ set by the function generator?}
+\begin{partquestion}{mag}{In a matched-load scenario, if the output (load) voltage is configured to have an amplitude of $\qty{10}{\volt}$, what is the actual value of $V_\mathrm{gen}$ set by the function generator?}
 \begin{answer}
-Because the function generator is expecting a matching load of $50\,\Omega$, it expects
-to deliver what is configured, $10\,\mathrm{V}$, at the load. Since
+Because the function generator is expecting a matching load of $\qty{50}{\ohm}$, it expects
+to deliver what is configured, $\qty{10}{\volt}$, at the load. Since
 \[
-V_L = V_{\mathrm{gen}}\frac{R_L}{50\,\Omega + R_L},
+V_L = V_{\mathrm{gen}}\frac{R_L}{\qty{50}{\ohm} + R_L},
 \]
 we have
 \[
 V_{\mathrm{gen}}
-=V_L\frac{50\,\Omega+R_L}{R_L}
-=(10\,\mathrm{V})\frac{50\,\Omega+50\,\Omega}{50\,\Omega}
-=20\,\mathrm{V}.
+=V_L\frac{\qty{50}{\ohm}+R_L}{R_L}
+=(\qty{10}{\volt})\frac{\qty{50}{\ohm}+\qty{50}{\ohm}}{\qty{50}{\ohm}}
+=\qty{20}{\volt}.
 \]
 \end{answer}
 \end{partquestion}
@@ -29,14 +29,14 @@ V_{\mathrm{gen}}
 For a periodic signal with amplitude $V_m$, the power dissipated in a resistor is always proportional to $\frac{V_m^2}{R_L}$.  
 \[
 P_L=\alpha\frac{V_L^2}{R_L}
-=\alpha\frac{(10\,\mathrm{V})^2}{50\,\Omega}
+=\alpha\frac{(\qty{10}{\volt})^2}{\qty{50}{\ohm}}
 =2\alpha\,\mathrm{W}.
 \]
 The total power dissipated is
 \[
 P_{\mathrm{total}}
-=\alpha\frac{V_{\mathrm{gen}}^2}{50\,\Omega+R_L}
-=\alpha\frac{(20\,\mathrm{V})^2}{100\,\Omega}
+=\alpha\frac{V_{\mathrm{gen}}^2}{\qty{50}{\ohm}+R_L}
+=\alpha\frac{(\qty{20}{\volt})^2}{\qty{100}{\ohm}}
 =4\alpha\,\mathrm{W},
 \]
 so the percentage dissipated in the load is
@@ -47,23 +47,23 @@ so the percentage dissipated in the load is
 \]
 \end{answer}
 \end{partquestion}
-\begin{partquestion}{mag2}{Now assume the load $R_L$ is not $50\,\Omega$ but a $1\,\mathrm{M}\Omega$ oscilloscope channel input. If the function generator remains configured as in part (\cref{prob:function_generator_and_scope:mag}), what is the amplitude of the voltage that will be displayed on the oscilloscope?}
+\begin{partquestion}{mag2}{Now assume the load $R_L$ is not $\qty{50}{\ohm}$ but a $1\,\mathrm{M}\Omega$ oscilloscope channel input. If the function generator remains configured as in part (\cref{prob:function_generator_and_scope:mag}), what is the amplitude of the voltage that will be displayed on the oscilloscope?}
 \begin{answer}
-The internally generated source voltage remains $V_{\mathrm{gen}}=20\,\mathrm{V}$, but now
+The internally generated source voltage remains $V_{\mathrm{gen}}=\qty{20}{\volt}$, but now
 \[
 V_L
 =V_{\mathrm{gen}}\frac{1\,\mathrm{M}\Omega}
-{50\,\Omega+1\,\mathrm{M}\Omega}
+{\qty{50}{\ohm}+1\,\mathrm{M}\Omega}
 \approx V_{\mathrm{gen}}
-=20\,\mathrm{V}.
+=\qty{20}{\volt}.
 \]
 \end{answer}
 \end{partquestion}
 \begin{partquestion}{voltadj}{How should the function-generator voltage be adjusted to provide the expected voltage across the load?}
 \begin{answer}
-We would need to drop the function-generator setting such that $V_m = 5\,\mathrm{V}$, requiring that
+We would need to drop the function-generator setting such that $V_m = \qty{5}{\volt}$, requiring that
 \[
-V_{\mathrm{gen}}=V_L=10\,\mathrm{V}.
+V_{\mathrm{gen}}=V_L=\qty{10}{\volt}.
 \]
 \end{answer}
 \end{partquestion}
@@ -72,14 +72,14 @@ V_{\mathrm{gen}}=V_L=10\,\mathrm{V}.
 The power dissipated in the load is
 \[
 P_L=\alpha\frac{V_L^2}{R_L}
-=\alpha\frac{(10\,\mathrm{V})^2}{1\,\mathrm{M}\Omega}
+=\alpha\frac{(\qty{10}{\volt})^2}{1\,\mathrm{M}\Omega}
 =0.1\alpha\,\mathrm{mW}.
 \]
 The total power dissipated is
 \[
 P_{\mathrm{total}}
-=\alpha\frac{V_{\mathrm{gen}}^2}{50\,\Omega+R_L}
-=\alpha\frac{(10\,\mathrm{V})^2}{50\,\Omega+1\,\mathrm{M}\Omega}
+=\alpha\frac{V_{\mathrm{gen}}^2}{\qty{50}{\ohm}+R_L}
+=\alpha\frac{(\qty{10}{\volt})^2}{\qty{50}{\ohm}+1\,\mathrm{M}\Omega}
 \approx 0.1\alpha\,\mathrm{mW},
 \]
 so the percentage dissipated in the load is approximately
@@ -116,14 +116,14 @@ the first oscilloscope still configured as in part (\cref{prob:function_generato
 the second oscilloscope? What is the voltage level displayed by the second oscilloscope?}
 \begin{answer}
 The voltage seen by the second oscilloscope is $1/20$ of the actual voltage, which was
-determined to be $10\,\mathrm{V}$. Thus,
+determined to be $\qty{10}{\volt}$. Thus,
 \[
-V_{\mathrm{seen}}=0.5\,\mathrm{V}.
+V_{\mathrm{seen}}=\qty{0.5}{\volt}.
 \]
 Because the second oscilloscope is properly configured with the $20{:}1$ probe attenuation
 factor, it compensates for this factor of 20 and displays
 \[
-V_{\mathrm{displayed}}=10\,\mathrm{V}.
+V_{\mathrm{displayed}}=\qty{10}{\volt}.
 \]
 \end{answer}
 \end{partquestion}
