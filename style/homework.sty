@@ -582,6 +582,10 @@
             \vspace{1\baselineskip}
             \begingroup
             \color{blue!70!black}
+            % drawings (circuitikz, tikz, pgfplots) inside answers stay black, like image figures;
+            % otherwise their wires, labels and axes would take the blue text color while
+            % circuitikz components stay black
+            \tikzset{every picture/.append style={black}}
         }
         {
             \endgroup
