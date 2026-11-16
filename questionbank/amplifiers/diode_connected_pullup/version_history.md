@@ -1,10 +1,11 @@
-# Diode-Connected Transistor as Pull-Up Resistor 
+# Diode-Connected Transistor as Pull-Up Resistor
 
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: ---
+- Date: —
+- Content: TODO: describe the original problem
 
 ### v1 - Updated
 - Author: Ammon Wolfert

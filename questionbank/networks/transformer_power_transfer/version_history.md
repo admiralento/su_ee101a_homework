@@ -1,10 +1,10 @@
-# Transformer Power Transfer and Transmission Line Efficiency
+# Ideal Transformer Power
 
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: ---
+- Date: —
 - Content: Ideal transformer analysis and power transfer efficiency, 5 parts
   - Part (a): Resistance transformation across ideal transformer (3 points)
   - Part (b): Power transfer without transformers (5 points)
@@ -19,4 +19,4 @@
 - Date: 2026-07-01
 - Content: Updated for variety
   - Changed 10Vpp source to 340Vpp source, emulates the power grid 120Vrms (also the amplitude is 170!)
-  - Redrew 
+  - Redrew

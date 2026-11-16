@@ -1,10 +1,10 @@
-# Zener Diode Voltage Regulator
+# Solar Panel Zener Diode
 
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: ---
+- Date: —
 - Content: Zener diode power supply design and analysis, 3 parts
   - Part (a): Show why Rs=100Ω is inadequate (5 points)
   - Part (b): Find maximum Rs value for desired voltage range (5 points)

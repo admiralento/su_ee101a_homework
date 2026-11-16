@@ -1,4 +1,4 @@
-# LED I-V Curve Load-Line Analysis
+# LED Load-Line
 
 ## Version History
 
@@ -10,7 +10,7 @@
   - Part (b): Explanation of LED brightness (2 points)
   - Part (c): Resistor selection for maximum brightness (5 points)
 - Includes I-V curve diagram
-  
+
 ### v1 - Updated
 - Author: Ammon Wolfert
 - Date: 2026-07-01

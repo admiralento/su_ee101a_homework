@@ -1,15 +1,15 @@
-# Capacitor Network DC Analysis
+# DC Capacitor Network
 
 ## Version History
 
 ### v0 - Initial version
 - Author: Jeff Stribling
-- Date: ---
+- Date: —
 - Content: DC steady-state analysis of complex capacitor network, 2 parts
   - Part (a): Calculate steady-state currents (2 points)
   - Part (b): Calculate steady-state voltages across each capacitor (16 points)
 - Includes network diagram with 8 capacitors and 5 parallel branches
-  
+
 ### v1 - Updated
 - Author: Ammon Wolfert
 - Date: 2026-07-01

@@ -1,4 +1,13 @@
-| Version | Author | Time | Notes |
-|-|-|-|-|
-| v0 | Jeff Stribling | | |
-| v1 | Ammon Wolfert | Summer 2026 | Changed the schematic for variety. |
+# Solderpasted
+
+## Version History
+
+### v0 - Initial version
+- Author: Jeff Stribling
+- Date: —
+- Content: TODO: describe the original problem
+
+### v1 - Updated
+- Author: Ammon Wolfert
+- Date: Summer 2026
+- Content: Changed the schematic for variety.
