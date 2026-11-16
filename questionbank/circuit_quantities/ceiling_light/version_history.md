@@ -1,0 +1,4 @@
+| Version | Author         | Time        | Notes                                                                                                    |   |
+|---------|----------------|-------------|----------------------------------------------------------------------------------------------------------|---|
+| v0      | Jeff Stribling |             |                                                                                                          |   |
+| v1      | Ammon Wolfert  | Summer 2026 | Wire length changed to 5m. Added two new application problems covering resitivity and power dissipation. |   |

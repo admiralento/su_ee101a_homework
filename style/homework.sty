@@ -1,0 +1,294 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{style/homework}[2026/06/27 Homework system]
+
+% =========================================================
+% Core packages
+% =========================================================
+\RequirePackage{geometry}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{xparse}
+\RequirePackage{comment}
+\RequirePackage{fancyhdr}
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\RequirePackage{datetime2}
+\RequirePackage{expl3}
+\RequirePackage{siunitx}
+\RequirePackage{hyperref}
+\RequirePackage{cleveref}
+\RequirePackage{pgfkeys}
+\RequirePackage{listings}
+\RequirePackage{verbatim}
+\RequirePackage{caption}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{teal},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single
+}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+    }
+
+% Page layout
+\geometry{margin=1in}
+\setlength{\headheight}{14pt}
+% =========================================================
+% Counters
+% =========================================================
+\newcounter{questionCnt}
+\newcounter{partquestionCnt}[questionCnt]
+
+\renewcommand{\thepartquestionCnt}{\alph{partquestionCnt}}
+\crefname{partquestionCnt}{}{}
+\Crefname{partquestionCnt}{}{}
+
+\newcounter{problempoints}
+\newcounter{assignmentpoints}
+\newcounter{extracreditpoints}
+
+\newcommand{\currquestionkey}{}
+\setmainfont{Times New Roman}
+
+% =========================================================
+% Aux storage for per-question totals
+% =========================================================
+\makeatletter
+
+\newcommand{\StoreAssignmentTotal}{%
+    \ifnum\value{assignmentpoints}>0
+        \protected@write\@auxout{}{%
+            \string\gdef
+            \string\AssignmentTotal
+            {\arabic{assignmentpoints}}%
+        }%
+    \fi
+}
+
+\newcommand{\StoreProblemTotal}{%
+    \ifnum\value{questionCnt}>0
+        \protected@write\@auxout{}{%
+            \string\gdef
+            \string\ProblemTotal\alph{questionCnt}%
+            {\arabic{problempoints}}%
+        }%
+    \fi
+}
+
+\newcommand{\StoreProblemCount}{%
+    \ifnum\value{questionCnt}>0
+        \protected@write\@auxout{}{%
+            \string\gdef
+            \string\ProblemCount
+            {\arabic{questionCnt}}%
+        }%
+    \fi
+}
+
+\newcommand{\StoreExtraCreditTotal}{%
+    \ifnum\value{extracreditpoints}>0
+        \protected@write\@auxout{}{%
+            \string\gdef
+            \string\ExtraCreditTotal
+            {\arabic{extracreditpoints}}%
+        }%
+    \fi
+}
+
+% Store: \Point{question}{part}{value}
+\newcommand{\Point}[3]{%
+    \expandafter\gdef\csname pt@#1@#2\endcsname{#3}%
+}
+
+% Store: \ExtraCredit{question}{part}
+\newcommand{\MarkExtraCredit}[2]{%
+    \expandafter\gdef\csname extra@#1@#2\endcsname{true}
+}
+
+% Retrieve: \GetPoint{question}{part}
+\newcommand{\GetPoint}[2]{%
+    \ifcsname pt@#1@#2\endcsname
+        \csname pt@#1@#2\endcsname
+    \else
+        0 % fallback if undefined
+    \fi
+}
+
+\makeatother
+
+\newcommand{\PartPoints}{\pluralize{\partpoints}{point}{points}}
+
+% =========================================================
+% Homework header
+% =========================================================
+\providecommand{\AssignmentTotal}{0}
+\providecommand{\ExtraCreditTotal}{0}
+\newcommand{\MakeHomeworkHeader}
+{
+    \pagestyle{fancy}
+    \fancyhf{}
+    \fancyhead[L]{\CourseCode/\Semester}
+    \fancyfoot[L]{Compiled \DTMnow}
+    \fancyfoot[R]{\thepage}
+    \fancyhead[R]{\rightmark}
+
+    \begin{center}
+
+        \ifsolutions
+            {\Large\bfseries Homework \#\HomeworkNumber{} Solutions}
+            
+        \else
+            {\Large\bfseries Homework \#\HomeworkNumber}
+            
+        \fi
+        \ifextracreditassignment
+        \vspace{0.3em}
+        {\Large\bfseries EXTRA CREDIT ASSIGNMENT}
+        
+        \fi
+        \vspace{0.3em}
+        Due 11:59PM \DueDate
+
+        \ifnum\ExtraCreditTotal>0
+            Total: \pluralize{\AssignmentTotal}{Point}{Points} (\pluralize{\ExtraCreditTotal}{Point}{Points} Extra Credit)
+        \else
+            Total: \pluralize{\AssignmentTotal}{Point}{Points}
+        \fi
+
+        \vspace{0.5em}
+
+        \ifsolutions
+        \else
+            \textbf{Please be sure to write your name on the front page!}
+        \fi
+
+    \end{center}
+}
+
+% =========================================================
+% QUESTION ENVIRONMENT
+% =========================================================
+% FORMAT:
+% \begin{mainquestion}{TITLE}
+\NewDocumentEnvironment{mainquestion}{m +m}
+{
+    % save previous question before starting new one
+    \StoreProblemTotal
+
+    \stepcounter{questionCnt}
+    \setcounter{partquestionCnt}{0}
+    \setcounter{problempoints}{0}
+
+    % store current key
+    \gdef\currquestionkey{#1}
+
+    % Make the Upper Right Corner Display which question we are on
+    \markright{Question \arabic{questionCnt}/\ProblemCount}
+
+    \bigskip
+    \noindent
+    {\Large\bfseries
+        Question \thequestionCnt{} - #2
+        \hfill
+        (\pluralize{\csname ProblemTotal\alph{questionCnt}\endcsname}{point}{points})
+    }
+
+    \medskip
+}
+{
+    \bigskip
+}
+
+% =========================================================
+% PART QUESTION ENVIRONMENT
+% =========================================================
+\NewDocumentEnvironment{partquestion}{m +m}
+{
+    \refstepcounter{partquestionCnt}
+
+    % lookup assignment-defined points
+    \edef\partpoints{\GetPoint{\currquestionkey}{#1}}
+
+    % Make a label to this portion of the question
+    \edef\labelname{prob:\currquestionkey:#1}
+    \label{\labelname}
+
+    % Check if it is extra credit
+    \ifcsname extra@\currquestionkey@#1\endcsname
+        % accumulate points
+        \addtocounter{extracreditpoints}{\partpoints}
+    
+        \medskip
+        \noindent
+        \textbf{(\alph{partquestionCnt})}\hspace{0.5em}%
+        \textbf{EXTRA CREDIT}\hspace{0.5em}%
+    \else
+        % accumulate totals
+        \addtocounter{problempoints}{\partpoints}
+        \addtocounter{assignmentpoints}{\partpoints}
+    
+        \medskip
+        \noindent
+        \textbf{(\alph{partquestionCnt})}\hspace{0.5em}%
+    \fi
+    #2
+    \textbf{(\PartPoints)}
+}
+{
+    \medskip
+}
+
+\NewDocumentEnvironment{kaitlyn}{}
+{
+    \begingroup
+    \color{green!70!black}
+}
+{
+    \endgroup
+}
+
+% =========================================================
+% ANSWER ENVIRONMENT
+% =========================================================
+\ifsolutions
+    \NewDocumentEnvironment{answer}{}
+    {
+        \par
+        \vspace{1\baselineskip}
+        \begingroup
+        \color{blue!70!black}
+    }
+    {
+        \endgroup
+    }
+\else
+    \excludecomment{answer}
+\fi
+
+% =========================================================
+% Final flush at end of document
+% =========================================================
+\AtEndDocument{%
+    \StoreProblemTotal
+    \StoreAssignmentTotal
+    \StoreProblemCount
+    \StoreExtraCreditTotal
+}

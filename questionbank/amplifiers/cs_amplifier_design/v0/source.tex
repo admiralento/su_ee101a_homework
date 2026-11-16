@@ -1,0 +1,81 @@
+\begin{mainquestion}{csdesign}{Common Source Amplifier Design}
+
+A CS amplifier must be designed to provide an output signal with 0.5 V amplitude using a load $R_{D} = 47\ \text{k}\Omega$. Note: This is a design problem; please provide lower \& upper bounds for answers to parts (b)-(d).
+
+\begin{partquestion}{mingm}{If a voltage gain $\left|A_{v}\right| \geq 8\ \frac{\text{V}}{\text{V}}$ is desired, what minimum transconductance $g_{m}$ is required? You may use this $g_{m}$ value to answer the parts below.}
+\begin{answer}
+If $\lambda = 0$, the gain magnitude of a common source amplifier is:
+
+\[
+\left|A_{v}\right| = g_{m} R_{D} \geq 8
+\]
+
+so
+
+\[
+g_{m} \geq \frac{8}{R_{D}} = \frac{8}{47} = 0.17\ \text{mS}.
+\]
+\end{answer}
+\end{partquestion}
+
+\begin{partquestion}{idanvov}{Using a DC supply $V_{DD} = 1.8\ \text{V}$, what values of $I_{D}$ and $V_{OV} = V_{GS} - V_{t}$ would you choose?}
+\begin{answer}
+With a negative gain in a CS amplifier, the output small signal is lowest ($-v_{ds}$) when the input small signal is highest ($+v_{gs}$). Therefore, the lowest $V_{DS}$ that will allow us to stay in saturation is:
+
+\[
+V_{DS} = V_{DD} - I_{D} R_{D} - v_{ds} \geq V_{OV} + v_{gs}
+\]
+
+and since $v_{gs} = \frac{v_{ds}}{A_{v}}$ and $I_{D} = \frac{1}{2}g_{m}V_{OV}$, we can write
+
+\begin{align*}
+V_{DD} - \frac{1}{2}g_{m}V_{OV}R_{D} - v_{ds} &\geq V_{OV} + \frac{v_{ds}}{A_{v}} \\
+V_{DD} - v_{ds} - \frac{v_{ds}}{A_{v}} &\geq V_{OV}\left(1 + \frac{1}{2}g_{m}R_{D}\right) \\
+V_{OV} &\leq \frac{V_{DD} - v_{ds} - \frac{v_{ds}}{A_{v}}}{1 + \frac{1}{2}g_{m}R_{D}}\\
+V_{OV} &\leq \frac{1.8 - 0.5 - \frac{0.5}{8}}{1 + \frac{1}{2}(0.17)(47)}\\
+V_{OV} &\leq 0.248\ \text{V}
+\end{align*}
+
+and
+
+\begin{align*}
+    I_D &= \frac{1}{2} g_m V_{OV} \leq \frac{1}{2} g_m (0.248) \\
+    &\leq \frac{1}{2} (0.17)(0.248) \\
+    &\leq \qty{0.021}{\milli\ampere} \\
+\end{align*}
+
+At the high end, we can't be too close to the rail in order to allow the small signal output to vary across its maximum amplitude. $V_{DS} \leq V_{DD} - v_{ds} = 1.8 - 0.5 = 1.3\ \text{V}$. The constraints on the current becomes:
+
+\[
+I_{D} \geq \frac{V_{DD} - V_{DS}}{R_{D}} = \frac{1.8 - 1.3}{47} = 0.011\ \text{mA}
+\]
+
+and
+
+\[
+V_{OV} = \frac{2I_{D}}{g_{m}} \geq \frac{2(0.011)}{0.17} = 0.125\ \text{V}.
+\]
+
+Putting all this together gives the acceptable current range of $11\ \mu\text{A} \leq I_{D} \leq 21\ \mu\text{A}$ and acceptable overdrive voltage range of $0.125\ \text{V} \leq V_{OV} \leq 0.248\ \text{V}$.
+\end{answer}
+\end{partquestion}
+
+\begin{partquestion}{wlratio}{What $\frac{W}{L}$ ratio is required if $k^{\prime} = \mu_{n} C_{ox} = 400\ \frac{\mu\text{A}}{V^{2}}$?}
+\begin{answer}
+Since $g_{m} = k'\frac{W}{L}V_{OV}$,
+
+\[
+\frac{W}{L} = \frac{g_{m}}{k^{\prime} V_{OV}} = \frac{0.17}{(0.400)V_{OV}} = \frac{0.425}{V_{OV}}
+\]
+
+Given the range of $V_{OV}$ from part (b), we can see the corresponding range for $\frac{W}{L}$ is $1.7 \leq \frac{W}{L} \leq 3.4$.
+\end{answer}
+\end{partquestion}
+
+\begin{partquestion}{vgsrange}{If $V_{t} = 0.4\ \text{V}$, find the range of $V_{GS}$.}
+\begin{answer}
+Since $V_{GS} = V_{OV} + V_{t} = V_{OV} + 0.4$, we can use the range of $V_{OV}$ from part (b) to find $0.525\ \text{V} \leq V_{GS} \leq 0.648\ \text{V}$.
+\end{answer}
+\end{partquestion}
+
+\end{mainquestion}
