@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+"""Build every homework (or a subset) and report / compare results.
+
+Builds run in a temporary copy of the project, so config/current_assignment.tex in your working
+copy is never touched. Uses Tectonic from .tools/tectonic/ or PATH.
+
+Examples
+    python tools/build_all.py                          # all homeworks, both modes
+    python tools/build_all.py --mode solutions --only "Fall 2026/HW07"
+    python tools/build_all.py --save baseline.json     # record results
+    python tools/build_all.py --compare baseline.json  # rebuild and diff against a recording
+    python tools/build_all.py --pdf-dir pdfs           # also keep every PDF
+
+Recorded per build: success, page count, the totals written to the .aux file, the set of image
+files loaded (normalized paths), and LaTeX warnings.
+"""
+import argparse
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+IGNORE = shutil.ignore_patterns('.git', '.tools', 'build', 'out.pdf', '__pycache__')
+
+
+def find_tectonic():
+    local = ROOT / '.tools' / 'tectonic' / ('tectonic.exe' if os.name == 'nt' else 'tectonic')
+    if local.exists():
+        return str(local)
+    found = shutil.which('tectonic')
+    if not found:
+        sys.exit('Tectonic not found: run "build.ps1 -Install" or put tectonic on PATH.')
+    return found
+
+
+def assignments(repo, only):
+    for sem in sorted(p for p in (repo / 'assignments').iterdir() if p.is_dir()):
+        for hw in sorted(p for p in sem.iterdir() if p.is_dir()):
+            name = f'{sem.name}/{hw.name}'
+            if not only or name in only:
+                yield sem.name, hw.name
+
+
+def parse_results(log_text, aux_text):
+    pages = re.search(r'Output written on .*?\((\d+) pages?', log_text)
+    totals = dict(re.findall(r'\\gdef\s*\\(\w+)\s*\{([^}]*)\}', aux_text))
+    graphics = sorted({os.path.normpath(g).replace('\\', '/')
+                       for g in re.findall(r'^File: (.+?) Graphic file', log_text, re.M)})
+    warnings = []
+    for m in re.finditer(r'^((?:LaTeX|Package \w+) Warning:.*(?:\n(?!\n).*)*)', log_text, re.M):
+        w = ' '.join(m.group(1).split())
+        if 'Rerun' not in w and 'PageLabels' not in w:
+            warnings.append(w)
+    return int(pages.group(1)) if pages else None, totals, graphics, warnings
+
+
+def build(tectonic, work, sem, hw, mode, pdf_dir):
+    (work / 'config' / 'current_assignment.tex').write_text(
+        f'\\def\\Semester{{{sem}}}\n\\def\\AssignmentFolder{{{hw}}}\n', encoding='utf-8')
+    out = work / '_out'
+    shutil.rmtree(out, ignore_errors=True)
+    out.mkdir()
+    proc = subprocess.run([tectonic, f'main_{mode}.tex', '--outdir', str(out),
+                           '--keep-logs', '--keep-intermediates'],
+                          cwd=work, capture_output=True, text=True, encoding='utf-8', errors='replace')
+    log = (out / f'main_{mode}.log')
+    aux = (out / f'main_{mode}.aux')
+    log_text = log.read_text(encoding='utf-8', errors='replace') if log.exists() else ''
+    aux_text = aux.read_text(encoding='utf-8', errors='replace') if aux.exists() else ''
+    ok = proc.returncode == 0 and (out / f'main_{mode}.pdf').exists()
+    pages, totals, graphics, warnings = parse_results(log_text, aux_text)
+    errors = [] if ok else [l for l in (proc.stdout + proc.stderr).splitlines()
+                            if l.startswith('error') or l.startswith('!')][:5] + \
+        re.findall(r'^!.*$', log_text, re.M)[:3]
+    if ok and pdf_dir:
+        pdf_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copy(out / f'main_{mode}.pdf', pdf_dir / f'{sem}_{hw}_{mode}.pdf')
+    return {'ok': ok, 'pages': pages, 'totals': totals, 'graphics': graphics,
+            'warnings': warnings, 'errors': errors}
+
+
+def compare(old, new):
+    diffs = []
+    for key in sorted(set(old) | set(new)):
+        a, b = old.get(key), new.get(key)
+        if a is None or b is None:
+            diffs.append(f'{key}: only in {"new" if a is None else "baseline"}')
+            continue
+        for field in ('ok', 'pages', 'totals', 'warnings'):
+            if a[field] != b[field]:
+                diffs.append(f'{key}: {field} {a[field]!r} -> {b[field]!r}')
+        if a['graphics'] != b['graphics']:
+            gone = sorted(set(a['graphics']) - set(b['graphics']))
+            added = sorted(set(b['graphics']) - set(a['graphics']))
+            diffs.append(f'{key}: graphics removed {gone} added {added}')
+    return diffs
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--mode', choices=['both', 'solutions', 'student'], default='both')
+    ap.add_argument('--only', nargs='*', help='e.g. "Fall 2026/HW07"')
+    ap.add_argument('--save', type=Path, help='write results JSON here')
+    ap.add_argument('--compare', type=Path, help='baseline JSON to diff against')
+    ap.add_argument('--pdf-dir', type=Path, help='copy every PDF here')
+    args = ap.parse_args()
+
+    tectonic = find_tectonic()
+    modes = ['solutions', 'student'] if args.mode == 'both' else [args.mode]
+    results = {}
+    with tempfile.TemporaryDirectory(prefix='hwbuild_') as tmp:
+        work = Path(tmp) / 'repo'
+        shutil.copytree(ROOT, work, ignore=IGNORE)
+        for sem, hw in assignments(work, args.only):
+            for mode in modes:
+                key = f'{sem}/{hw} [{mode}]'
+                r = build(tectonic, work, sem, hw, mode, args.pdf_dir)
+                results[key] = r
+                status = 'OK  ' if r['ok'] else 'FAIL'
+                print(f'{status} {key:<32} pages={r["pages"]} total={r["totals"].get("AssignmentTotal", "-")}'
+                      f' warnings={len(r["warnings"])}', flush=True)
+                for line in r['errors'] + r['warnings']:
+                    print(f'       {line}')
+
+    failed = [k for k, r in results.items() if not r['ok']]
+    print(f'\n{len(results) - len(failed)}/{len(results)} builds succeeded.')
+    if args.save:
+        args.save.write_text(json.dumps(results, indent=1), encoding='utf-8')
+        print(f'Saved results to {args.save}')
+    if args.compare:
+        diffs = compare(json.loads(args.compare.read_text(encoding='utf-8')), results)
+        print(f'\nComparison with {args.compare}: {"no differences" if not diffs else f"{len(diffs)} difference(s)"}')
+        for d in diffs:
+            print('  ' + d)
+        if diffs:
+            return 1
+    return 1 if failed else 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
