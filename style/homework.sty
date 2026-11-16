@@ -66,9 +66,10 @@
 % blank answer space in the student version. The base font size (11pt / 10pt) is chosen in
 % config/shared.tex before \documentclass.
 \ifdefined\HwStyle\else\def\HwStyle{style-jeff}\fi  % (\def, not \providecommand: compared with \ifx)
-% \boxedsolutionstrue (course.tex or metadata.tex): style-jeff solutions in a thin blue frame
+% Boxed style-jeff solutions (thin blue frame) are the default; \boxedsolutionsfalse in course.tex
+% or metadata.tex turns them off. (Defined in config/shared.tex; this default covers the catalog.)
 \makeatletter
-\@ifundefined{ifboxedsolutions}{\newif\ifboxedsolutions}{}
+\@ifundefined{ifboxedsolutions}{\newif\ifboxedsolutions\boxedsolutionstrue}{}
 % \HwNoFloats: within the current group, figure/table environments are typeset in place (no
 % floating), so they work inside boxes; \caption still works.
 \newcommand{\HwNoFloats}{%
@@ -592,7 +593,7 @@
             \vspace{1\baselineskip}
             \begingroup
             \ifboxedsolutions
-                % optional (\boxedsolutionstrue in course.tex): solution in a thin blue frame.
+                % default (\boxedsolutionsfalse turns it off): solution in a thin blue frame.
                 % Floats can't live inside a box, so figure/table are placed "here" (like [H]).
                 \HwNoFloats
                 \begin{mdframed}[linecolor=blue!70!black, linewidth=0.6pt,
