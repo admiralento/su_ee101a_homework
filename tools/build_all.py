@@ -46,7 +46,21 @@ def assignments(repo, only):
                 yield sem.name, hw.name
 
 
+def unwrap_log(log_text, width=79):
+    """TeX hard-wraps log lines at 79 characters; join them back together."""
+    out, buf = [], ''
+    for line in log_text.splitlines():
+        buf += line
+        if len(line) != width:
+            out.append(buf)
+            buf = ''
+    if buf:
+        out.append(buf)
+    return '\n'.join(out)
+
+
 def parse_results(log_text, aux_text):
+    log_text = unwrap_log(log_text)
     pages = re.search(r'Output written on .*?\((\d+) pages?', log_text)
     totals = dict(re.findall(r'\\gdef\s*\\(\w+)\s*\{([^}]*)\}', aux_text))
     graphics = sorted({os.path.normpath(g).replace('\\', '/')
