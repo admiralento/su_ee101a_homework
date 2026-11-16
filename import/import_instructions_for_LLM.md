@@ -40,11 +40,14 @@ reference build; Tectonic's package snapshot is older (2022) and can differ slig
 ```
 main_student.tex / main_solutions.tex
  ├─ config/student_mode.tex | config/solutions_mode.tex   → defines \ifsolutions
- ├─ config/shared.tex
+ ├─ config/shared.tex                      (read BEFORE \documentclass)
  │    ├─ \newif\ifextracreditassignment, \newif\ifshowinstructor (both default false)
+ │    ├─ \HomeworkStyle{...} (default style-jeff)
  │    ├─ config/current_assignment.tex     → \Semester, \AssignmentFolder
- │    ├─ assignments/\Semester/course.tex  → course code/title/instructor + header settings
- │    └─ assignments/\Semester/\AssignmentFolder/metadata.tex
+ │    ├─ assignments/\Semester/course.tex  → course code/title/instructor, style, header settings
+ │    ├─ assignments/\Semester/\AssignmentFolder/metadata.tex   (may override the style)
+ │    └─ \HwFontSize                       → 11pt (style-jeff) or 10pt (style-mark)
+ ├─ \documentclass[\HwFontSize]{article}
  ├─ style/shared.sty                       → \dd, \pluralize
  ├─ style/homework.sty                     → environments, \UseQuestion, point bookkeeping, header
  │    └─ questionbank/index.tex            → \RegisterQuestion{id}{folder} for every question
@@ -54,12 +57,17 @@ main_student.tex / main_solutions.tex
 
 Key facts:
 - **Engine: XeLaTeX or LuaLaTeX** (required by `fontspec`/`unicode-math`). pdfLaTeX will fail.
-  The main font is `Times New Roman` via `\setmainfont`.
+  The main font is `Times New Roman` in `style-jeff`, Latin Modern in `style-mark`.
+- **Two homework styles** (section 2.0): `style-jeff`, the standard layout, and `style-mark`, which
+  reproduces Mark Horowitz's Winter 2026 homework (his `exam.cls`). Same sources, same manifests;
+  only the rendering differs. Winter 2026 uses `style-mark`; all other semesters `style-jeff`.
 - **Two compile passes are needed.** Point totals, per-question totals, and the "Question n/N"
   header are written to the `.aux` file and read back on the next run. Overleaf's latexmk and
   Tectonic both rerun automatically.
-- Student vs. solutions differ only in `\ifsolutions`. In student mode the `answer` environment is
-  removed entirely via the `comment` package (`\excludecomment{answer}`).
+- Student vs. solutions differ only in `\ifsolutions`. In the student version of `style-jeff` the
+  `answer` environment is removed via the `comment` package (`\excludecomment{answer}`), which
+  requires `\begin{answer}[..]` and `\end{answer}` to be **alone on their lines, in column 0**
+  (`check.py` enforces this). In `style-mark` answers are replaced by blank writing space.
 - `config/current_assignment.tex` selects which homework is compiled, e.g.:
   ```tex
   \def\Semester{Fall 2026}
@@ -131,14 +139,32 @@ Course-level metadata and header settings for one offering; every semester folde
 \newcommand{\CourseTitle}{Circuits I}
 \newcommand{\Instructor}{Jeff Stribling}
 
+% Homework style (optional; default style-jeff)
+\HomeworkStyle{style-jeff}
+
 % Header settings
 \newcommand{\DueTime}{11:59PM}  % printed as "Due <DueTime> <DueDate>"
 \newcommand{\NameReminder}{Please be sure to write your name on the front page!}  % student version only; leave {} empty to hide
 \showinstructorfalse  % \showinstructortrue prints "Instructor: <Instructor>" under the title
 ```
 `\CourseCode` appears in the page header ("EE101A/Fall 2026") and the PDF title. When creating a
-new semester folder, copy an existing `course.tex` and ask the user for the instructor and whether
-the header settings should differ.
+new semester folder, copy an existing `course.tex` and ask the user for the instructor, the style,
+and whether the header settings should differ.
+
+**Styles.** `\HomeworkStyle{style-jeff}` or `\HomeworkStyle{style-mark}`; a homework's
+`metadata.tex` may also set it to override the semester for that homework.
+
+| Element | `style-jeff` | `style-mark` |
+|---|---|---|
+| Font / size | Times New Roman, 11 pt | Latin Modern, 10 pt |
+| Page header | *EE101A/Semester* left, *Question n/N* right; compile date and page in footer | centered *Homework N / \CourseCode / Due \DueTime, \DueDate* |
+| Title block | "Homework #N", due, total points, name reminder | none |
+| Question heading | **Question n - Title (X points)** | **Question n: Title**, then *[X pts]* where `\questionpoints` is |
+| Part | **(a)** prompt **(n points)** | (a) *[n pts]* prompt, as a list item |
+| Solutions | blue text | sans-serif text in a framed box |
+| Student version | answers removed | answers replaced by `[height]` of blank space (default 1in) |
+| `\qnewpage` | ignored | page break in the student version |
+| Lists | LaTeX defaults | `(a)` labels at every level; `\parskip`, no indent |
 
 ### 2.1 `assignments/<Semester>/HWxx/metadata.tex`
 
@@ -179,6 +205,9 @@ For an all-extra-credit homework (prints "EXTRA CREDIT ASSIGNMENT" in the header
 - `\clearpage` before every problem except the first.
 - A manifest may pin any version. Past semesters keep pointing at the version they used.
 - To leave a problem out temporarily, comment out the whole block (every line starting `% `).
+- **Question-level points:** when the source only gives a total (no per-part breakdown), or the
+  question has no parts, write `\UseQuestion{full_wave_rectifier}{v0}{ total = 14, }`. The parts
+  then show no points; `total` is a reserved key and can't be combined with per-part points.
 
 Compile-time safety (from `homework.sty`):
 - **Errors:** unknown id; id registered twice; the same question used twice in one homework; two
@@ -228,7 +257,15 @@ Solution text.
 - Every part gets the label `prob:<questionkey>:<partkey>`; refer to other parts with
   `part (\cref{prob:<questionkey>:<partkey>})`, which prints the part letter.
 - Every part should have an `answer` environment, even if empty
-  (see `00_course_introduction/lab_training/v0/source.tex`).
+  (see `00_course_introduction/lab_training/v0/source.tex`). `\begin{answer}[2in]` gives the
+  student writing space used by `style-mark` (ignored by `style-jeff`). Put `\begin{answer}[..]` and
+  `\end{answer}` each alone on a line, in column 0 (no indentation).
+- `\questionpoints` marks where `style-mark` prints the question's "[N pts]" (Mark's sources put it
+  at the start of the statement); `\qnewpage` gives a page break in the `style-mark` student
+  version. Both are harmless in `style-jeff`. A question may have no parts at all (statement and
+  answer only); give it `total = N` in the manifest.
+- `circuitikz` (options `american, siunitx, nooldvoltagedirection`), `tikz` and `pgfplots`
+  (`compat=1.18`) drawings can be written inline.
 - Do not put `\documentclass`, `\usepackage`, `\begin{document}`, `\section*{Problem 4}`, or point
   values in a source file.
 - Figure captions inside answers use `\captionof*{figure}{...}` within a `center` environment.
@@ -254,16 +291,19 @@ No source file ever needs to change when a question moves.
 | `\RegisterQuestion{id}{folder}` | `questionbank/index.tex` only; see 2.4. |
 | `mainquestion{key}{title}` | One problem. Prints "Question n - title (X points)". |
 | `partquestion{partkey}{prompt}` | One graded part, auto-lettered (a), (b), ... |
-| `answer` | Solution text; blue in solutions mode, removed in student mode. |
+| `answer[height]` | Solution text (style-jeff: blue; style-mark: framed sans-serif). Student version: removed (style-jeff) or blank space of `height`, default 1in (style-mark). |
+| `\questionpoints` | Where style-mark prints the question total; no-op in style-jeff. |
+| `\qnewpage` | Page break in the style-mark student version; no-op otherwise. |
+| `\HomeworkStyle{...}` | `course.tex` / `metadata.tex` only; see 2.0. |
 | `kaitlyn` | Green-colored TA commentary (e.g. a boxed "Why we're doing this problem"), used inside `answer` in a few amplifier solutions. Only use it when the source material has equivalent TA commentary. |
 | `\pluralize{n}{point}{points}` | Number + singular/plural word. |
 | `\dd` | Upright differential: `\int f(t)\dd t`. |
 
 Packages already loaded (do not add `\usepackage` in sources): amsmath, amssymb, graphicx, xcolor,
 xparse, comment, fancyhdr, fontspec, unicode-math, datetime2, siunitx, hyperref, cleveref, pgfkeys,
-listings (Python style preset), verbatim, caption, import. Notably **not** loaded: circuitikz, tikz,
-booktabs, enumitem. If a source needs one of these, ask the user before adding it to
-`style/homework.sty` (it affects every homework).
+listings (Python style preset), verbatim, caption, import, tikz, circuitikz, pgfplots, enumitem,
+mdframed, float. Notably **not** loaded: booktabs, subfig, adjustbox. If a source needs another
+package, ask the user before adding it to `style/homework.sty` (it affects every homework).
 
 ### 2.6 The question bank catalog (`main_questionbank.tex`)
 
@@ -413,6 +453,17 @@ Import rules:
 - Copy its figures into the new `vN/` folders and reference them by bare filename.
 - Pick question ids and keys that don't collide with the existing bank (section 3; `check.py`
   reports collisions).
+- Problems that share a circuit with an existing question are filed by the **method they ask the
+  student to use** (e.g. the same circuit solved by nodal analysis vs. by superposition are
+  different questions). A re-typeset version of the same problem becomes a new `vN`.
+- Point annotations and labels typed into the text ("(5 pts)", `\textbf{[3 pts]}`, a leading
+  "(a)") are formatting: remove them and put the points in the manifest. A trailing `\\` before
+  an answer is also formatting. Everything else is copied exactly.
+- Reference: the Winter 2026 import of Mark Horowitz's `exam.cls` project (Nov 2026) mapped
+  `\question{T}` → `mainquestion`, `\points{N}` → `\questionpoints` + manifest points,
+  top-level `enumerate` `\item`s → `partquestion`s (several lists split by `[resume]` → one
+  sequence of parts), `answer[h]` → `answer[h]`, `$$...$$` → `\[...\]`; text was verified
+  identical to the original after removing markup.
 
 ---
 

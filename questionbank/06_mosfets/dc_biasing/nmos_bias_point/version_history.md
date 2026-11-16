@@ -15,3 +15,8 @@ Concepts: mosfet-dc-bias
 - Content: Updated for variety
   - Switched power supply, mosfet parameters, and resistor values
   - Drain current now comes out to 1.7mA
+
+### v2 - Mark Horowitz version
+- Author: Mark Horowitz
+- Date: Winter 2026
+- Content: Mark Horowitz's re-typeset version from Winter 2026 HW07 ("NMOS Bias Circuit"); 2 part(s).

@@ -17,6 +17,15 @@
 \RequirePackage{datetime2}
 \RequirePackage{expl3}
 \RequirePackage{siunitx}
+% Drawing and plotting (used by the Winter 2026 problems; options as in Mark Horowitz's project so
+% his circuitikz drawings render identically).
+\RequirePackage{tikz}
+\RequirePackage[american,siunitx,nooldvoltagedirection]{circuitikz}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\RequirePackage{enumitem}
+\RequirePackage{mdframed}
+\RequirePackage{float}
 \RequirePackage{hyperref}
 \RequirePackage{cleveref}
 \RequirePackage{pgfkeys}
@@ -48,9 +57,34 @@
     pdfpagemode=FullScreen,
     }
 
+% =========================================================
+% Homework style: style-jeff (default) or style-mark
+% =========================================================
+% Selected with \HomeworkStyle{...} in assignments/<Semester>/course.tex (or metadata.tex to override
+% one homework). style-mark reproduces the look of Mark Horowitz's Winter 2026 homework (his
+% exam.cls): centered header, "Question n: Title", [N pts] markers, framed sans-serif solutions,
+% blank answer space in the student version. The base font size (11pt / 10pt) is chosen in
+% config/shared.tex before \documentclass.
+\ifdefined\HwStyle\else\def\HwStyle{style-jeff}\fi  % (\def, not \providecommand: compared with \ifx)
+\newif\ifhwstylemark
+\def\HwStyleMarkName{style-mark}
+\def\HwStyleJeffName{style-jeff}
+\ifx\HwStyle\HwStyleMarkName
+    \hwstylemarktrue
+\else\ifx\HwStyle\HwStyleJeffName\else
+    \PackageError{homework}{Unknown \string\HomeworkStyle\space'\HwStyle'}{Use style-jeff or style-mark.}
+\fi\fi
+
 % Page layout
 \geometry{margin=1in}
-\setlength{\headheight}{14pt}
+\ifhwstylemark
+    \setlength{\headheight}{45pt}
+    \setlength{\parskip}{\medskipamount}
+    \setlength{\parindent}{0pt}
+    \setlist[enumerate]{label=(\alph*)}   % as Mark's \setenumerate{label=(\alph*)}
+\else
+    \setlength{\headheight}{14pt}
+\fi
 % =========================================================
 % Counters
 % =========================================================
@@ -66,7 +100,10 @@
 \newcounter{extracreditpoints}
 
 \newcommand{\currquestionkey}{}
-\setmainfont{Times New Roman}
+% style-mark keeps fontspec's default Latin Modern (the Computer Modern look of Mark's pdfLaTeX PDFs)
+\ifhwstylemark\else
+    \setmainfont{Times New Roman}
+\fi
 
 % =========================================================
 % Aux storage for per-question totals
@@ -130,6 +167,8 @@
 % are relative to its version folder: {fig.png}, or {../v0/fig.png} for an earlier version.
 \RequirePackage{import}
 \newif\ifhwextrapart
+\newif\ifhwtotalonly   % current question has "total = N" instead of per-part points
+\newif\ifhwmarkheading % style-mark question heading (not in catalog mode)
 % Catalog mode (main_questionbank.tex): questions are shown without points, every version of a
 % question may appear in one document, and labels are scoped per version (see \ShowQuestion).
 \newif\ifhwcatalog
@@ -161,6 +200,7 @@
 \tl_new:N   \g__hw_qid_tl        % id of the question being loaded (empty outside \UseQuestion)
 \tl_new:N   \l__hw_dir_tl
 \tl_new:N   \l__hw_extra_tl
+\tl_new:N   \g__hw_total_tl      % question-level points ("total = N"), empty if points are per part
 \seq_new:N  \l__hw_match_seq
 \regex_const:Nn \c__hw_points_regex { \A \s* (\d+) \s* (extra)? \s* \Z }
 % Older expl3 releases (e.g. Tectonic's bundle) lack some message variants.
@@ -185,6 +225,8 @@
   { Part~'#1'~of~question~'#2'~has~no~points~in~the~manifest;~counting~it~as~0. }
 \msg_new:nnn {homework} {unused-points}
   { Points~were~given~for~part~'#1'~of~question~'#2',~but~its~source~has~no~such~part. }
+\msg_new:nnn {homework} {total-and-parts}
+  { Question~'#1'~gives~both~'total'~and~per-part~points;~use~one~or~the~other. }
 \msg_new:nnn {homework} {no-usequestion}
   { Question~'#1'~was~not~loaded~with~\iow_char:N\\UseQuestion;~its~points~cannot~be~found. }
 \msg_new:nnn {homework} {old-macro}
@@ -198,6 +240,19 @@
   }
 
 \cs_new_protected:Npn \__hw_add_part:nn #1#2
+  {
+    \str_if_eq:nnTF {#1} {total}
+      { \__hw_set_total:n {#2} }
+      { \__hw_add_part_points:nn {#1} {#2} }
+  }
+% "total = N": points for the whole question (its parts then show no points)
+\cs_new_protected:Npn \__hw_set_total:n #1
+  {
+    \regex_extract_once:NnNTF \c__hw_points_regex {#1} \l__hw_match_seq
+      { \tl_gset:Nx \g__hw_total_tl { \seq_item:Nn \l__hw_match_seq {2} } }
+      { \msg_error:nnxxx {homework} {bad-points} {total} {#1} { \g__hw_qid_tl } }
+  }
+\cs_new_protected:Npn \__hw_add_part_points:nn #1#2
   {
     \regex_extract_once:NnNTF \c__hw_points_regex {#2} \l__hw_match_seq
       {
@@ -226,7 +281,12 @@
         \prop_gclear:N \g__hw_points_prop
         \seq_gclear:N \g__hw_extra_seq
         \seq_gclear:N \g__hw_unused_seq
+        \tl_gclear:N \g__hw_total_tl
         \keyval_parse:NNn \__hw_part_no_value:n \__hw_add_part:nn {#3}
+        \bool_lazy_and:nnT
+          { ! \tl_if_empty_p:N \g__hw_total_tl }
+          { ! \prop_if_empty_p:N \g__hw_points_prop }
+          { \msg_error:nnn {homework} {total-and-parts} {#1} }
         \__hw_subimport:x { questionbank/\l__hw_dir_tl/#2/ }
         \seq_map_inline:Nn \g__hw_unused_seq
           { \msg_warning:nnnn {homework} {unused-points} {##1} {#1} }
@@ -244,6 +304,14 @@
         { \msg_error:nnnx {homework} {key-twice} {#1} { \g__hw_qid_tl } }
         { \seq_gput_right:Nn \g__hw_used_keys_seq {#1} }
     \fi
+    % question-level points: count them once here; parts then carry no points
+    \tl_if_empty:NTF \g__hw_total_tl
+      { \global\hwtotalonlyfalse }
+      {
+        \global\hwtotalonlytrue
+        \addtocounter{problempoints}{\g__hw_total_tl}
+        \addtocounter{assignmentpoints}{\g__hw_total_tl}
+      }
   }
 % Called by partquestion with its part key: sets \partpoints and \ifhwextrapart.
 \cs_new_protected:Npn \hw_lookup_part:n #1
@@ -251,10 +319,10 @@
     \prop_get:NnNTF \g__hw_points_prop {#1} \l_tmpa_tl
       { \cs_set:Npx \partpoints { \l_tmpa_tl } }
       {
-        \ifhwcatalog \else
+        \ifhwcatalog \else \ifhwtotalonly \else
           \tl_if_empty:NF \g__hw_qid_tl
             { \msg_warning:nnnx {homework} {no-points} {#1} { \g__hw_qid_tl } }
-        \fi
+        \fi \fi
         \cs_set:Npn \partpoints {0}
       }
     \seq_gremove_all:Nn \g__hw_unused_seq {#1}
@@ -271,6 +339,7 @@
         \prop_gclear:N \g__hw_points_prop
         \seq_gclear:N \g__hw_extra_seq
         \seq_gclear:N \g__hw_unused_seq
+        \tl_gclear:N \g__hw_total_tl
         \HwPrefixRefs {#1/#2:}
         \__hw_subimport:x { questionbank/\l__hw_dir_tl/#2/ }
         \group_end:
@@ -305,6 +374,18 @@
         0%
     \fi
 }
+% Mark's points marker: [N pt] / [N pts]
+\newcommand{\HwMarkPoints}[1]{[#1\,pt\ifnum1=#1\relax\else s\fi]}
+
+\ifhwstylemark
+% style-mark: centered three-line page header on every page (as in Mark's hwN.tex), no title block
+\newcommand{\MakeHomeworkHeader}{%
+    \pagestyle{fancy}%
+    \fancyhf{}%
+    \fancyhead[C]{\Large Homework \HomeworkNumber \\ \large \CourseCode \\[5pt] \small Due \DueTime, \DueDate}%
+    \renewcommand{\headrulewidth}{0pt}%
+}
+\else
 \newcommand{\MakeHomeworkHeader}
 {
     \pagestyle{fancy}
@@ -353,6 +434,7 @@
 
     \end{center}
 }
+\fi
 
 % =========================================================
 % QUESTION ENVIRONMENT
@@ -372,6 +454,17 @@
     \gdef\currquestionkey{#1}
     \HwBeginQuestion{#1}
 
+    \hwmarkheadingfalse
+    \ifhwstylemark\ifhwcatalog\else\hwmarkheadingtrue\fi\fi
+    \ifhwmarkheading
+        % style-mark: "Question n: Title" (Mark's titlesec format), then "[N pts]" at the start of
+        % the first paragraph of the question, which \questionpoints marks in converted sources.
+        \par\addvspace{2ex}%
+        \noindent{\bfseries\large Question \thequestionCnt: #2}\par
+        \vspace{\smallskipamount}%
+        \gdef\HwQuestionPointsHook{\gdef\HwQuestionPointsHook{}\HwMarkPoints{\GetProblemTotal}\ }%
+        \everypar{\HwQuestionPointsHook}%
+    \else
     % Make the Upper Right Corner Display which question we are on
     \ifhwcatalog\else
         \markright{Question \arabic{questionCnt}/\ProblemCount}
@@ -392,10 +485,21 @@
     }
 
     \medskip
+    \fi
 }
 {
-    \bigskip
+    \ifhwstylemark\gdef\HwQuestionPointsHook{}\else\bigskip\fi
 }
+% \questionpoints: where a problem's total is printed in style-mark (it starts the paragraph that
+% receives "[N pts]"); ignored in style-jeff, which prints the total in the question heading.
+\newcommand{\HwQuestionPointsHook}{}
+\ifhwstylemark
+    \newcommand{\questionpoints}{\leavevmode}
+\else
+    \newcommand{\questionpoints}{\relax}
+\fi
+% \qnewpage: page break in the student version of style-mark (room to write); ignored otherwise.
+\newcommand{\qnewpage}{\ifhwstylemark\ifsolutions\else\newpage\fi\fi}
 
 % =========================================================
 % PART QUESTION ENVIRONMENT
@@ -411,31 +515,35 @@
     \edef\labelname{prob:\currquestionkey:#1}
     \label{\labelname}
 
-    % Check if it is extra credit
+    % accumulate points
     \ifhwextrapart
-        % accumulate points
         \addtocounter{extracreditpoints}{\partpoints}
-    
-        \medskip
-        \noindent
-        \textbf{(\alph{partquestionCnt})}\hspace{0.5em}%
-        \textbf{EXTRA CREDIT}\hspace{0.5em}%
     \else
-        % accumulate totals
         \addtocounter{problempoints}{\partpoints}
         \addtocounter{assignmentpoints}{\partpoints}
-    
+    \fi
+    \ifhwstylemark
+        % style-mark: an (a)-labelled list item, "[n pts]" first (Mark's "\item \points{n} ...")
+        \begin{enumerate}[start=\value{partquestionCnt}]
+        \item
+        \ifhwcatalog\else\ifhwtotalonly\else
+            \HwMarkPoints{\partpoints}\ %
+        \fi\fi
+        \ifhwextrapart\textbf{EXTRA CREDIT}\hspace{0.5em}\fi
+        #2
+    \else
         \medskip
         \noindent
         \textbf{(\alph{partquestionCnt})}\hspace{0.5em}%
-    \fi
-    #2
-    \ifhwcatalog\else
-        \textbf{(\PartPoints)}
+        \ifhwextrapart\textbf{EXTRA CREDIT}\hspace{0.5em}\fi
+        #2
+        \ifhwcatalog\else\ifhwtotalonly\else
+            \textbf{(\PartPoints)}
+        \fi\fi
     \fi
 }
 {
-    \medskip
+    \ifhwstylemark\end{enumerate}\else\medskip\fi
 }
 
 \NewDocumentEnvironment{kaitlyn}{}
@@ -450,19 +558,44 @@
 % =========================================================
 % ANSWER ENVIRONMENT
 % =========================================================
+% \begin{answer}[<height>] ... \end{answer}. The optional height is the writing space left in the
+% student version of style-mark (default 1in, as in Mark's exam.cls); style-jeff ignores it.
 \ifsolutions
-    \NewDocumentEnvironment{answer}{}
-    {
-        \par
-        \vspace{1\baselineskip}
-        \begingroup
-        \color{blue!70!black}
-    }
-    {
-        \endgroup
-    }
+    \ifhwstylemark
+        % Mark's solution box: sans-serif text in an mdframed frame
+        \NewDocumentEnvironment{answer}{o}
+        {
+            \par
+            \vspace{1ex}
+            \begin{mdframed}
+            \setlength{\parskip}{\medskipamount}
+            \sffamily
+        }
+        {
+            \end{mdframed}
+            \vspace{1ex}
+        }
+    \else
+        \NewDocumentEnvironment{answer}{o}
+        {
+            \par
+            \vspace{1\baselineskip}
+            \begingroup
+            \color{blue!70!black}
+        }
+        {
+            \endgroup
+        }
+    \fi
 \else
-    \excludecomment{answer}
+    \ifhwstylemark
+        % student version: drop the answer, leave blank space of the given height
+        \NewDocumentEnvironment{answer}{O{1in} +b}{\par\vspace*{#1}}{}
+    \else
+        % student version: drop the answer entirely (the comment package also copes with verbatim
+        % code inside answers; anything after \begin{answer} on its line, e.g. [2in], is skipped)
+        \excludecomment{answer}
+    \fi
 \fi
 
 % =========================================================

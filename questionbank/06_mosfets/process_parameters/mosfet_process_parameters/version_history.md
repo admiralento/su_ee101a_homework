@@ -15,3 +15,8 @@ Concepts: mosfet-process, mosfet-iv
 - Content: Updated for variety
   - Switched the technology node to 250nm
   - Adjusted channel resistance to get 1.7um
+
+### v2 - Mark Horowitz version
+- Author: Mark Horowitz
+- Date: Winter 2026
+- Content: Mark Horowitz's re-typeset version from Winter 2026 HW07 ("MOSFET Process Technology"); 5 part(s).

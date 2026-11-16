@@ -27,6 +27,7 @@ How to maintain this file:
 ## 3. Resistive Networks
 - `kcl-kvl` — Kirchhoff's laws and Ohm's law on a whole circuit
 - `series-parallel` — Series/parallel combination, voltage and current dividers
+- `equivalent-resistance` — Equivalent resistance of networks (series/parallel reduction, symmetry)
 - `nodal-analysis` — Node-voltage analysis
 - `mesh-analysis` — Mesh-current analysis
 - `wye-delta` — Wye–delta transformations
@@ -48,6 +49,8 @@ How to maintain this file:
 - `diode-temperature` — Temperature dependence of diodes, derating, thermal runaway
 - `zener-regulator` — Zener diodes and voltage regulation
 - `led` — Light-emitting diodes
+- `rectifiers` — Half- and full-wave rectifiers
+- `diode-small-signal` — Linearized (piecewise-linear and small-signal) diode models
 
 ## 6. Energy Storage Elements
 - `capacitors` — Capacitor i–v relation, stored energy
@@ -74,6 +77,8 @@ How to maintain this file:
 - `common-drain` — Common-drain (source-follower) amplifiers
 - `common-gate` — Common-gate amplifiers
 - `multistage-amplifiers` — Cascaded / multistage amplifiers
+- `amplifier-bandwidth` — Amplifier frequency response, cutoff frequencies and gain–bandwidth trade-off
+- `source-degeneration` — Source degeneration and linearity
 
 ## 10. Sinusoidal Circuit Analysis
 - `complex-numbers` — Complex numbers: Cartesian, polar and Euler forms

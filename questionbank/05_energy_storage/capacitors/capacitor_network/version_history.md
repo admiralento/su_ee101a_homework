@@ -22,3 +22,8 @@ Concepts: capacitors, capacitor-networks, series-parallel, power-energy
   - Includes a capacitor that is shorted out
   - Uses capacitance values with SI prefixes
   - Added question to calculate capacitor energy
+
+### v2 - Mark Horowitz version
+- Author: Mark Horowitz
+- Date: Winter 2026
+- Content: Mark Horowitz's re-typeset version from Winter 2026 HW05 ("Capacitor Network at Steady State"); 2 part(s).

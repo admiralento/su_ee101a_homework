@@ -1,0 +1,141 @@
+\begin{mainquestion}{ammeter}{Ammeter and Equivalent Circuits}
+
+\questionpoints Consider the circuit shown below. An ammeter with an internal resistance of $R_{i}$ is used to measure the current flowing through a \SI{2}{\kilo\ohm} resistor between points $a$ and $b$.
+
+\begin{center}
+    \begin{circuitikz}[scale=1, american]
+        \draw (0,0) to[R, l=\SI{30}{\kilo\ohm}] (0,3) -- (2,3);
+        \draw (0,0) -- (2,0);
+        \draw (2,0) to[I, l=\SI{4}{\milli\ampere}] (2,3);
+        \draw (2,3) to[short, -o] (2,3) node[above]{$a$} to[R=\SI{2}{\kilo\ohm}, i=$I_o$, -o] (5,3) node[above]{$b$};
+        \draw (2,0) to[R=\SI{6}{\kilo\ohm}] (5,0);
+        \draw (5,3) to[R=\SI{20}{\kilo\ohm}] (5,0);
+        \draw (5,3) to[R=\SI{5}{\kilo\ohm}] (8,3) to[V, l=\SI{50}{\volt}] (8,0) -- (5,0);
+    \end{circuitikz}
+\end{center}
+
+% =========================================================
+\begin{partquestion}{connection}
+{How should the ammeter be connected between $a$ and $b$? Show a sketch of the circuit (only include the portion between $a$ and $b$) which includes the ammeter with its internal resistance.}
+
+\begin{answer}[2in]
+        The ammeter should be connected in series with the load resistor across $a$ and $b$ through which the current is to be measured, and it will look like the following:
+
+        \begin{center}
+            \begin{circuitikz}[scale=1, american]
+                \draw (0,4) node[above]{$a$} to[R=$R_i$] (0,2)
+                to[rmeter, t=A] (0,1)
+                to[R=\SI{2}{\kilo\ohm}] (0,-1) node[below]{$b$};
+            \end{circuitikz}
+        \end{center}
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{thevenin}
+{Find the Thévenin equivalent circuit at terminals $a$ and $b$ (without the \SI{2}{\kilo\ohm} load).}
+
+\begin{answer}[3.5in]
+        To find the Thévenin resistance, we zero out all independent sources: the current source becomes an open circuit and the voltage source becomes a short circuit.
+    \begin{align*}
+        R_{th} &= \SI{30}{\kilo\ohm} + \SI{6}{\kilo\ohm} + (\SI{20}{\kilo\ohm} \parallel \SI{5}{\kilo\ohm}) \\
+               &= 36 + \frac{(20)(5)}{20+5} = \SI{40}{\kilo\ohm}.
+    \end{align*}
+
+    To find the Thévenin voltage, consider the following representation of the circuit:
+    \begin{center}
+        \begin{circuitikz}[american, scale=0.9, transform shape]
+            % Left Island
+            \draw (0,0) to[R, l=\SI{30}{\kilo\ohm}] (0,3);
+            \draw (2,0) to[I, l_=\SI{4}{\milli\ampere}] (2,3);
+            \draw (0,3) -- (2,3); % Top wire left
+            \draw (0,0) -- (2,0); % Bottom wire left
+            \draw (2,3) -- (3,3) node[above]{$a$}; % Terminal a
+            \node at (3.2,3) {}; % Spacing spacer
+            
+            % Connection
+            \draw (2,0) to[R, l=\SI{6}{\kilo\ohm}] (6,0);
+            
+            % Right Island
+            \draw (6,0) to[R, l_=\SI{20}{\kilo\ohm}] (6,3);
+            \draw (6,3) -- (5,3) node[above]{$b$}; % Terminal b
+            \draw (6,3) -- (8,3) to[R, l=\SI{5}{\kilo\ohm}] (10,3);
+            \draw (10,3) to[V, l=\SI{50}{\volt}] (10,0);
+            \draw (10,0) -- (6,0);
+        \end{circuitikz}
+    \end{center}
+
+    First, convince yourself that no current can flow through the \SI{6}{\kilo\ohm} resistor, so the voltage across it must be \SI{0}{\volt}. Then the open circuit voltage from $a$ to $b$ is the voltage drop across the current source (value of $(4)(30) = \SI{120}{\volt}$) and the negative of the voltage divider across the \SI{20}{\kilo\ohm} resistor due to the \SI{50}{\volt} source (value of $50 \frac{20}{20+5} = \SI{40}{\volt}$) so
+    \[ V_{th} = 120 - 0 - 40 = \SI{80}{\volt}. \]
+    The Thévenin equivalent circuit looks like:
+    \begin{center}
+        \begin{circuitikz}[american, scale=0.9]
+            % Added 'invert' to flip the polarity (minus on top, plus on bottom)
+            \draw (0,0) to[V, l=$V_{th}:$ \SI{80}{\volt}, invert] (0,2) 
+            to[R, l=$R_{th}:$ \SI{40}{\kilo\ohm}] (3,2) node[above]{$a$};
+            \draw (0,0) -- (3,0) node[above]{$b$};
+            % Add open terminals
+            \draw (3,2) to[short, -o] (3.5,2);
+            \draw (3,0) to[short, -o] (3.5,0);
+        \end{circuitikz}
+    \end{center}
+\end{answer}
+
+    
+    \newpage
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{norton}
+{Find the Norton equivalent circuit at terminals $a$ and $b$ (without the \SI{2}{\kilo\ohm} load).}
+
+\begin{answer}[2.5in]
+        With the Thévenin equivalent already calculated, this is straightforward.
+        \[ I_N = \frac{V_{th}}{R_{th}} = \frac{\SI{80}{\volt}}{\SI{40}{\kilo\ohm}} = \SI{2.0}{\milli\ampere} \]
+        and $R_N = R_{th} = \SI{40}{\kilo\ohm}$. The Norton equivalent circuit looks like:
+
+        \begin{center}
+            \begin{circuitikz}[american, scale=0.8]
+                % Wires extended to start at x=-2
+                \draw (-2,0) -- (2,0);
+                \draw (-2,2) -- (2,2);
+                
+                % Current source moved to x=-2
+                \draw (-2,0) to[I, l=$I_N:$ \SI{2.0}{\milli\ampere}] (-2,2);
+                
+                % Resistor stays at x=2
+                \draw (2,0) to[R, l=$R_N:$ \SI{40}{\kilo\ohm}] (2,2);
+                
+                % Terminals
+                \draw (2,2) -- (3,2) node[right]{$a$};
+                \draw (2,0) -- (3,0) node[right]{$b$};
+            \end{circuitikz}
+        \end{center}
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{ri300}
+{What is the ammeter reading if $R_i = \SI{300}{\ohm}$?}
+
+\begin{answer}[3in]
+        Using Ohm's law with the Thévenin equivalent: $V_{th} = I(R_{th} + R_i + R_L)$, so
+        \[ I = \frac{V_{th}}{R_{th} + R_i + R_L} = \frac{\SI{80}{\volt}}{(40 + 0.3 + 2)\si{\kilo\ohm}} = \SI{1.89}{\milli\ampere}. \]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{ri0}
+{What is the reading if $R_i = \SI{0}{\ohm}$?}
+
+\begin{answer}[1in]
+        \[ I = \frac{V_{th}}{R_{th} + R_i + R_L} = \frac{\SI{80}{\volt}}{(40 + 0 + 2)\si{\kilo\ohm}} = \SI{1.90}{\milli\ampere}. \]
+        Note that this is not a significant deviation.
+\end{answer}
+
+\end{partquestion}
+
+\end{mainquestion}

@@ -1,0 +1,131 @@
+\begin{mainquestion}{diodethevenin}{I Love Diodes}
+
+\questionpoints
+Consider the circuit below. Using a constant voltage drop model, determine the minimum input voltage ($V_{in}$) required to turn on the LED.
+
+Assume the following component values:
+\begin{itemize}
+    \item $R_1 = 1\text{k}\Omega$
+    \item $R_2 = 1\text{k}\Omega, \quad R_3 = 4\text{k}\Omega$
+    \item $R_4 = 4\text{k}\Omega, \quad R_5 = 1\text{k}\Omega$
+    \item The LED ($D_1$) has a forward voltage drop $V_f = 1.8\text{V}$.
+\end{itemize}
+
+\begin{center}
+\begin{circuitikz}[american, scale=1.2] 
+    % --- Coordinates (Shortened Vertically) ---
+    
+    % Input Terminals (Pulled far left)
+    \coordinate (InTop) at (-7.5, 2.5);
+    \coordinate (InBot) at (-7.5, -2.5);
+    
+    % Resistor Top/Bot (Kept at original x=-5, but compressed y)
+    \coordinate (ResTop) at (-5, 2.5);
+    \coordinate (ResBot) at (-5, -2.5);
+    
+    % Heart Shape (Compressed Vertically)
+    \coordinate (TopDip) at (0, 1.0);       % Lowered dip
+    \coordinate (LeftLobe) at (-1.5, 2.5);  % Lowered peaks
+    \coordinate (RightLobe) at (1.5, 2.5);
+    \coordinate (LeftElbow) at (-3, 0.5);   % Elbows closer to center
+    \coordinate (RightElbow) at (3, 0.5);
+    \coordinate (BottomTip) at (0, -2.5);   % Raised bottom tip
+
+    % --- The Extended "I" (Input Section) ---
+    
+    % 1. The Vertical Resistor (The "Body" of the I)
+    \draw (ResTop) to[R, l=$R_1$] (ResBot);
+
+    % 2. The Horizontal Extensions (The "Serifs" of the I)
+    % Top wire extending left to Vin
+    \draw (InTop) to[short, o-] (ResTop);
+    % Bottom wire extending left to Vin
+    \draw (InBot) to[short, o-] (ResBot);
+    
+    % Labels for Vin at the far left terminals
+    \node at (InTop) [above left] {$+$};
+    \node at (InBot) [below left] {$-$};
+    \node at (-8, 0) {$V_{in}$}; % Label centered between terminals
+
+    % --- Connecting "I" to Heart ---
+    % Top wire connects Resistor to Upper Left Lobe
+    \draw (ResTop) -- (LeftLobe);
+    
+    % Bottom wire connects Resistor to Bottom Tip
+    \draw (ResBot) -- (BottomTip);
+
+    % --- The Heart Bridge ---
+    % The Top Rail: Connect Left Lobe to Right Lobe via the Dip
+    % This forces the entire top 'M' shape to be the positive rail
+    \draw (LeftLobe) to[short] (TopDip) to[short] (RightLobe);
+
+    % Left Branch
+    \draw (LeftLobe) to[R, l_=$R_2$, *-*] (LeftElbow) node[label={left:$A$}]{};
+    \draw (LeftElbow) to[R, l_=$R_3$] (BottomTip);
+
+    % Right Branch
+    \draw (RightLobe) to[R, l=$R_4$, *-*] (RightElbow) node[label={right:$B$}]{};
+    \draw (RightElbow) to[R, l=$R_5$] (BottomTip);
+
+    % The LED Bridge (Center)
+    \draw (LeftElbow) to[D, l_=$D_1$] (RightElbow);
+
+\end{circuitikz}
+\end{center}
+
+% =========================================================
+\begin{partquestion}{theveninvoltage}
+{To analyze the LED, it can be helpful to first remove it from the circuit. Calculate the Thevenin Voltage ($V_{th}$) between terminals $A$ and $B$ in terms of $V_{in}$.}
+
+\begin{answer}[2in]
+        The voltage at nodes A and B is determined by the voltage divider rule (since the top rail is $V_{in}$ and the bottom rail is ground).
+        \[ V_A = V_{in} \left( \frac{R_3}{R_2 + R_3} \right) = V_{in} \left( \frac{4\text{k}}{1\text{k} + 4\text{k}} \right) = 0.8 V_{in} \]
+        \[ V_B = V_{in} \left( \frac{R_5}{R_4 + R_5} \right) = V_{in} \left( \frac{1\text{k}}{4\text{k} + 1\text{k}} \right) = 0.2 V_{in} \]
+        The Thevenin voltage is the difference between these nodes:
+        \[ V_{th} = V_A - V_B = 0.8 V_{in} - 0.2 V_{in} = 0.6 V_{in} \]
+\end{answer}
+
+\pagebreak
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{theveninresistance}
+{Calculate the Thevenin Resistance ($R_{th}$) looking into terminals $A$ and $B$.}
+
+\begin{answer}[2in]
+        To find $R_{th}$, we turn off the source ($V_{in} \rightarrow$ short circuit). This connects the top rail directly to the bottom rail.
+        \begin{itemize}
+            \item At node A: $R_2$ and $R_3$ are now in parallel.
+            \[ R_A = R_2 || R_3 = \frac{1 \cdot 4}{1 + 4} = 0.8\text{k}\Omega \]
+            \item At node B: $R_4$ and $R_5$ are now in parallel.
+            \[ R_B = R_4 || R_5 = \frac{4 \cdot 1}{4 + 1} = 0.8\text{k}\Omega \]
+        \end{itemize}
+        The total resistance is the sum of these two branches:
+        \[ R_{th} = R_A + R_B = 0.8\text{k}\Omega + 0.8\text{k}\Omega = 1.6\text{k}\Omega \]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{mininput}
+{Using your Thevenin equivalent circuit, determine the minimum input voltage ($V_{in}$) required to turn on the LED.}
+
+\begin{answer}[2in]
+        We can model the heart circuit as a single voltage source $V_{th}$ in series with $R_{th}$ and the LED.
+        
+        For the LED to turn on, the Thevenin voltage must exceed the forward voltage drop $V_f$:
+        \[ V_{th} > V_f \]
+        
+        Substitute the expressions we found in parts (a) and (b):
+        \[ 0.6 V_{in} > 1.8\text{V} \]
+        
+        Solve for $V_{in}$:
+        \[ V_{in} > \frac{1.8\text{V}}{0.6} \]
+        \[ V_{in} > 3\text{V} \]
+        
+        The minimum input voltage required is \textbf{3 Volts}.
+\end{answer}
+
+\end{partquestion}
+
+\end{mainquestion}

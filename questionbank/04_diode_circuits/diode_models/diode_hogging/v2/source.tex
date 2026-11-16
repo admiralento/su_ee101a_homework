@@ -1,0 +1,155 @@
+\begin{mainquestion}{diode_hogging}{Parallel Diodes and Thermal Runaway}
+
+\questionpoints
+We explore the case of two identical diodes placed in parallel as shown in the accompanying figure. Assume the diodes have $n = 1$. For each diode, a forward current of 200 mA results in a voltage of 900 mV at 300 K.
+
+\begin{center}
+\begin{circuitikz}[american]
+    \draw (0,0) to[I, l=400 mA] (0,3) -- (4,3);
+    \draw (0,0) -- (4,0);
+    \draw (2,3) -- (2,2.5) to[D, l=$D_A$, i=$I_A$] (2,0);
+    \draw (4,3) -- (4,2.5) to[D, l=$D_B$, i=$I_B$] (4,0);
+    \draw (2,0) node[circ]{} -- (0,0);
+    \draw (2,3) node[circ]{} -- (0,3);
+\end{circuitikz}
+\end{center}
+
+% =========================================================
+\begin{partquestion}{current}
+{If both diodes are at 300 K, what are the values of $I_A$ and $I_B$?}
+
+\begin{answer}
+        Using KCL, $I_A + I_B = 400 \text{ mA}$. Since the diodes are identical, by symmetry we expect:
+        \[ I_A = I_B = 200 \text{ mA} \]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{currenthot}
+{If diode A is at 300 K and diode B is at 310 K, find $I_A$ and $I_B$ using the rule of thumb that $I_S$ doubles every 5 K increase in temperature.}
+
+\begin{answer}
+        We first must determine $I_S$ at 300 K, by plugging in known values of operation:
+        \[ I_S = I \exp\left(-\frac{qV_D}{nkT}\right) = (200 \text{ mA})\exp\left(-\frac{1.6\times 10^{-19} \cdot 0.900}{1 \cdot 1.38 \times 10^{-23} \cdot 300}\right) = 1.56 \times 10^{-16} \text{ A} \]
+        
+        Now we can find the diode currents:
+        \begin{align*}
+        0.4 \text{ A} &= I_A + I_B = I_S \exp\left(\frac{qV_D}{n300k}\right) + 4I_S \exp\left(\frac{qV_D}{n310k}\right) \\
+        &= (1.56 \times 10^{-16} \text{ A}) \exp(38.63 V_D) + 4(1.56 \times 10^{-16} \text{ A}) \exp(37.38 V_D)
+        \end{align*}
+        Note the factor of 4 in the second term arises from the fact that when the temperature increases by 10 K, $I_S$ quadruples. This is a transcendental equation that can be solved numerically using MATLAB or graphically results in $V_D = 0.896 \text{ V}$. It follows using $I \approx I_S \exp\left(\frac{V_D}{nV_T}\right)$ that:
+        \[ I_A = 0.173 \text{ A} \quad \text{and} \quad I_B = 0.227 \text{ A} \]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{heat}
+{Based on your result from (b), which diode will heat up, and which will cool down?}
+
+\begin{answer}
+        Diode B, with an increase in current (from 0.2 A to 0.227 A), will experience an increase in temperature. Diode A, with a decrease in current (from 0.2 A to 0.173 A), will experience a decrease in temperature.
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{hogging}
+{What will happen to the diodes as their temperatures change? Describe the potential problem.}
+
+\begin{answer}
+        As diode B continues to heat up, we know its current will continue to increase as well—a bit of undesired positive feedback. Over a short period of time, this can lead to "current hogging" and cause diode B to conduct nearly all of the current, while diode A sits relatively idle. Situations like this are undesirable because it is often easy to exceed the rated specifications and cause damage to a device if it is carrying more current than intended.
+\end{answer}
+
+    \qnewpage
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{seriesresistor}
+{One possible mitigation for the problem discussed in (d) is the addition of a series resistor $R$ in series with each diode. The voltage across these resistors changes if the current changes, which can help balance the change in diode voltage with temperature. Find an expression for $R$ in terms of the currents $I_A$, $I_B$ and the diode voltages $V_{DA}$ and $V_{DB}$.
+    
+    \begin{center}
+    \begin{circuitikz}[american]
+        \draw (0,0) to[I, l=400 mA] (0,3) -- (4,3);
+        \draw (0,0) -- (4,0);
+        \draw (2,3) to[R, l=$R$, i=$I_A$] (2,1.5) to[D, v=$V_{DA}$] (2,0);
+        \draw (4,3) to[R, l=$R$, i=$I_B$] (4,1.5) to[D, v=$V_{DB}$] (4,0);
+    \end{circuitikz}
+    \end{center}}
+
+\begin{answer}
+        Since the diode resistor pairs are in parallel, they must have the same voltage across them:    \[ I_A R + V_{DA} = I_B R + V_{DB} \]
+        which can easily be solved for $R$:
+        \[ R = \frac{V_{DB} - V_{DA}}{I_A - I_B} \]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{overhead}
+{We wish to limit the power "overhead" of the resistors. Calculate the value of $R$ that results in the total power dissipated by the circuit (diodes and resistors) being exactly 10\% higher than the power dissipated by the diodes alone. Assume the temperatures are as they were in part (a), i.e. symmetric operation at 300 K.}
+
+\begin{answer}
+        In the nominal symmetric case, $I_A = I_B = I_{nom} = 200 \text{ mA}$ and $V_{DA} = V_{DB} = V_D = 0.9 \text{ V}$.
+        The power dissipated by the diodes alone is $P_{diodes} = I_{total} V_D$.
+        The total power dissipated with resistors is $P_{total} = I_{total} (V_D + I_{nom} R)$.
+        
+        We require $P_{total} = 1.10 P_{diodes}$.
+        \[ I_{total} (V_D + I_{nom} R) = 1.10 I_{total} V_D \]
+        \[ V_D + I_{nom} R = 1.10 V_D \]
+        \[ I_{nom} R = 0.10 V_D \]
+        
+        This implies the voltage drop across the resistor must be 10\% of the diode voltage (90 mV). Solving for $R$:
+        \[ R = \frac{0.10(0.9 \text{ V})}{0.2 \text{ A}} = \frac{0.09 \text{ V}}{0.2 \text{ A}} = 0.45 \ \Omega \]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{maxcurrent}
+{Using the resistance calculated in part (f), determine the maximum current fluctuation of this new circuit if the temperatures are $T_A = 300 \text{ K}$ and $T_B = 310 \text{ K}$. Compare this result to the case without resistors in part (b).}
+
+\begin{answer}
+        We must solve the system of equations for the new currents:
+        1. $I_A + I_B = 0.4 \text{ A}$
+        2. $V_{DA} + I_A R = V_{DB} + I_B R$
+        
+        Using the diode equations $V_{DA} = n V_{T,300} \ln(I_A/I_S)$ and $V_{DB} = n V_{T,310} \ln(I_B/4I_S)$ along with $R=0.45 \ \Omega$, we can solve numerically or graphically to find:
+        \[ I_A \approx 192.2 \text{ mA} \quad \text{and} \quad I_B \approx 207.8 \text{ mA} \]
+        
+        The current fluctuation (deviation from the nominal 200 mA) is:
+        \[ \Delta I = |200 - 207.8| = 7.8 \text{ mA} \]
+        
+        In part (b) (without resistors), the currents were 173 mA and 227 mA, a fluctuation of 27 mA. The resistors reduced the current imbalance by a factor of roughly $3\times$ ($27/7.8 \approx 3.46$).
+\end{answer}
+
+\begin{comment}
+\item Calculate the voltage across the current source. (2 points)
+
+\begin{answer}
+        We can use the expression $I_A = \frac{V - V_{DA}}{R}$ and solve for $V$:
+        \begin{align*}
+        V &= I_A R + V_{DA} \\
+          &= (0.199)(3.38) + 0.900 \\
+          &= 1.57 \text{ V}
+        \end{align*}
+        (We could have used the similar equation for $I_B$ and arrived at the same result.)
+\end{answer}
+
+    
+    \item What is the ratio of the dissipated power in the two resistors to that of the remaining dissipated power? (2 points)
+
+\begin{answer}
+        The total dissipated power is equal to the total supplied power:
+        \[ VI = (1.57 \text{ V})(0.4 \text{ A}) = 0.629 \text{ W} \]
+        The total power dissipated in the resistors (about 43\%) is:
+        \[ I_A^2 R + I_B^2 R = (0.199)^2(3.38) + (0.201)^2(3.38) = 0.271 \text{ W} \]
+        and the remaining dissipated power must be $0.629 \text{ W} - 0.271 \text{ W} = 0.358 \text{ W}$, all of which are consumed by the two diodes. The desired ratio is:
+        \[ \frac{0.271 \text{ W}}{0.358 \text{ W}} \approx 0.75 \]
+\end{answer}
+
+\end{comment}
+\end{partquestion}
+
+\end{mainquestion}

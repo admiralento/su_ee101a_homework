@@ -13,3 +13,8 @@ Concepts: diode-connected-mosfet, common-source, transfer-characteristic, symbol
 - Author: Ammon Wolfert
 - Date: 2026-07-24
 - Content: Updated lengths/widths for variety
+
+### v2 - Mark Horowitz version
+- Author: Mark Horowitz
+- Date: Winter 2026
+- Content: Mark Horowitz's re-typeset version from Winter 2026 HW08 ("Diode-Connected Load Common-Source Amplifier"); 3 part(s).

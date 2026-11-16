@@ -133,6 +133,12 @@ def parse_source(src):
         warn(where, 'text-mode \\it{...}/\\bf{...} found; use \\textit{...}/\\textbf{...}')
     if '$$' in code:
         warn(where, 'use \\[ ... \\] instead of $$ ... $$')
+    # The student version of style-jeff drops answers with the comment package, which only
+    # recognizes \begin{answer}[..] / \end{answer} alone on a line, starting in column 0.
+    for n, line in enumerate(code.split('\n'), 1):
+        if ('\\begin{answer}' in line or '\\end{answer}' in line) and not re.fullmatch(
+                r'\\begin\{answer\}(\[[^\]]*\])?|\\end\{answer\}', line.rstrip()):
+            err(f'{where}:{n}', '\\begin{answer}/\\end{answer} must be alone on its line, in column 0')
     for path in info['graphics'] + info['inputs']:
         if path.startswith('questionbank/'):
             err(where, f'root-relative path "{path}"; paths are relative to the version folder now')
@@ -222,6 +228,11 @@ def check_assignments(registered, sources):
             for macro in ('CourseCode', 'CourseTitle', 'Instructor'):
                 if f'\\newcommand{{\\{macro}}}' not in c:
                     err(rel(course), f'does not define \\{macro}')
+        for f in [course] + sorted(sem.glob('*/metadata.tex')):
+            if f.exists():
+                for style in re.findall(r'\\HomeworkStyle\{([^}]*)\}', strip_comments(read(f))):
+                    if style not in ('style-jeff', 'style-mark'):
+                        err(rel(f), f'unknown \\HomeworkStyle{{{style}}} (use style-jeff or style-mark)')
         sem_year = re.search(r'(\d{4})', sem.name)
         for hw in sorted(p for p in sem.iterdir() if p.is_dir()):
             meta, man = hw / 'metadata.tex', hw / 'questions.tex'
@@ -298,11 +309,22 @@ def check_manifest(man, label, registered, sources, usage):
             else:
                 total += int(pm.group(1))
         usage[(qid, ver)].append(f'{label} ({total} pts' + (f' + {extra} EC)' if extra else ')'))
-        for p in info['parts']:
-            if p not in points:
-                err(where, f'{qid}: part "{p}" has no points (it would count as 0)')
+        # "total = N" gives the whole question's points; then no per-part points are allowed
+        if 'total' in points:
+            if 'total' in info['parts']:
+                err(where, f'{qid}/{ver} has a part named "total", which is reserved for question-level points')
+            if len(points) > 1:
+                err(where, f'{qid}: give either "total = N" or per-part points, not both')
+            if points['total'].endswith('extra'):
+                err(where, f'{qid}: "total" cannot be extra credit')
+        else:
+            for p in info['parts']:
+                if p not in points:
+                    err(where, f'{qid}: part "{p}" has no points (it would count as 0)')
+            if not info['parts']:
+                err(where, f'{qid}/{ver} has no parts; give its points as "total = N"')
         for p in points:
-            if p not in info['parts']:
+            if p != 'total' and p not in info['parts']:
                 err(where, f'{qid}: points given for "{p}", which is not a part of {qid}/{ver}')
         # nearest preceding problem comment, if it is after the previous \UseQuestion
         line = code.count('\n', 0, m.start())

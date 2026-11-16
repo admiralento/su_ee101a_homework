@@ -1,0 +1,112 @@
+\begin{mainquestion}{euleridentity}{The Strange Relation Between Exponentials and Sin / Cos}
+
+\questionpoints
+
+% Complex exponentials play a central role in circuit analysis, especially for sinusoidal steady-state behavior.
+
+% \begin{center}
+% \begin{circuitikz}
+%     \draw
+%     (0,0) to[vsourcesin, label=$v_s(t)$] (0,3)
+%           to[R, l=$R_s$] (3,3)
+%           to[C, l=$C$] (3,0)
+%           -- (0,0);
+% \end{circuitikz}
+% \end{center}
+
+% =========================================================
+\begin{partquestion}{complexexponent}
+{Some surprising things happen when we allow the time constant in an exponential to be a complex number.  If you don't remember complex numbers, each complex number has a real part and an imaginary part.  The imaginary part consists of a real number multiplied by $\sqrt{-1}$.  Everywhere except EE uses `i' to represent $\sqrt{-1}$.  Since EE generally uses `i' to represent current, we use `j,' so $j=\sqrt{-1}$.  So let's assume we have a function, f, such that:
+\[
+f(t) = e^{j\omega t}.
+\]
+Now please compute $\dfrac{df(t)}{dt}$. Relate this answer back to the original function f(t), so your answer should give me a function a, such that a(f(t))=df/dt.}
+
+\begin{answer}[1.7in]
+\[
+\frac{d}{dt} e^{j\omega t} = j\omega e^{j\omega t}=j\omega~ f(t).
+\]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{constructg}
+{Now let's construct a new function, g, such that
+\[
+g(t) = \cos(\omega t) + j\sin(\omega t).
+\]
+Compute $\dfrac{dg(t)}{dt}$. Relate this answer back to the original function g(t), so your answer should give me a function a, such that a(g(t))=df/dt.}
+
+\begin{answer}[1.7in]
+\[
+\frac{d}{dt}g(t)
+= -\omega \sin(\omega t) + j\omega \cos(\omega t)
+=j\omega\left(\cos(\omega t) + j\sin(\omega t)\right)=j\omega~ g(t).
+\]
+\end{answer}
+
+\qnewpage
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{relationship}
+{Given these results, what does it say about the relationship between f(t) and g(t)? Show that $f(t)$ and $g(t)$ satisfy the same first-order differential equation and have the same initial condition.}
+
+\begin{answer}[2.5in]
+If I have two functions that are the same at t=0, and their derivative is the same at t=0, implies that at t= + or - dt the value will still be the same.  Then using induction (or common sense), it means that the functions must be the same for all time.
+
+Both functions satisfy
+\[
+\frac{d}{dt}x(t) = j\omega x(t),
+\]
+and
+\[
+f(0) = e^{0} = 1,
+\qquad
+g(0) = \cos(0) + j\sin(0) = 1.
+\]
+By uniqueness of solutions to first-order differential equations, the two functions must be identical for all $t$, so
+\[
+e^{j\omega t} = \cos(\omega t) + j\sin(\omega t).
+\]
+\end{answer}
+
+\noindent
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{cosinesource}
+{The voltage source in the circuit produces
+\[
+v_s(t) = V_0 \cos(\omega t).
+\]
+We can construct this voltage using the sum/difference of complex exponentials.  To do this we need to use the fact that sin(t) is an odd function of t -- its values for -t are the negative of its values for positive t.  Cos(t) is an even function of time -- its outputs for -t are the same as its values for -t. Using this information and the result from the previous part, write $v_s(t)$ using a complex exponential.}
+
+\begin{answer}[1.2in]
+I need to cancel out the sin part of the equation.  Since sin is odd, I just need to add together + and - exponentials.  This leaves 2cos, which is why I divide by 2.
+\[
+v_s(t) =V_0\frac{e^{j\omega t}+e^{-j\omega t}}{2}.
+\]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{sinesource}
+{The voltage source in the circuit produces
+\[
+v_s(t) = V_0 \sin(\omega t).
+\]
+Write $v_s(t)$ using a complex exponential.}
+
+\begin{answer}[1.2in]
+I need to cancel out the cos, so I subtract the two exponentials.
+\[
+v_s(t) =V_0\frac{e^{j\omega t}-e^{-j\omega t}}{2j}.
+\]
+\end{answer}
+
+\end{partquestion}
+
+\end{mainquestion}

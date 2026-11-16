@@ -13,3 +13,8 @@ Concepts: thevenin-norton, instrument-loading
 - Author: Ammon Wolfert
 - Date: Summer 2026 (first use)
 - Content: Redrew the circuit with new values (560 Ohm load, R_i = 90 Ohm) and added a part on the largest R_i that keeps the deviation below 1%.
+
+### v2 - Mark Horowitz version
+- Author: Mark Horowitz
+- Date: Winter 2026
+- Content: Mark Horowitz's re-typeset version from Winter 2026 HW02 ("Ammeter and Equivalent Circuits"); 5 part(s).

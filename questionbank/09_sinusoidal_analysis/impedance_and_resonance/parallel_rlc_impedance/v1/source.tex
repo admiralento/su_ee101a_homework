@@ -1,0 +1,107 @@
+\begin{mainquestion}{parallelrlc}{Current-Driven Parallel RLC Circuit}
+
+\questionpoints Consider the current-driven parallel RLC circuit shown below. The output voltage $V_{\text{out}}$ is measured across the parallel network.
+
+\begin{center}
+\begin{circuitikz}[american]
+    \draw
+    (0,0) node[ground] {}
+    to[I, l=$I_s$] (0,3)
+    -- (5,3)
+    (0,0) -- (5,0)
+    (1.5,3) to[R, l=$R$] (1.5,0)
+    (3,3) to[L, l=$L$] (3,0)
+    (4.5,3) to[C, l=$C$] (4.5,0)
+    (5,3) node[right] {$+$}
+    (5,0) node[right] {$-$};
+\end{circuitikz}
+\end{center}
+
+% =========================================================
+\begin{partquestion}{deriveimpedance}
+{Derive the impedance $Z(j\omega)$ facing the current source.  
+Express your answer explicitly as the sum of a real part and an imaginary part.}
+
+\begin{answer}[3.5in]
+The total admittance $Y(j\omega)$ is the sum of the admittances of the parallel components:
+\[
+Y(j\omega) = \frac{1}{R} + \frac{1}{j\omega L} + j\omega C.
+\]
+To simplify, we can factor out $1/R$ to group the reactive terms into a dimensionless quantity:
+\[
+Y(j\omega) = \frac{1}{R} \left[ 1 + jR\left(\omega C - \frac{1}{\omega L}\right) \right]
+= \frac{1}{R} \left[ 1 + j\left(\omega RC - \frac{R}{\omega L}\right) \right].
+\]
+The impedance is the reciprocal of the admittance, $Z(j\omega) = 1/Y(j\omega)$:
+\[
+Z(j\omega) = \frac{R}{1 + j\left(\omega RC - \frac{R}{\omega L}\right)}.
+\]
+To separate the real and imaginary parts, we multiply the numerator and denominator by the complex conjugate of the denominator, $1 - j(\omega RC - \frac{R}{\omega L})$:
+\[
+Z(j\omega) = \frac{R \left[ 1 - j\left(\omega RC - \frac{R}{\omega L}\right) \right]}{1 + \left(\omega RC - \frac{R}{\omega L}\right)^2}.
+\]
+Thus, the real and imaginary parts are:
+\[
+\Re\{Z(j\omega)\} = \frac{R}{1 + \left(\omega RC - \frac{R}{\omega L}\right)^2},
+\quad
+\Im\{Z(j\omega)\} = -\frac{R \left(\omega RC - \frac{R}{\omega L}\right)}{1 + \left(\omega RC - \frac{R}{\omega L}\right)^2}.
+\]
+\end{answer}
+
+\pagebreak
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{maxmagnitude}
+{At what frequency is the magnitude of the impedance $|Z(j\omega)|$ maximized?  
+What is the phase angle at that frequency?}
+
+\begin{answer}[3in]
+Based on the derivation above, the magnitude of the impedance is:
+\[
+|Z(j\omega)| = \frac{R}{\sqrt{1 + \left(\omega RC - \frac{R}{\omega L}\right)^2}}.
+\]
+The magnitude is maximized when the denominator is minimized. This occurs when the squared term is zero:
+\[
+\omega RC - \frac{R}{\omega L} = 0 \implies \omega^2 = \frac{1}{LC}.
+\]
+Solving for $\omega$ gives the resonant frequency:
+\[
+\omega_0 = \frac{1}{\sqrt{LC}}.
+\]
+At this frequency, the imaginary part of the impedance is zero, so $Z(j\omega_0) = R$. Therefore, the phase angle is:
+\[
+\angle Z(j\omega_0) = 0.
+\]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{extremephase}
+{What is the phase angle of the impedance at zero frequency (DC) and at extremely high frequency?  
+Provide an intuitive explanation based on the behavior of the inductor and capacitor in these limits.}
+
+\begin{answer}[3.5in]
+At DC ($\omega \to 0$), the inductor behaves like a short circuit while the capacitor behaves like an open circuit. The impedance is therefore dominated by the inductor:
+\[
+Z(j\omega) \approx j\omega L.
+\]
+Thus, the phase angle approaches:
+\[
+\angle Z(j\omega) \to +\frac{\pi}{2}.
+\]
+
+At very high frequency ($\omega \to \infty$), the capacitor behaves like a short circuit while the inductor behaves like an open circuit. The impedance is dominated by the capacitor:
+\[
+Z(j\omega) \approx \frac{1}{j\omega C}.
+\]
+This has a phase angle of:
+\[
+\angle Z(j\omega) \to -\frac{\pi}{2}.
+\]
+\end{answer}
+
+\end{partquestion}
+
+\end{mainquestion}

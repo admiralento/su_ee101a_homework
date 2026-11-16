@@ -13,3 +13,8 @@ Concepts: diode-models, symbolic
 - Author: Ammon Wolfert
 - Date: Summer 2026 (first use)
 - Content: Redrew the circuit with new component values; the output is labeled V_OUT.
+
+### v2 - Mark Horowitz version
+- Author: Mark Horowitz
+- Date: Winter 2026
+- Content: Mark Horowitz's re-typeset version from Winter 2026 HW03 ("Diode Circuit Analysis"); 3 part(s).

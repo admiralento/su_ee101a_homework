@@ -16,3 +16,8 @@ Concepts: mosfet-dc-bias, pmos
   - Refreshed the bias voltages, supply voltages, resistor value
   - Added sub problem where it's reflected back to a PMOS stack up
   - 2*i_d happens to be 1.7mA
+
+### v2 - Mark Horowitz version
+- Author: Mark Horowitz
+- Date: Winter 2026
+- Content: Mark Horowitz's re-typeset version for Winter 2026 HW07 ("This Series PMOS"), commented out in his homework; 2 part(s).

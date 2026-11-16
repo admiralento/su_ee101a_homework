@@ -1,0 +1,105 @@
+\begin{mainquestion}{diodesmallsignal}{Diode Modeling and Linearization}
+
+\questionpoints
+Consider the series circuit below with the following parameters:
+\begin{itemize}
+    \item Voltage Source: $V_{DD} = 5\text{V}$
+    \item Resistor: $R = 4\text{k}\Omega$
+    \item Diode Parameters: $I_S = 10^{-14}\text{A}$, $n=1$, $V_T = 26\text{mV}$ (at room temperature)
+\end{itemize}
+
+\begin{center}
+\begin{circuitikz}[american]
+    % Draw voltage source V_DD
+    \draw (0,0) to[V, l=$V_{DD}$, invert] (0,3);
+    % Draw resistor R on top
+    \draw (0,3) to[R, l=$R$, i=$I_D$] (3,3);
+    % Draw diode D going down
+    \draw (3,3) to[D, l=$D$, v=$V_D$] (3,0);
+    % Close the loop
+    \draw (3,0) -- (0,0);
+    % Add ground
+    \draw (1.5,0) node[ground]{};
+\end{circuitikz}
+\end{center}
+
+% =========================================================
+\begin{partquestion}{cvdmodel}
+{Assume the diode follows the \textbf{Constant Voltage Drop} model with $V_{ON} = 0.7\text{V}$. Calculate the current ($I_{D}$) flowing through the resistor.}
+
+\begin{answer}[1.5in]
+        Using KVL with the diode replaced by a 0.7V source:
+        \[ I_{D} = \frac{V_{DD} - V_{ON}}{R} \]
+        \[ I_{D} = \frac{5\text{V} - 0.7\text{V}}{4000\Omega} = \frac{4.3\text{V}}{4000\Omega} = 1.075\text{mA} \]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{exponentialmodel}
+{In reality, the diode voltage drop is not strictly constant at $0.7\text{V}$. Instead, a real diode follows the Shockley Equation:
+    \[ I_D = I_S(e^{V_D/V_T} - 1) \]
+    Assume that the current $I_{D}$ you calculated in part (a) is flowing through the real diode. Find the \textit{precise} voltage drop ($V_Q$) required to support this current and state the resulting operating point.}
+
+\begin{answer}[2in]
+        Inverting the Shockley equation for $V_D$:
+        \[ V_Q = n V_T \ln\left(\frac{I_{D}}{I_S} + 1\right) \]
+        
+        \textit{Note: Also accept the following approximation if used} \[ V_Q \approx n V_T \ln\left(\frac{I_{D}}{I_S}\right) \]
+        
+        Substituting the values (using $I_D = 1.075\text{mA}$):
+        \[ V_Q = (1)(26\text{mV}) \ln\left(\frac{1.075\times 10^{-3}}{10^{-14}} + 1\right) \]
+        \[ V_Q = 0.026 \ln(1.075 \times 10^{11}) \]
+        \[ V_Q \approx 0.026 (25.40) \approx 0.660\text{V} \]
+        
+        \textit{Note: The actual voltage is 40mV lower than the CVD assumption.}
+        
+        The Operating Point (Q-Point) is $(0.660\text{V}, 1.075\text{mA})$.
+\end{answer}
+
+\qnewpage
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{linearize}
+{To simplify circuit analysis, we often "linearize" non-linear devices such as this diode by using a small signal model. This involves approximating the exponential curve with a straight line (the tangent line) at the operating point. Using the operating point you found in part (b):
+    \begin{enumerate}[label=(\roman*)]
+        \item Calculate the \textbf{small-signal resistance} ($r_d$) of this linear approximation.
+        \item Find the \textbf{effective turn-on voltage} ($V_{D0}$) of this linear approximation.
+    \end{enumerate}}
+
+\begin{answer}[2.5in]
+        \textbf{i. Small-Signal Resistance ($r_d$):}
+        The resistance is the inverse of the slope of the I-V curve at the Q-point:
+        \[ r_d = \left( \frac{dI_D}{dV_D} \right)^{-1} \approx \frac{V_T}{I_Q} \]
+        \[ r_d = \frac{26\text{mV}}{1.075\text{mA}} \approx 24.2\Omega \]
+        
+        \textbf{ii. Tangent Intercept ($V_{D0}$):}
+        Using the point-slope form of the line:
+        \[ V_{D0} = V_Q - (I_Q \cdot r_d) \]
+        \[ V_{D0} = 0.660\text{V} - (1.075\text{mA})(24.2\Omega) \]
+        \[ V_{D0} = 0.660\text{V} - 0.026\text{V} = 0.634\text{V} \]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{theveninmodel}
+{Using the values found in part (c), draw the Thévenin equivalent circuit for the linearized, small signal model of the diode. Then, replace the diode in the original circuit with this linear model and calculate the \textbf{revised operating current} ($I_{D,new}$).}
+
+\begin{answer}[2in]
+        \textbf{Circuit Model:}
+        A voltage source of $V_{D0} = 0.634\text{V}$ in series with a resistor $r_d = 24.2\Omega$.
+        
+        \textbf{Revised Current Calculation:}
+        Substituting the linear model back into the original series circuit, the total resistance is now $R + r_d$. Using KVL:
+        \[ I_{D,new} = \frac{V_{DD} - V_{D0}}{R + r_d} \]
+        \[ I_{D,new} = \frac{5\text{V} - 0.634\text{V}}{4000\Omega + 24.2\Omega} \]
+        \[ I_{D,new} = \frac{4.366\text{V}}{4024.2\Omega} \approx 1.085\text{mA} \]
+        
+        \textit{Note: This result represents the first iteration of finding the true operating point, correcting the initial assumption from part (a).}
+\end{answer}
+
+\end{partquestion}
+
+\end{mainquestion}

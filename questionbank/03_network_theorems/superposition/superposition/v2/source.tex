@@ -1,0 +1,125 @@
+\begin{mainquestion}{superposition}{Case Study 01 - Superposition}
+
+\questionpoints
+Consider the circuit below.
+
+\begin{center}
+    \begin{circuitikz}
+
+    % 1. Leftmost Branch: Resistor (1 Ohm) and Current ix
+    \draw (0,3) to[R, l_=$1\,\Omega$, i=$i_x$] (0,0);
+
+    % 2. Middle Branch 1: 1A Current Source
+    \draw (3,0) to[I, l_=$1\,\text{A}$] (3,3);
+
+    % 3. Middle Branch 2: 2A Current Source
+    \draw (6,0) to[I, l=$2\,\text{A}$] (6,3);
+
+    % 4. Rightmost Branch: 10 Ohm Resistor
+    \draw (9,3) to[R, l_=$10\,\Omega$, v^=$v_x$] (9,0);
+
+    % 5. Top Connections
+    \draw (0,3) -- (3,3); 
+    \draw (3,3) -- (6,3); 
+    
+    % 3V Voltage Source 
+    \draw (6,3) to[V, l=$3\,\text{V}$] (9,3);
+
+    % 6. Bottom Connections
+    \draw (0,0) -- (3,0); 
+    
+    % Dependent Voltage Source (4ix) 
+    \draw (6,0) to[cV, l=$4i_x$] (3,0);
+
+    % Wire from 2A Source to 10 Ohm Resistor
+    \draw (6,0) -- (9,0);
+
+    \end{circuitikz}
+\end{center}
+
+% =========================================================
+\begin{partquestion}{calculatevx}
+{Calculate $v_x$ in the circuit using \textbf{superposition}.
+
+\textit{Solutions using nodal analysis or source transformation as the primary method will receive zero points.}}
+
+\begin{answer}[5 in]
+        To find $v_x$ using superposition, we calculate the contribution of each independent source individually while turning the others off. The dependent source $4i_x$ remains active in all steps.
+        
+        \[ v_x = v_x^{(1)} + v_x^{(2)} + v_x^{(3)} \]
+        
+        \textbf{Case 1: $1\,\text{A}$ Source Active} \\
+        (Turn OFF $2\,\text{A}$ source $\to$ Open; Turn OFF $3\,\text{V}$ source $\to$ Short)
+        
+        Current leaving down the $1\,\Omega$ resistor is $i_x$. Current entering from the source is $1\,\text{A}$. The remaining current $(1 - i_x)$ flows right, through the shorted top wire, down the $10\,\Omega$ resistor, and returns via the dependent source.
+        
+        Apply KVL to the outer loop (clockwise):
+        \[
+        \underbrace{1 \cdot i_x}_{\text{Voltage across } 1\Omega} + 0 - \underbrace{10(1-i_x)}_{\text{Voltage } v_x^{(1)}} - \underbrace{4i_x}_{\text{Dependent Source}} = 0
+        \]
+        \[
+        i_x - 10 + 10i_x - 4i_x = 0 \quad \Rightarrow \quad 7i_x = 10 \quad \Rightarrow \quad i_x = \frac{10}{7}\,\text{A}.
+        \]
+        Calculating $v_x^{(1)}$:
+        \[
+        v_x^{(1)} = 10(1 - i_x) = 10\left(1 - \frac{10}{7}\right) = -\frac{30}{7}\,\text{V}.
+        \]
+        
+        \medskip
+        \textbf{Case 2: $2\,\text{A}$ Source Active} \\
+        (Turn OFF $1\,\text{A}$ source $\to$ Open; Turn OFF $3\,\text{V}$ source $\to$ Short)
+        
+        Apply KCL at the top node (supernode): Current leaving down $1\,\Omega$ is $i_x$. Input current is $2\,\text{A}$. Current down $10\,\Omega$ is $i_{10} = 2 - i_x$.
+        
+        Apply KVL to the outer loop:
+        \[
+        1 \cdot i_x - 10(2 - i_x) - 4i_x = 0
+        \]
+        \[
+        i_x - 20 + 10i_x - 4i_x = 0 \quad \Rightarrow \quad 7i_x = 20 \quad \Rightarrow \quad i_x = \frac{20}{7}\,\text{A}.
+        \]
+        Calculating $v_x^{(2)}$:
+        \[
+        v_x^{(2)} = 10(2 - i_x) = 10\left(2 - \frac{20}{7}\right) = -\frac{60}{7}\,\text{V}.
+        \]
+        
+        \medskip
+        \textbf{Case 3: $3\,\text{V}$ Source Active} \\
+        (Turn OFF $1\,\text{A}$ and $2\,\text{A}$ sources $\to$ Open)
+        
+        This forms a single loop. KVL tracing the direction of $i_x$:
+        \[
+        -1i_x + 4i_x - 10i_x + 3 = 0
+        \]
+        \[
+        -7i_x = -3 \quad \Rightarrow \quad i_x = \frac{3}{7}\,\text{A}.
+        \]
+        Calculating $v_x^{(3)}$:
+        \[
+        v_x^{(3)} = -10 i_x = -10\left(\frac{3}{7}\right) = -\frac{30}{7}\,\text{V}.
+        \]
+        
+        \textbf{Total Voltage $v_x$}
+        \[
+        v_x = \left(-\frac{30}{7}\right) + \left(-\frac{60}{7}\right) + \left(-\frac{30}{7}\right) = -\frac{120}{7}\,\text{V} \approx -17.14\,\text{V}.
+        \]
+\end{answer}
+
+\qnewpage
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{comparenodal}
+{Compare your result from part (a) with the answer obtained using \textbf{nodal analysis} (refer to Homework 4, Question 4). Which method do you prefer?}
+
+\begin{answer}
+        We previously solved this problem in Homework 4, Question 4 using Nodal Analysis. Using that method, we found the node voltages $V_1 = \frac{33}{7}\,\text{V}$ and $V_2 = \frac{12}{7}\,\text{V}$. The resulting voltage $v_x$ was calculated as:
+        \[
+        v_x = V_2 - V_{\text{bottom-right}} = \frac{12}{7} - \frac{132}{7} = -\frac{120}{7}\,\text{V}.
+        \]
+        This matches our result from Superposition exactly.
+\end{answer}
+
+\end{partquestion}
+
+\end{mainquestion}

@@ -13,3 +13,8 @@ Concepts: standard-resistor-values, series-parallel, power-energy, design
 - Author: Ammon Wolfert
 - Date: Summer 2026 (first use)
 - Content: Changed the source to 220 mA, linked the E24 table, and redrew the figure.
+
+### v2 - Mark Horowitz version
+- Author: Mark Horowitz
+- Date: Winter 2026
+- Content: Mark Horowitz's re-typeset version from Winter 2026 HW02 ("Current Source Design"); 3 part(s).

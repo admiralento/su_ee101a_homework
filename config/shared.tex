@@ -2,7 +2,13 @@
 \extracreditassignmentfalse
 \newif\ifshowinstructor
 \showinstructorfalse
+% Homework style (see style/homework.sty): set in course.tex, may be overridden in metadata.tex
+\def\HwStyle{style-jeff}
+\newcommand{\HomeworkStyle}[1]{\def\HwStyle{#1}}
 \input{config/current_assignment}
 % Course code, title, instructor, and header settings are per semester
 \input{assignments/\Semester/course}
 \input{assignments/\Semester/\AssignmentFolder/metadata}
+% Base font size for \documentclass (the main files read this file before \documentclass)
+\def\HwStyleMarkName{style-mark}
+\ifx\HwStyle\HwStyleMarkName \def\HwFontSize{10pt}\else \def\HwFontSize{11pt}\fi

@@ -15,3 +15,8 @@ Concepts: common-source, transfer-characteristic, signal-swing, small-signal-mod
 - Content: Updated for variety
   - Refreshed R_D, k_n, V_OV and V_t for variety.
   - Lambda now is approx 0.017, Gain mantained at 17
+
+### v2 - Mark Horowitz version
+- Author: Mark Horowitz
+- Date: Winter 2026
+- Content: Mark Horowitz's re-typeset version from Winter 2026 HW08 ("Biasing, Clipping, and Signal Swing"); 5 part(s).
