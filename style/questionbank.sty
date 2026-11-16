@@ -5,8 +5,8 @@
 
 \hwcatalogtrue
 \hypersetup{pdftitle={\CourseCode{} Question Bank}, bookmarksnumbered=true, bookmarksopen=true}
-\setcounter{tocdepth}{2}   % ToC: topic folders (sections) and question folders (subsections)
-\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{3}   % ToC: topic folders, subtopic folders, question folders
+\setcounter{secnumdepth}{3}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -42,11 +42,20 @@
 }
 
 \newif\ifcatalog@freshpage
-% \CatalogTopic{display name}: one section per topic folder.
+\newif\ifcatalog@insubtopic
+% \CatalogTopic{display name}: one section per top-level (syllabus) folder.
 \newcommand{\CatalogTopic}[1]{%
     \clearpage
     \section{#1}%
     \catalog@freshpagetrue
+    \catalog@insubtopicfalse
+}
+% \CatalogSubtopic{display name}: one subsection per subtopic folder.
+\newcommand{\CatalogSubtopic}[1]{%
+    \ifcatalog@freshpage\else\clearpage\fi
+    \subsection{#1}%
+    \catalog@freshpagetrue
+    \catalog@insubtopictrue
 }
 % Concept index (generated from questionbank/tags.md and each question's Concepts line).
 \newcommand{\CatalogConceptIndexBegin}{%
@@ -68,11 +77,16 @@
 % \CatalogRef{id}{title}: link to a question's first page
 \newcommand{\CatalogRef}[2]{\hyperref[catalog:#1]{#2}~(p.\,\pageref{catalog:#1})}
 
-% \CatalogQuestion{plain title for bookmarks}{typeset title}{escaped id}{id}: one subsection per
-% question folder; the ToC entry shows the title and the folder name (= question id).
+% \CatalogQuestion{plain title for bookmarks}{typeset title}{escaped id}{id}: one heading per
+% question folder (subsubsection under a subtopic, else subsection); the ToC entry shows the title
+% and the folder name (= question id).
 \newcommand{\CatalogQuestion}[4]{%
     \ifcatalog@freshpage\else\clearpage\fi
-    \subsection[\texorpdfstring{#2\quad{\normalfont\small\ttfamily #3}}{#1}]{#2}%
+    \ifcatalog@insubtopic
+        \subsubsection[\texorpdfstring{#2\quad{\normalfont\small\ttfamily #3}}{#1}]{#2}%
+    \else
+        \subsection[\texorpdfstring{#2\quad{\normalfont\small\ttfamily #3}}{#1}]{#2}%
+    \fi
     \label{catalog:#4}%
     \catalog@freshpagetrue
 }

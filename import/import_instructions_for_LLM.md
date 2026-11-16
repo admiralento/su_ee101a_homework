@@ -85,18 +85,42 @@ questionbank/
   tags.md                     concept tag vocabulary (human-edited; see section 4)
   README.md                   generated catalog table (tools/check.py --catalog); do not edit by hand
   catalog.tex                 generated content of main_questionbank.tex (same command); do not edit
-  <topic>/                    amplifiers, capacitors_and_inductors, circuit_quantities, diodes,
-                              networks, simple_circuits, training, transistors
-    <question_id>/            folder name = question id (snake_case, unique across the bank)
-      v0/                     original version
-        source.tex
-        <figures: .png/.jpg/.jpeg, .drawio sources, .m scripts>
-      v1/ ...                 later variants
-      originals/              optional: standalone original documents (never \input)
-      version_history.md      required: authors, dates, notes per version + Concepts tags
+  NN_<syllabus_topic>/        one folder per syllabus topic, numbered in course order (see below)
+    <subtopic>/               the primary concept the problem teaches
+      <question_id>/          folder name = question id (snake_case, unique across the bank)
+        v0/                   original version
+          source.tex
+          <figures: .png/.jpg/.jpeg, .drawio sources, .m scripts>
+        v1/ ...               later variants
+        originals/            optional: standalone original documents (never \input)
+        version_history.md    required: authors, dates, notes per version + Concepts tags
 config/  style/  tools/  main_student.tex  main_solutions.tex  main_questionbank.tex
 import/                       this document and conversion notes; per-import scratch folders
 ```
+
+Question bank topic folders (each question is filed under the **primary** topic it teaches;
+secondary concepts are expressed with concept tags, section 4):
+
+| Syllabus folder | Subtopic folders |
+|---|---|
+| `00_course_introduction` | (questions directly inside, e.g. `lab_training`) |
+| `01_circuit_abstraction` | `charge_current_energy`, `waveforms`, `resistors`, `circuit_topology`, `power_balance` |
+| `02_resistive_networks` | `kirchhoff_laws`, `dividers`, `nodal_analysis`, `mesh_analysis`, `dependent_sources` |
+| `03_network_theorems` | `superposition`, `source_transformation`, `thevenin_and_norton`, `power_transfer` |
+| `04_diode_circuits` | `diode_physics`, `diode_models`, `load_line`, `zener_regulators` |
+| `05_energy_storage` | `capacitors`, `transients` |
+| `06_mosfets` | `process_parameters`, `iv_characteristics`, `dc_biasing`, `applications` |
+| `07_mosfet_amplifier_analysis` | `transfer_characteristic` |
+| `08_single_stage_amplifiers` | `amplifier_models`, `common_source`, `common_drain`, `multistage` |
+| `09_sinusoidal_analysis` | `phasors`, `impedance_and_resonance`, `filters_and_bode_plots` |
+
+- Put an imported problem in the existing subtopic that matches what it mainly teaches; create a
+  new subtopic folder (snake_case, no number) if none fits, and mention it to the user. Number
+  prefixes are only on the syllabus folders; they order the catalog and are hidden in it.
+- Folder names are shown in the catalog with words capitalized and a few acronyms recognized
+  (`dc`, `iv`, `mosfet`, `rc`, `rl`, ...; see `topic_name` in `tools/check.py`).
+- Moving a question between folders: `git mv` it, then `python tools/check.py --fix-index` and
+  `--catalog`. Nothing else references folder paths.
 
 ### 2.0 `assignments/<Semester>/course.tex`
 
@@ -204,7 +228,7 @@ Solution text.
 - Every part gets the label `prob:<questionkey>:<partkey>`; refer to other parts with
   `part (\cref{prob:<questionkey>:<partkey>})`, which prints the part letter.
 - Every part should have an `answer` environment, even if empty
-  (see `training/lab_training/v0/source.tex`).
+  (see `00_course_introduction/lab_training/v0/source.tex`).
 - Do not put `\documentclass`, `\usepackage`, `\begin{document}`, `\section*{Problem 4}`, or point
   values in a source file.
 - Figure captions inside answers use `\captionof*{figure}{...}` within a `center` environment.
@@ -213,8 +237,8 @@ Solution text.
 ### 2.4 `questionbank/index.tex`
 
 ```tex
-% --- diodes
-\RegisterQuestion{led_iv_curve}{diodes/led_iv_curve}
+% --- 04_diode_circuits
+\RegisterQuestion{led_iv_curve}{04_diode_circuits/load_line/led_iv_curve}
 ```
 One line per question: id (= folder name) and its folder below `questionbank/`. **To move or
 rename a question folder:** move it (`git mv`), then update its line here — or run
@@ -267,12 +291,16 @@ problems. Line 4 selects `config/student_mode` or `config/solutions_mode`.
 
 ## 3. Naming conventions
 
-The user plans to rename question folders once the Winter 2026 problems are in; until then, keep
-existing names and follow these conventions for new content.
+The bank was reorganized and renamed in November 2026 (old ids such as `circuit_001` or
+`solderpaste` no longer exist). Follow these conventions for new content.
 
 - **Question id / folder name**: descriptive snake_case naming the physics/skill — `led_iv_curve`,
   `zener_regulator`, `cs_amplifier_design`. Must be unique across the whole bank (checked). Avoid
-  numbered names (`circuit_001`) and combined folders (`circuit_graph_and_circuit_001`).
+  numbered names (`circuit_001`), names of a scenario rather than the concept, and combining two
+  problems into one folder.
+- **Renaming a question** (changing its id) means: `git mv` the folder, update every
+  `\UseQuestion{<old id>}` in `assignments/` (including commented-out ones), mentions of the old id
+  in `version_history.md` files, then `check.py --fix-index --catalog`.
 - **Question key** (`mainquestion` first argument): short, lowercase, no separators —
   `ledloadline`, `zenerregulator`, `cstransfer`. All versions of one question share the key.
   Keys must be unique across *different* questions: the key prefixes every part label, so two
@@ -352,9 +380,9 @@ Conversion: see `import/how_to_convert.md` (pandoc into a per-import scratch fol
 Import rules:
 - **Do not change the wording of problems or solutions.** Import only; do not revise, correct, or
   "improve" content. If something looks wrong (inconsistent numbers, garbled OCR), keep it and add
-  a `% NOTE: ...` comment next to it for the user to review (see `networks/bridge_rc_filter/v0`).
+  a `% NOTE: ...` comment next to it for the user to review (see `09_sinusoidal_analysis/filters_and_bode_plots/bridge_rc_filter/v0`).
 - pandoc tends to bold everything in problem statements (`\mathbf{R}_{\mathbf{w}}`, `**...**`).
-  Earlier imports sometimes kept this (e.g. `amplifiers/cascade_cd_cg/v0`). Ask the user at the
+  Earlier imports sometimes kept this (e.g. `cascade_cd_cg/v0`). Ask the user at the
   start of an import whether to strip conversion-artifact bolding (keeping intentional emphasis and
   bold phasors/vectors) or preserve it verbatim.
 - Strip point annotations like "(12 points)" or "(24 points total)" from the text — they go in the
@@ -435,9 +463,9 @@ Then:
 ## 10. Known quirks / legacy items (don't imitate, don't "fix" unless asked)
 
 - Refer to parts only through the automatic `prob:<key>:<part>` labels; don't add hand-written
-  `\label{prob:...}` lines (one in `solderpaste/v0` was removed for this reason).
-- Standalone original documents live in `<id>/originals/` (`function_generator_and_scope`,
-  `thevenin_meas`, `lab_training`). They have their own `\documentclass` and must never be loaded.
+  `\label{prob:...}` lines (one in `tellegen_power_balance/v0` was removed for this reason).
+- Standalone original documents live in `<id>/originals/` (`function_generator_loading`,
+  `thevenin_from_measurements`, `lab_training`). They have their own `\documentclass` and must never be loaded.
 - Some unused question versions exist (see "Used in: —" in `questionbank/README.md`). Unused ≠
   obsolete; leave them.
 - Older content mixes key-naming styles (`diode_hogging` vs `ledloadline`) and has some plain-text

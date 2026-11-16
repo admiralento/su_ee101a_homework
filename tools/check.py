@@ -455,10 +455,15 @@ def plain_title(title):
     return re.sub(r'[${}^_]', '', t).strip()
 
 
-def topic_name(path):
+def topic_name(folder):
+    """'04_diode_circuits' -> 'Diode Circuits', 'iv_characteristics' -> 'I-V Characteristics'.
+    A leading number prefix (used only to order folders) is dropped."""
     small = {'and', 'of', 'the', 'in', 'for'}
-    words = path.replace('_', ' ').split()
-    return ' '.join(w if (i and w in small) else w[:1].upper() + w[1:] for i, w in enumerate(words))
+    special = {'dc': 'DC', 'ac': 'AC', 'iv': 'I-V', 'mosfet': 'MOSFET', 'mosfets': 'MOSFETs',
+               'pn': 'pn', 'rc': 'RC', 'rl': 'RL', 'rlc': 'RLC', 'kcl': 'KCL', 'kvl': 'KVL'}
+    words = re.sub(r'^\d+_', '', folder).replace('_', ' ').split()
+    return ' '.join(special.get(w, w if (i and w in small) else w[:1].upper() + w[1:])
+                    for i, w in enumerate(words))
 
 
 def build_catalogs(by_id, sources, usage):
@@ -492,15 +497,22 @@ def build_catalogs(by_id, sources, usage):
         md_index.append(f'- `{tag}` ({desc}): ' + ', '.join(f'[`{qid}`]({by_id[qid].relative_to(QB).as_posix()})' for qid in users))
     tex.append('\\CatalogConceptIndexEnd')
 
-    topic = None
+    topic = subtopic = None
     for qid, d in ordered:
         path = d.relative_to(QB).as_posix()
-        t = path.rsplit('/', 1)[0] if '/' in path else ''
+        folders = path.split('/')[:-1]          # e.g. ['04_diode_circuits', 'load_line']
+        t = folders[0] if folders else ''
+        s = ' / '.join(topic_name(f) for f in folders[1:])
         if t != topic:
-            md += ['', f'## {t}', '', '| ID | Title | Key | Version | Author | Parts | Used in | Concepts |',
-                   '|---|---|---|---|---|---|---|---|']
             tex += ['', f'\\CatalogTopic{{{tex_escape(topic_name(t))}}}']
-            topic = t
+            topic, subtopic = t, None
+        if (t, s) != (topic, subtopic):
+            if s:
+                tex.append(f'\\CatalogSubtopic{{{tex_escape(s)}}}')
+            heading = topic_name(t) + (f' — {s}' if s else '')
+            md += ['', f'## {heading}', '', '| ID | Title | Key | Version | Author | Parts | Used in | Concepts |',
+                   '|---|---|---|---|---|---|---|---|']
+            subtopic = s
         versions = sorted((v for (q, v) in sources if q == qid), key=lambda v: int(v[1:]))
         history = read_history(d)
         latest_title = titles[qid]
