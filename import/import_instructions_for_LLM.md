@@ -26,11 +26,12 @@ assignments into it. It is written for an LLM assistant (or a new collaborator) 
 
 | Command | What it does |
 |---|---|
-| `python tools/check.py` | Static checks (section 9). Run before every hand-back. `--fix-index` regenerates `questionbank/index.tex`; `--catalog` rewrites `questionbank/README.md` and `questionbank/catalog.tex` (it warns when either is stale). |
-| `python tools/build_all.py` | Compiles every homework in both modes **in a temporary copy** (never touches `config/current_assignment.tex`). `--only "Winter 2026/HW03"`, `--mode solutions`, `--save x.json` / `--compare x.json` for before/after regression checks, `--pdf-dir` to keep PDFs. |
-| `powershell -ExecutionPolicy Bypass -File build.ps1 [-Mode student\|solutions\|questionbank]` | Compiles the homework selected in `config/current_assignment.tex` to `out.pdf` (default: solutions), or with `-Mode questionbank` the question bank catalog (section 2.6). Ctrl+Shift+B in VS Code. One-time setup: `build.ps1 -Install`. |
+| `python tools/check.py` | Static checks (section 9). Run before every hand-back. `--fix-index` regenerates `questionbank/index.tex`; `--fix-mains` (re)writes every homework's two root files; `--catalog` rewrites `questionbank/README.md` and `questionbank/catalog.tex` (it warns when either is stale). |
+| `python tools/build_all.py` | Compiles every homework's root files (both modes) in a temporary copy. `--only "Winter 2026/HW03"`, `--mode solutions`, `--save x.json` / `--compare x.json` for before/after regression checks, `--pdf-dir` to keep PDFs. |
+| `powershell -ExecutionPolicy Bypass -File build.ps1 -Semester "Fall 2026" -Assignment HW07 [-Mode student]` | Compiles one homework to `out.pdf` (default: solutions). Also `-File <root .tex>`, `-Mode questionbank` / `questionbank-student` for the catalog. In VS Code, open a root file and press Ctrl+Shift+B. One-time setup: `build.ps1 -Install`. |
 
-Both builders use Tectonic (XeTeX engine, automatic reruns) from `.tools/tectonic/`. Overleaf is the
+Both builders use Tectonic (XeTeX engine, automatic reruns) from `.tools/tectonic/`, run from the
+project root with `-Z search-path=.` so paths resolve from the root as on Overleaf. Overleaf is the
 reference build; Tectonic's package snapshot is older (2022) and can differ slightly.
 
 ---
@@ -38,21 +39,22 @@ reference build; Tectonic's package snapshot is older (2022) and can differ slig
 ## 1. Build chain
 
 ```
-main_student.tex / main_solutions.tex
+assignments/<Semester>/<HWxx>/<Semester>_<HWxx>_student.tex | ..._solutions.tex   (root files)
+ ├─ \def\Semester{...}  \def\AssignmentFolder{...}
  ├─ config/student_mode.tex | config/solutions_mode.tex   → defines \ifsolutions
  ├─ config/shared.tex                      (read BEFORE \documentclass)
- │    ├─ \newif\ifextracreditassignment, \newif\ifshowinstructor (both default false)
+ │    ├─ \newif\ifextracreditassignment, \ifshowinstructor (default false), \ifboxedsolutions (default true)
  │    ├─ \HomeworkStyle{...} (default style-jeff)
- │    ├─ config/current_assignment.tex     → \Semester, \AssignmentFolder
  │    ├─ assignments/\Semester/course.tex  → course code/title/instructor, style, header settings
  │    ├─ assignments/\Semester/\AssignmentFolder/metadata.tex   (may override the style)
  │    └─ \HwFontSize                       → 11pt (style-jeff) or 10pt (style-mark)
  ├─ \documentclass[\HwFontSize]{article}
- ├─ style/shared.sty                       → \dd, \pluralize
- ├─ style/homework.sty                     → environments, \UseQuestion, point bookkeeping, header
- │    └─ questionbank/index.tex            → \RegisterQuestion{id}{folder} for every question
- └─ \MakeHomeworkHeader
-    \input{assignments/\Semester/\AssignmentFolder/questions.tex}   → \UseQuestion{...} per problem
+ └─ config/document.tex
+      ├─ style/shared.sty                  → \dd, \pluralize
+      ├─ style/homework.sty                → environments, \UseQuestion, point bookkeeping, header
+      │    └─ questionbank/index.tex       → \RegisterQuestion{id}{folder} for every question
+      └─ \MakeHomeworkHeader
+         \input{assignments/\Semester/\AssignmentFolder/questions.tex}   → \UseQuestion{...} per problem
 ```
 
 Key facts:
@@ -68,14 +70,14 @@ Key facts:
   `answer` environment is removed via the `comment` package (`\excludecomment{answer}`), which
   requires `\begin{answer}[..]` and `\end{answer}` to be **alone on their lines, in column 0**
   (`check.py` enforces this). In `style-mark` answers are replaced by blank writing space.
-- `config/current_assignment.tex` selects which homework is compiled, e.g.:
-  ```tex
-  \def\Semester{Fall 2026}
-  \def\AssignmentFolder{HW07}
-  ```
-  **This file is shared state.** Changing it changes what every collaborator compiles in Overleaf.
-  Do not change it as part of an import; tell the user what to set it to. Use
-  `tools/build_all.py --only ...` to compile a homework yourself without touching it.
+- **Choosing what to compile:** every homework has two root files in its folder, e.g.
+  `assignments/Fall 2026/HW07/Fall2026_HW07_student.tex` and `Fall2026_HW07_solutions.tex`.
+  In Overleaf, open one and press Recompile: Overleaf compiles the open file when it contains
+  `\documentclass`, without changing the project's Main document, so collaborators can compile
+  different homeworks at the same time. Root-file names are unique across the project (Overleaf
+  needs that). The root files are generated (`check.py --fix-mains`) and must not be hand-edited;
+  shared layout lives in `config/document.tex`. Set the project's Main document to
+  `main_questionbank_student.tex` (harmless default).
 
 ---
 
@@ -88,11 +90,12 @@ assignments/
     HWxx/                     two-digit, zero-padded: HW00, HW01, ... HW09
       metadata.tex
       questions.tex           the manifest
+      <Sem>_<HWxx>_student.tex, <Sem>_<HWxx>_solutions.tex   root files to compile (generated)
 questionbank/
   index.tex                   question id -> folder; the ONLY place a question's location is written
   tags.md                     concept tag vocabulary (human-edited; see section 4)
   README.md                   generated catalog table (tools/check.py --catalog); do not edit by hand
-  catalog.tex                 generated content of main_questionbank.tex (same command); do not edit
+  catalog.tex                 generated content of the catalog root files (same command); do not edit
   NN_<syllabus_topic>/        one folder per syllabus topic, numbered in course order (see below)
     <subtopic>/               the primary concept the problem teaches
       <question_id>/          folder name = question id (snake_case, unique across the bank)
@@ -102,7 +105,7 @@ questionbank/
         v1/ ...               later variants
         originals/            optional: standalone original documents (never \input)
         version_history.md    required: authors, dates, notes per version + Concepts tags
-config/  style/  tools/  main_student.tex  main_solutions.tex  main_questionbank.tex
+config/  style/  tools/  main_questionbank_student.tex  main_questionbank_solutions.tex
 import/                       this document and conversion notes; per-import scratch folders
 ```
 
@@ -306,10 +309,10 @@ listings (Python style preset), verbatim, caption, import, tikz, circuitikz, pgf
 mdframed, float. Notably **not** loaded: booktabs, subfig, adjustbox. If a source needs another
 package, ask the user before adding it to `style/homework.sty` (it affects every homework).
 
-### 2.6 The question bank catalog (`main_questionbank.tex`)
+### 2.6 The question bank catalog (`main_questionbank_student.tex` / `main_questionbank_solutions.tex`)
 
-A third root document that renders **every version of every question** for browsing and choosing
-problems. Line 4 selects `config/student_mode` or `config/solutions_mode`.
+Two root documents in the project root that render **every version of every question** for
+browsing and choosing problems, without or with solutions.
 - Table of contents: one section per topic folder, one subsection per question folder
   (title + id). Each version starts on its own page with an info box: id, version, folder,
   author, date, homeworks that used it (with point totals), part keys in order (ready to copy into
@@ -325,8 +328,8 @@ problems. Line 4 selects `config/student_mode` or `config/solutions_mode`.
   the questions using it (also at the end of `questionbank/README.md`).
 - `catalog.tex` is committed so Overleaf can compile it, but only the local tool regenerates it:
   after adding/moving questions or editing version histories, run `python tools/check.py --catalog`.
-  In Overleaf, compile it by setting the project's Main document to `main_questionbank.tex`
-  (that setting is project-wide, so switch it back afterwards).
+  In Overleaf, open `main_questionbank_student.tex` or `main_questionbank_solutions.tex` and press
+  Recompile.
 
 ---
 
@@ -489,7 +492,8 @@ Then:
 5. Create/update each question's `version_history.md`, including its `Concepts:` tags (section 4).
 6. Run the checks in section 9 and regenerate the catalogs (`--catalog`), so the new questions
    appear in `questionbank/README.md` and in the question bank PDF.
-7. Do **not** edit `config/current_assignment.tex`; tell the user the two values to set to compile.
+7. Create the homework's two root files: `python tools/check.py --fix-mains`. Tell the user which
+   file to open to compile (e.g. `Winter2026_HW03_solutions.tex`).
 8. Commit on a branch and report the full list of added / modified / moved files for mirroring into
    Overleaf (section 0).
 

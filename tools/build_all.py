@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build every homework (or a subset) and report / compare results.
 
-Builds run in a temporary copy of the project, so config/current_assignment.tex in your working
-copy is never touched. Uses Tectonic from .tools/tectonic/ or PATH.
+Each homework is built from its root files (assignments/<Semester>/<HWxx>/<Semester>_<HWxx>_<mode>.tex),
+in a temporary copy of the project. Uses Tectonic from .tools/tectonic/ or PATH.
 
 Examples
     python tools/build_all.py                          # all homeworks, both modes
@@ -11,7 +11,7 @@ Examples
     python tools/build_all.py --compare baseline.json  # rebuild and diff against a recording
     python tools/build_all.py --pdf-dir pdfs           # also keep every PDF
 
-Unless --only is given, main_questionbank.tex (every version of every question) is built too.
+Unless --only is given, main_questionbank_solutions.tex (every version of every question) is built too.
 
 Recorded per build: success, page count, the totals written to the .aux file, the set of image
 files loaded (normalized paths), and LaTeX warnings.
@@ -75,29 +75,41 @@ def parse_results(log_text, aux_text):
     return int(pages.group(1)) if pages else None, totals, graphics, warnings
 
 
+def root_file(sem, hw, mode):
+    """Path (relative to the project root) of the root file to compile."""
+    if mode == 'questionbank':
+        return 'main_questionbank_solutions.tex'
+    return f'assignments/{sem}/{hw}/{sem.replace(" ", "")}_{hw}_{mode}.tex'
+
+
+def compile_root(tectonic, work, root, outdir):
+    """Compile one root file from the project root. -Z search-path=. makes \\input and
+    \\includegraphics resolve from the project root, as Overleaf does, even for root files in
+    subfolders."""
+    return subprocess.run([tectonic, root, '--outdir', str(outdir), '--keep-logs', '--keep-intermediates',
+                           '-Z', 'search-path=.'],
+                          cwd=work, capture_output=True, text=True, encoding='utf-8', errors='replace')
+
+
 def build(tectonic, work, sem, hw, mode, pdf_dir):
-    if mode != 'questionbank':
-        (work / 'config' / 'current_assignment.tex').write_text(
-            f'\\def\\Semester{{{sem}}}\n\\def\\AssignmentFolder{{{hw}}}\n', encoding='utf-8')
     out = work / '_out'
     shutil.rmtree(out, ignore_errors=True)
     out.mkdir()
-    proc = subprocess.run([tectonic, f'main_{mode}.tex', '--outdir', str(out),
-                           '--keep-logs', '--keep-intermediates'],
-                          cwd=work, capture_output=True, text=True, encoding='utf-8', errors='replace')
-    log = (out / f'main_{mode}.log')
-    aux = (out / f'main_{mode}.aux')
+    root = root_file(sem, hw, mode)
+    stem = Path(root).stem
+    proc = compile_root(tectonic, work, root, out)
+    log = (out / f'{stem}.log')
+    aux = (out / f'{stem}.aux')
     log_text = log.read_text(encoding='utf-8', errors='replace') if log.exists() else ''
     aux_text = aux.read_text(encoding='utf-8', errors='replace') if aux.exists() else ''
-    ok = proc.returncode == 0 and (out / f'main_{mode}.pdf').exists()
+    ok = proc.returncode == 0 and (out / f'{stem}.pdf').exists()
     pages, totals, graphics, warnings = parse_results(log_text, aux_text)
     errors = [] if ok else [l for l in (proc.stdout + proc.stderr).splitlines()
                             if l.startswith('error') or l.startswith('!')][:5] + \
         re.findall(r'^!.*$', log_text, re.M)[:3]
     if ok and pdf_dir:
         pdf_dir.mkdir(parents=True, exist_ok=True)
-        name = 'questionbank.pdf' if mode == 'questionbank' else f'{sem}_{hw}_{mode}.pdf'
-        shutil.copy(out / f'main_{mode}.pdf', pdf_dir / name)
+        shutil.copy(out / f'{stem}.pdf', pdf_dir / f'{stem}.pdf')
     return {'ok': ok, 'pages': pages, 'totals': totals, 'graphics': graphics,
             'warnings': warnings, 'errors': errors}
 
@@ -127,7 +139,7 @@ def main():
     ap.add_argument('--compare', type=Path, help='baseline JSON to diff against')
     ap.add_argument('--pdf-dir', type=Path, help='copy every PDF here')
     ap.add_argument('--no-questionbank', action='store_true',
-                    help='skip main_questionbank.tex (built by default unless --only is given)')
+                    help='skip the question bank catalog (built by default unless --only is given)')
     args = ap.parse_args()
 
     tectonic = find_tectonic()

@@ -10,8 +10,7 @@
 *.xdv
 *.bbl
 *.blg
-main_student.pdf
-main_solutions.pdf
+main_questionbank_*.pdf
 out.pdf
 build/
 
