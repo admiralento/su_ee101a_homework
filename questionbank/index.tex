@@ -1,0 +1,84 @@
+% Question index: question id (= folder name) -> folder below questionbank/.
+% This is the ONLY place a question's location is written. After moving or renaming a
+% question folder, update its line here (tools/check.py --fix-index regenerates this file).
+
+% --- 00_course_introduction
+\RegisterQuestion{lab_training}{00_course_introduction/lab_training}
+% --- 01_circuit_abstraction
+\RegisterQuestion{energy_power_charge}{01_circuit_abstraction/charge_current_energy/energy_power_charge}
+\RegisterQuestion{household_wiring}{01_circuit_abstraction/charge_current_energy/household_wiring}
+\RegisterQuestion{nodes_loops_branches}{01_circuit_abstraction/circuit_topology/nodes_loops_branches}
+\RegisterQuestion{tellegen_power_balance}{01_circuit_abstraction/power_balance/tellegen_power_balance}
+\RegisterQuestion{resistor_color_code}{01_circuit_abstraction/resistors/resistor_color_code}
+\RegisterQuestion{rms_trapezoid}{01_circuit_abstraction/waveforms/rms_trapezoid}
+% --- 02_resistive_networks
+\RegisterQuestion{controlled_source_gain}{02_resistive_networks/dependent_sources/controlled_source_gain}
+\RegisterQuestion{two_dependent_sources}{02_resistive_networks/dependent_sources/two_dependent_sources}
+\RegisterQuestion{resistor_search}{02_resistive_networks/dividers/resistor_search}
+\RegisterQuestion{symmetrical_circuits}{02_resistive_networks/equivalent_resistance/symmetrical_circuits}
+\RegisterQuestion{wye_delta_conversions}{02_resistive_networks/equivalent_resistance/wye_delta_conversions}
+\RegisterQuestion{kcl_kvl_equations}{02_resistive_networks/kirchhoff_laws/kcl_kvl_equations}
+\RegisterQuestion{topology_and_kirchhoff}{02_resistive_networks/kirchhoff_laws/topology_and_kirchhoff}
+\RegisterQuestion{residential_power_distribution}{02_resistive_networks/mesh_analysis/residential_power_distribution}
+\RegisterQuestion{nodal_analysis_power}{02_resistive_networks/nodal_analysis/nodal_analysis_power}
+\RegisterQuestion{nodal_analysis_reference_node}{02_resistive_networks/nodal_analysis/nodal_analysis_reference_node}
+\RegisterQuestion{nodal_dependent_source}{02_resistive_networks/nodal_analysis/nodal_dependent_source}
+\RegisterQuestion{wye_delta_nodal_dependent}{02_resistive_networks/nodal_analysis/wye_delta_nodal_dependent}
+\RegisterQuestion{wye_delta_nodal_independent}{02_resistive_networks/nodal_analysis/wye_delta_nodal_independent}
+% --- 03_network_theorems
+\RegisterQuestion{battery_internal_resistance}{03_network_theorems/power_transfer/battery_internal_resistance}
+\RegisterQuestion{function_generator_loading}{03_network_theorems/power_transfer/function_generator_loading}
+\RegisterQuestion{transformer_power_transfer}{03_network_theorems/power_transfer/transformer_power_transfer}
+\RegisterQuestion{source_transformations}{03_network_theorems/source_transformation/source_transformations}
+\RegisterQuestion{superposition}{03_network_theorems/superposition/superposition}
+\RegisterQuestion{ammeter_thevenin_norton}{03_network_theorems/thevenin_and_norton/ammeter_thevenin_norton}
+\RegisterQuestion{dependent_source_thevenin}{03_network_theorems/thevenin_and_norton/dependent_source_thevenin}
+\RegisterQuestion{thevenin_from_measurements}{03_network_theorems/thevenin_and_norton/thevenin_from_measurements}
+% --- 04_diode_circuits
+\RegisterQuestion{diode_hogging}{04_diode_circuits/diode_models/diode_hogging}
+\RegisterQuestion{diode_model_comparison}{04_diode_circuits/diode_models/diode_model_comparison}
+\RegisterQuestion{diode_thevenin}{04_diode_circuits/diode_models/diode_thevenin}
+\RegisterQuestion{pn_junction_concepts}{04_diode_circuits/diode_physics/pn_junction_concepts}
+\RegisterQuestion{led_iv_curve}{04_diode_circuits/load_line/led_iv_curve}
+\RegisterQuestion{full_wave_rectifier}{04_diode_circuits/rectifiers/full_wave_rectifier}
+\RegisterQuestion{diode_small_signal}{04_diode_circuits/small_signal/diode_small_signal}
+\RegisterQuestion{zener_regulator}{04_diode_circuits/zener_regulators/zener_regulator}
+% --- 05_energy_storage
+\RegisterQuestion{capacitor_current_energy}{05_energy_storage/capacitors/capacitor_current_energy}
+\RegisterQuestion{capacitor_network}{05_energy_storage/capacitors/capacitor_network}
+\RegisterQuestion{inductor_waveforms}{05_energy_storage/inductors/inductor_waveforms}
+\RegisterQuestion{capacitor_time_constant}{05_energy_storage/transients/capacitor_time_constant}
+\RegisterQuestion{rl_rc_step_response}{05_energy_storage/transients/rl_rc_step_response}
+% --- 06_mosfets
+\RegisterQuestion{reverse_polarity_protection}{06_mosfets/applications/reverse_polarity_protection}
+\RegisterQuestion{nmos_bias_point}{06_mosfets/dc_biasing/nmos_bias_point}
+\RegisterQuestion{series_mos_bias}{06_mosfets/dc_biasing/series_mos_bias}
+\RegisterQuestion{diode_connected_nmos}{06_mosfets/iv_characteristics/diode_connected_nmos}
+\RegisterQuestion{pmos_iv_family}{06_mosfets/iv_characteristics/pmos_iv_family}
+\RegisterQuestion{mosfet_process_parameters}{06_mosfets/process_parameters/mosfet_process_parameters}
+% --- 07_mosfet_amplifier_analysis
+\RegisterQuestion{cs_coupling_distortion}{07_mosfet_amplifier_analysis/transfer_characteristic/cs_coupling_distortion}
+\RegisterQuestion{cs_transfer_characteristic}{07_mosfet_amplifier_analysis/transfer_characteristic/cs_transfer_characteristic}
+\RegisterQuestion{cs_vtc_quadratic}{07_mosfet_amplifier_analysis/transfer_characteristic/cs_vtc_quadratic}
+% --- 08_single_stage_amplifiers
+\RegisterQuestion{current_amplifier_design}{08_single_stage_amplifiers/amplifier_models/current_amplifier_design}
+\RegisterQuestion{source_follower}{08_single_stage_amplifiers/common_drain/source_follower}
+\RegisterQuestion{common_gate_application}{08_single_stage_amplifiers/common_gate/common_gate_application}
+\RegisterQuestion{cs_amplifier_design}{08_single_stage_amplifiers/common_source/cs_amplifier_design}
+\RegisterQuestion{cs_bandwidth_limitation}{08_single_stage_amplifiers/common_source/cs_bandwidth_limitation}
+\RegisterQuestion{cs_output_swing_linearity}{08_single_stage_amplifiers/common_source/cs_output_swing_linearity}
+\RegisterQuestion{diode_connected_pullup}{08_single_stage_amplifiers/common_source/diode_connected_pullup}
+\RegisterQuestion{pmos_gate_resistor}{08_single_stage_amplifiers/common_source/pmos_gate_resistor}
+\RegisterQuestion{cascade_cd_cg}{08_single_stage_amplifiers/multistage/cascade_cd_cg}
+\RegisterQuestion{cascaded_audio_amplifier}{08_single_stage_amplifiers/multistage/cascaded_audio_amplifier}
+\RegisterQuestion{hf_pulse_amplifier}{08_single_stage_amplifiers/multistage/hf_pulse_amplifier}
+\RegisterQuestion{two_stage_power}{08_single_stage_amplifiers/multistage/two_stage_power}
+% --- 09_sinusoidal_analysis
+\RegisterQuestion{bode_plot_sketching}{09_sinusoidal_analysis/filters_and_bode_plots/bode_plot_sketching}
+\RegisterQuestion{bridge_rc_filter}{09_sinusoidal_analysis/filters_and_bode_plots/bridge_rc_filter}
+\RegisterQuestion{nonideal_inductor_bode}{09_sinusoidal_analysis/filters_and_bode_plots/nonideal_inductor_bode}
+\RegisterQuestion{rl_high_pass_design}{09_sinusoidal_analysis/filters_and_bode_plots/rl_high_pass_design}
+\RegisterQuestion{parallel_rlc_impedance}{09_sinusoidal_analysis/impedance_and_resonance/parallel_rlc_impedance}
+\RegisterQuestion{euler_identity}{09_sinusoidal_analysis/phasors/euler_identity}
+\RegisterQuestion{impedance_forms}{09_sinusoidal_analysis/phasors/impedance_forms}
+\RegisterQuestion{single_frequency_gain}{09_sinusoidal_analysis/phasors/single_frequency_gain}
