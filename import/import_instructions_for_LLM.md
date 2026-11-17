@@ -10,16 +10,17 @@ assignments into it. It is written for an LLM assistant (or a new collaborator) 
 
 ## 0. Where the project lives and how changes flow
 
-- The **live project is a shared Overleaf project**. Instructors and TAs edit and compile there.
-- A **local git repository** mirrors the Overleaf project and is where scripted work (imports, bulk
-  fixes, checks) is done. Work happens on a branch, is reviewed as a diff, and is then copied into
-  Overleaf by hand. Large changes are synced by replacing the `assignments/` and `questionbank/`
-  folders in Overleaf wholesale.
-- Because changes are transferred manually, **keep every change set explicit**:
-  - At the end of an import, list every file that was **added**, **modified**, **renamed/moved**, or
-    **deleted**, so the user can mirror exactly those changes in Overleaf.
-  - Before starting, ask the user whether the local repo is up to date with Overleaf (edits made in
-    Overleaf since the last sync must be brought into git first, or they will be overwritten).
+- The **permanent copy is a private GitHub repository** owned by the course's GitHub organization
+  (see `README.tex`, section "Syncing with GitHub"). The **Overleaf project** is linked to it with
+  Overleaf's GitHub synchronization; instructors and TAs edit and compile there and press
+  Menu → GitHub → Pull (before editing) / Push (after editing). Sync is manual.
+- **Local work** (imports, bulk fixes, checks) happens in a git clone: `git pull` first, work on a
+  branch, merge into `main`, `git push`; then tell the user to press *Pull* in Overleaf.
+  - Before starting, `git pull`, and ask the user whether there are Overleaf edits not yet pushed
+    to GitHub (they should push them first, or there will be conflicts).
+  - Overleaf recommends **fewer than 100 files per commit**; split large changes into several
+    commits/pushes where practical.
+  - A GitHub Action runs `tools/check.py` on every push (`.github/workflows/check.yml`).
 - Line endings: `.gitattributes` forces LF. Keep it that way; Overleaf uses LF.
 
 ### Local tools (git copy only)

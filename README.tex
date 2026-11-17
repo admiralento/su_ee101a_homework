@@ -18,6 +18,9 @@
 \def\UrlBreaks{\do\/\do\_\do\-}
 \let\f\path                                     % file names and keys (line-breakable)
 \newcommand{\cmd}[1]{\texttt{\textbackslash\detokenize{#1}}}
+% Fill these in when the GitHub repository and Overleaf project are set up (see the "Syncing with GitHub" section):
+\newcommand{\RepoURL}{\textcolor{red}{[GitHub repository URL --- to be filled in]}}
+\newcommand{\OverleafOwner}{\textcolor{red}{[name --- to be filled in]}}
 
 \title{EE101A Homework Project --- Start Here}
 \author{}
@@ -75,12 +78,12 @@ questionbank/
     README.md                    table of every problem (generated)
     tags.md                      the list of concept tags
 config/  style/                  shared setup and layout -- rarely edited
-tools/                           scripts (section 5)
+tools/                           scripts (see "Scripted tools")
 \end{lstlisting}
 
 \section{Common tasks}
 
-\subsection{Put an existing problem in a homework}
+\subsection{Put an existing problem in a homework}\label{sec:use}
 Find it in the question bank PDF (\f{main_questionbank_solutions.tex}): each version's box shows
 its \emph{id}, \emph{version} and \emph{part keys}. Add a block to the homework's
 \f{questions.tex}:
@@ -122,13 +125,13 @@ Solution for part (a).
   \item Add \f{<id>/version_history.md} (copy one from a neighbouring problem): title, a
         \f{Concepts:} line using tags from \f{questionbank/tags.md}, and a \texttt{\#\#\# v0} entry with
         author, date and a one-line description.
-  \item Use it in a homework (section 3.1), then \textbf{update the catalog}: run
+  \item Use it in a homework (section~\ref{sec:use}), then \textbf{update the catalog}: run
         \f{python tools/check.py --fix-index --catalog} and \f{python tools/check.py}
-        (section 5). Without this step the new problem is not found and does not appear in the
+        (section~\ref{sec:tools}). Without this step the new problem is not found and does not appear in the
         question bank PDF.
 \end{enumerate}
 
-\subsection{Change an existing problem}
+\subsection{Change an existing problem}\label{sec:change}
 If students have already received it, do not edit it: copy \f{v0/} to \f{v1/}, change the copy,
 add a \texttt{\#\#\# v1} entry to \f{version_history.md}, and point the new homework at \f{v1}. Typos
 may be fixed in place.
@@ -164,12 +167,53 @@ problems by id, so a move needs nothing else; a rename also needs the id changed
   \item[Where did a problem get used before?] The question bank PDF and
         \f{questionbank/README.md} list every homework that used each version.
   \item[Can I break a past homework?] Only by editing a version it uses. Make a new version
-        instead (section 3.3).
+        instead (section~\ref{sec:change}).
   \item[More detail?] \f{import/import_instructions_for_LLM.md} documents every convention;
         it is also what an AI assistant follows when importing new problems.
 \end{description}
 
-\section{Scripted tools}
+\section{Syncing with GitHub, and keeping the project alive}
+
+\textbf{The GitHub repository is the permanent copy} of this project:
+\RepoURL{} (private, owned by the course's GitHub organization, not by a person). This Overleaf
+project is a working copy linked to it with Overleaf's GitHub synchronization.
+
+\textbf{Every time you work in Overleaf:}
+\begin{enumerate}
+  \item \emph{Before editing:} Menu $\rightarrow$ GitHub $\rightarrow$ \textbf{Pull GitHub changes
+        into Overleaf}, so you start from the latest version.
+  \item \emph{After editing:} Menu $\rightarrow$ GitHub $\rightarrow$ \textbf{Push Overleaf
+        changes to GitHub}, with a short message (e.g.\ ``HW05 due date'').
+\end{enumerate}
+Sync is never automatic. If a pull reports a conflict, Overleaf puts its changes on a separate
+branch on GitHub; merge it there with a pull request (or ask someone who uses git). After each
+push GitHub runs \f{tools/check.py}; a red \textbf{X} next to the commit on GitHub means it found
+a problem --- open it to see what.
+
+\textbf{People with a local copy} use ordinary git: \f{git pull}, work on a branch, merge into
+\f{main}, \f{git push}. Then press \emph{Pull} in Overleaf.
+
+\textbf{Who owns what.} GitHub sync only works while the Overleaf project's \emph{owner} has
+Overleaf premium (Stanford's license ends when they leave Stanford). Keep:
+\begin{itemize}
+  \item at least two \textbf{owners of the GitHub organization}, at least one of whom will stay;
+  \item the \textbf{Overleaf project owned by someone who will stay} at Stanford (e.g.\ the
+        course instructor). Current: \OverleafOwner.
+\end{itemize}
+
+\textbf{When someone leaves} (do this before their Stanford access ends):
+\begin{enumerate}
+  \item GitHub: add the successor as an organization owner; the leaver can then step down.
+  \item Overleaf, if the leaver owns the project: transfer ownership to the successor
+        (Share $\rightarrow$ make them owner), then check that Menu $\rightarrow$ GitHub still
+        pulls and pushes. If it doesn't, the successor creates a fresh project with
+        New Project $\rightarrow$ Import from GitHub (choose the repository above), sets the
+        compiler to XeLaTeX and the Main document to \f{README.tex}, re-invites collaborators, and
+        the old project is archived. Nothing is lost: the repository has everything.
+  \item Update the names on this page and push.
+\end{enumerate}
+
+\section{Scripted tools}\label{sec:tools}
 
 The scripts run on a local copy of the project (git checkout with Python), not inside Overleaf.
 After running them, upload the changed files to Overleaf.
