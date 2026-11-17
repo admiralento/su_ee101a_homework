@@ -1,0 +1,61 @@
+% Problem 1
+\UseQuestion{kcl_kvl_equations}{v1}{
+    unknowns = 1,
+    kcl      = 1,
+    kvl      = 1,
+    ohm      = 1,
+    solve    = 13,
+}
+
+% Problem 2
+\newpage
+\UseQuestion{resistor_search}{v1}{
+    findvalue = 10,
+    deviation = 3,
+    power     = 3,
+}
+
+% Problem 3
+\newpage
+\UseQuestion{wye_delta_nodal_dependent}{v0}{
+    delta    = 6,
+    solve    = 9,
+    findvx   = 2,
+    deltakcl = 2,
+    vcom     = 2,
+    wyekcl   = 2,
+}
+
+% Problem 4
+\newpage
+\UseQuestion{pn_junction_concepts}{v0}{
+    side    = 2,
+    doped   = 2,
+    groupiv = 3,
+    excess  = 2,
+    charges = 2,
+    field   = 2,
+    flow    = 2,
+}
+
+% Problem 5
+\newpage
+\UseQuestion{diode_model_comparison}{v1}{
+    ideal    = 6,
+    drop     = 6,
+    level    = 5,
+    symbolic = 5 extra,
+}
+
+% Problem 6
+\newpage
+\UseQuestion{diode_hogging}{v1}{
+    current    = 2,
+    currenthot = 6,
+    heat       = 2,
+    hogging    = 4,
+    solver     = 5,
+    findr      = 5,
+    voltage    = 2,
+    power      = 2,
+}

@@ -1,0 +1,54 @@
+% Problem 1
+
+\UseQuestion{topology_and_kirchhoff}{v0}{
+    nodes    = 1,
+    loops    = 2,
+    branches = 1,
+    series   = 1,
+    parallel = 1,
+    unknowns = 1,
+    kcl      = 1,
+    kvl      = 1,
+    ohm      = 1,
+    solve    = 13,
+}
+
+% Problem 2
+\clearpage
+\UseQuestion{resistor_search}{v1}{
+    findvalue = 10,
+    deviation = 3,
+    power     = 3,
+}
+
+% Problem 3 function generators and oscilloscope probes
+\clearpage
+\UseQuestion{function_generator_loading}{v0}{
+    mag         = 2,
+    power       = 2,
+    mag2        = 2,
+    voltadj     = 2,
+    power2      = 2,
+    sourcer     = 2,
+    secondscope = 2,
+}
+
+% Problem 4
+\clearpage
+\UseQuestion{wye_delta_nodal_independent}{v0}{
+    delta    = 6,
+    solve    = 9,
+    findvx   = 2,
+    deltakcl = 2,
+    vcom     = 2,
+    wyekcl   = 2,
+}
+
+% Problem 5 - Residential Power Distribution Mesh Analysis (26 points)
+\clearpage
+\UseQuestion{residential_power_distribution}{v1}{
+    load_estimate = 2,
+    meshanalysis  = 12,
+    openneutral   = 10,
+    deviceimpact  = 2,
+}
