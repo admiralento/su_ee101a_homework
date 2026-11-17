@@ -76,8 +76,9 @@ Key facts:
   `\documentclass`, without changing the project's Main document, so collaborators can compile
   different homeworks at the same time. Root-file names are unique across the project (Overleaf
   needs that). The root files are generated (`check.py --fix-mains`) and must not be hand-edited;
-  shared layout lives in `config/document.tex`. Set the project's Main document to
-  `main_questionbank_student.tex` (harmless default).
+  shared layout lives in `config/document.tex`. The project's Main document is `README.tex`, a
+  short user guide (how to compile, add problems, update the catalog, and use the tools). Keep it
+  in sync when workflows change.
 
 ---
 
