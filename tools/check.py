@@ -21,6 +21,7 @@ What is checked
   metadata   course.tex per semester; \\HomeworkNumber matches HWxx; \\DueDate year matches semester
 """
 import argparse
+import os
 import re
 import sys
 from collections import defaultdict
@@ -80,14 +81,17 @@ def exists_exact_case(path):
     path = Path(path)
     if not path.exists():
         return False
-    cur = path.resolve()
-    parts = []
-    while cur != cur.parent:
-        parts.append(cur)
-        cur = cur.parent
-    for p in parts:
-        if p.parent.exists() and p.name not in {c.name for c in p.parent.iterdir()}:
+    # Walk the path as written (resolve() would silently correct the case on Windows), starting
+    # from the project root; '..' components are collapsed first.
+    try:
+        relative = Path(os.path.normpath(os.path.abspath(path))).relative_to(ROOT)
+    except ValueError:
+        return True   # outside the project: nothing to compare against
+    cur = ROOT
+    for name in relative.parts:
+        if name not in {c.name for c in cur.iterdir()}:
             return False
+        cur = cur / name
     return True
 
 
