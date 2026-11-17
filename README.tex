@@ -19,8 +19,9 @@
 \let\f\path                                     % file names and keys (line-breakable)
 \newcommand{\cmd}[1]{\texttt{\textbackslash\detokenize{#1}}}
 % Fill these in when the GitHub repository and Overleaf project are set up (see the "Syncing with GitHub" section):
-\newcommand{\RepoURL}{\textcolor{red}{[GitHub repository URL --- to be filled in]}}
-\newcommand{\OverleafOwner}{\textcolor{red}{[name --- to be filled in]}}
+\newcommand{\RepoURL}{\url{https://github.com/admiralento/su_ee101a_homework}}
+\newcommand{\RepoOwner}{Ammon Wolfert (GitHub user \texttt{admiralento})}
+\newcommand{\OverleafOwner}{Ammon Wolfert}
 
 \title{EE101A Homework Project --- Start Here}
 \author{}
@@ -174,9 +175,11 @@ problems by id, so a move needs nothing else; a rename also needs the id changed
 
 \section{Syncing with GitHub, and keeping the project alive}
 
-\textbf{The GitHub repository is the permanent copy} of this project:
-\RepoURL{} (private, owned by the course's GitHub organization, not by a person). This Overleaf
-project is a working copy linked to it with Overleaf's GitHub synchronization.
+\textbf{The GitHub repository is the permanent copy} of this project (private):
+\begin{center}\RepoURL\end{center}
+It currently belongs to \RepoOwner; it should eventually move to a course
+GitHub organization (see below). This Overleaf project is a working copy linked to it with
+Overleaf's GitHub synchronization.
 
 \textbf{Every time you work in Overleaf:}
 \begin{enumerate}
@@ -196,14 +199,19 @@ a problem --- open it to see what.
 \textbf{Who owns what.} GitHub sync only works while the Overleaf project's \emph{owner} has
 Overleaf premium (Stanford's license ends when they leave Stanford). Keep:
 \begin{itemize}
-  \item at least two \textbf{owners of the GitHub organization}, at least one of whom will stay;
+  \item the repository in a \textbf{GitHub organization} for the course with at least two owners,
+        at least one of whom will stay (a personal repository can be moved there with GitHub's
+        Settings $\rightarrow$ Transfer ownership; GitHub redirects the old URL);
   \item the \textbf{Overleaf project owned by someone who will stay} at Stanford (e.g.\ the
         course instructor). Current: \OverleafOwner.
 \end{itemize}
 
 \textbf{When someone leaves} (do this before their Stanford access ends):
 \begin{enumerate}
-  \item GitHub: add the successor as an organization owner; the leaver can then step down.
+  \item GitHub: if the repository is still on the leaver's personal account, transfer it to a
+        course organization (or to the successor); add the successor as an organization owner;
+        the leaver can then step down. Afterwards check that Overleaf's Menu $\rightarrow$ GitHub
+        still pulls and pushes (if not, re-import as in the next step).
   \item Overleaf, if the leaver owns the project: transfer ownership to the successor
         (Share $\rightarrow$ make them owner), then check that Menu $\rightarrow$ GitHub still
         pulls and pushes. If it doesn't, the successor creates a fresh project with
