@@ -1,0 +1,58 @@
+\begin{mainquestion}{tellegenpower}{Solderpasted}
+
+\begin{center}
+    \includegraphics[]{schematic.png}
+\end{center}
+
+% =========================================================
+\begin{partquestion}{powerall}
+{Calculate the power absorbed or supplied by each network element (including sources) except for element \#3, which appears to have some solder paste smeared over its label.}
+
+\begin{answer}
+    The power is simply P=IV for each element.  Here we follow the passive sign convention which states that the power will be negative if the current as drawn flows into the cathode, and will be positive if the current as drawn flows into the anode.  If the power is negative, the element is supplying power.  If the power is positive, the element is absorbing power.
+
+\begin{table}[htbp]
+\centering
+\label{tab:power_balance}
+\begin{tabular}{|c | S[table-format=-3.0]|  c|}
+\hline
+\textbf{Element} & \textbf{Power (\si{\watt})} & \textbf{Absorbing / Supplying} \\
+\hline
+6 V source & -72 & Supplying \\ \hline
+9 V source & -90 & Supplying \\ \hline
+3 A source & 18 & Absorbing \\ \hline
+1 & 25 & Absorbing \\ \hline
+2 & 15 & Absorbing \\ \hline
+3 & ??? & ??? \\ \hline
+4 & 105 & Absorbing \\ \hline
+5 & 3 & Absorbing \\ \hline
+\end{tabular}
+\end{table}
+
+\end{answer}
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{powersingle}
+{Without direct knowledge of the current and voltage for element \#3, can you find the power absorbed or supplied by element \#3?  If so, what is it, and if not, why not?}
+
+\begin{answer}
+Absolutely, we can use Tellegen’s theorem which says the sum of all power absorbed or supplied in a circuit must be zero.  Adding up the powers known, we have:
+\[
+P_{\text{total}}=-72-90+18+25+15+P_3+105+3=0
+\]
+Solving for $P_3$ gives $P_3=\qty{-4}{\watt}$, so the element is supplying power to the circuit. 
+
+\end{answer}
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{vasingle}
+{Can you determine the current and/or voltage through element \#3?  If so, what are the values, and if not, why not?}
+
+\begin{answer}
+Once again, we can certainly do this using KCL or KVL.  Let’s choose to employ KCL. We can readily see that the current flowing into element 3 from the left is 5 – 3 = 2 A.  If we use KVL and walk around the lower left-hand loop, we see that the voltage must be 9 – 6 – 1 = 2V, with the positive terminal on the right. This implies that the current is entering from the negative terminal on the left. which matches our assumption that the element is supplying power. We could’ve also calculated the voltage based on the current and power we found earlier using V = P / I.
+\end{answer}
+\end{partquestion}
+
+\end{mainquestion}
