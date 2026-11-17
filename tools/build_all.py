@@ -6,7 +6,7 @@ in a temporary copy of the project. Uses Tectonic from .tools/tectonic/ or PATH.
 
 Examples
     python tools/build_all.py                          # all homeworks, both modes
-    python tools/build_all.py --mode solutions --only "Fall 2026/HW07"
+    python tools/build_all.py --mode solutions --only 2026-4_Fall/HW07
     python tools/build_all.py --save baseline.json     # record results
     python tools/build_all.py --compare baseline.json  # rebuild and diff against a recording
     python tools/build_all.py --pdf-dir pdfs           # also keep every PDF
@@ -79,7 +79,7 @@ def root_file(sem, hw, mode):
     """Path (relative to the project root) of the root file to compile."""
     if mode == 'questionbank':
         return 'main_questionbank_solutions.tex'
-    return f'assignments/{sem}/{hw}/{sem.replace(" ", "")}_{hw}_{mode}.tex'
+    return f'assignments/{sem}/{hw}/{sem}_{hw}_{mode}.tex'
 
 
 def compile_root(tectonic, work, root, outdir):
@@ -134,7 +134,7 @@ def compare(old, new):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--mode', choices=['both', 'solutions', 'student'], default='both')
-    ap.add_argument('--only', nargs='*', help='e.g. "Fall 2026/HW07"')
+    ap.add_argument('--only', nargs='*', help='e.g. 2026-4_Fall/HW07')
     ap.add_argument('--save', type=Path, help='write results JSON here')
     ap.add_argument('--compare', type=Path, help='baseline JSON to diff against')
     ap.add_argument('--pdf-dir', type=Path, help='copy every PDF here')

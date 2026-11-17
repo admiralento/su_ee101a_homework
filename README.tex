@@ -45,7 +45,7 @@ file is not one of the files below.)
 \hline
 \textbf{To get\ldots} & \textbf{open and Recompile} \\ \hline
 A homework, student version & \f{assignments/<Semester>/<HWxx>/<Semester>_<HWxx>_student.tex}\newline
-                              e.g.\ \f{assignments/Fall 2026/HW07/Fall2026_HW07_student.tex} \\
+                              e.g.\ \f{assignments/2026-4_Fall/HW07/2026-4_Fall_HW07_student.tex} \\
 A homework, solutions & the \f{..._solutions.tex} file next to it \\
 Every problem in the bank & \f{main_questionbank_student.tex} or \f{main_questionbank_solutions.tex} \\
 \hline
@@ -58,12 +58,14 @@ homework can show 0 points; compiling again fixes it (Overleaf usually does this
 \section{Where things are}
 
 \begin{lstlisting}
-assignments/<Semester>/          one folder per offering, e.g. "Fall 2026", "Winter 2026"
-    course.tex                   course code, instructor, layout style for that semester
+assignments/<Semester>/          one folder per offering, sorted in time order:
+                                 <year>-<n>_<Season>; n: 1 Winter ... 4 Fall
+                                 e.g. 2026-1_Winter, 2026-4_Fall
+    course.tex                   printed name ("Fall 2026"), instructor, style
     HW07/
         metadata.tex             homework number and due date
         questions.tex            which problems, in what order, with what points
-        Fall2026_HW07_student.tex / Fall2026_HW07_solutions.tex   <- compile these
+        2026-4_Fall_HW07_student.tex / ..._solutions.tex   <- compile these
 questionbank/
     04_diode_circuits/           one folder per syllabus topic (numbered in course order)
         load_line/               subtopic: the main concept a problem teaches
@@ -134,7 +136,9 @@ may be fixed in place.
 \subsection{Create a new homework or semester}
 Copy an existing \f{HWxx/} folder, edit \f{metadata.tex} (number, due date) and
 \f{questions.tex}, then run \f{python tools/check.py --fix-mains} to create the two files you
-compile. For a new semester, also copy a \f{course.tex} and set the instructor.
+compile. For a new semester, create its folder with the dated name (e.g.\ \f{2027-1_Winter}),
+copy a \f{course.tex} into it, and set \cmd{SemesterName} (e.g.\ \f{Winter 2027}) and the
+instructor.
 
 \subsection{Change the look}
 In a semester's \f{course.tex}:
@@ -185,11 +189,11 @@ After running them, upload the changed files to Overleaf.
 \f{python tools/check.py --fix-mains} & After creating a homework folder: writes its
     \f{_student.tex} / \f{_solutions.tex} files. \\
 \f{python tools/check.py --rename-tag old new} & Renames a concept tag everywhere. \\
-\texttt{.\textbackslash build.ps1 -Semester "Fall 2026" -Assignment HW07 [-Mode student]} & Compiles one
+\texttt{.\textbackslash build.ps1 -Semester 2026-4\_Fall -Assignment HW07 [-Mode student]} & Compiles one
     homework locally to \f{out.pdf} (Windows; one-time setup \texttt{.\textbackslash build.ps1 -Install}). In VS
     Code: open a \f{_student/_solutions.tex} file and press Ctrl+Shift+B. \\
 \f{python tools/build_all.py} & Compiles every homework and the question bank. Use after
-    changing shared files (\f{style/}, \f{config/}); \f{--only "Fall 2026/HW07"} for one
+    changing shared files (\f{style/}, \f{config/}); \f{--only 2026-4_Fall/HW07} for one
     homework, \f{--save}/\f{--compare} to check nothing else changed. \\
 \hline
 \end{tabular}

@@ -27,8 +27,8 @@ assignments into it. It is written for an LLM assistant (or a new collaborator) 
 | Command | What it does |
 |---|---|
 | `python tools/check.py` | Static checks (section 9). Run before every hand-back. `--fix-index` regenerates `questionbank/index.tex`; `--fix-mains` (re)writes every homework's two root files; `--catalog` rewrites `questionbank/README.md` and `questionbank/catalog.tex` (it warns when either is stale). |
-| `python tools/build_all.py` | Compiles every homework's root files (both modes) in a temporary copy. `--only "Winter 2026/HW03"`, `--mode solutions`, `--save x.json` / `--compare x.json` for before/after regression checks, `--pdf-dir` to keep PDFs. |
-| `powershell -ExecutionPolicy Bypass -File build.ps1 -Semester "Fall 2026" -Assignment HW07 [-Mode student]` | Compiles one homework to `out.pdf` (default: solutions). Also `-File <root .tex>`, `-Mode questionbank` / `questionbank-student` for the catalog. In VS Code, open a root file and press Ctrl+Shift+B. One-time setup: `build.ps1 -Install`. |
+| `python tools/build_all.py` | Compiles every homework's root files (both modes) in a temporary copy. `--only 2026-1_Winter/HW03`, `--mode solutions`, `--save x.json` / `--compare x.json` for before/after regression checks, `--pdf-dir` to keep PDFs. |
+| `powershell -ExecutionPolicy Bypass -File build.ps1 -Semester 2026-4_Fall -Assignment HW07 [-Mode student]` | Compiles one homework to `out.pdf` (default: solutions). Also `-File <root .tex>`, `-Mode questionbank` / `questionbank-student` for the catalog. In VS Code, open a root file and press Ctrl+Shift+B. One-time setup: `build.ps1 -Install`. |
 
 Both builders use Tectonic (XeTeX engine, automatic reruns) from `.tools/tectonic/`, run from the
 project root with `-Z search-path=.` so paths resolve from the root as on Overleaf. Overleaf is the
@@ -71,7 +71,7 @@ Key facts:
   requires `\begin{answer}[..]` and `\end{answer}` to be **alone on their lines, in column 0**
   (`check.py` enforces this). In `style-mark` answers are replaced by blank writing space.
 - **Choosing what to compile:** every homework has two root files in its folder, e.g.
-  `assignments/Fall 2026/HW07/Fall2026_HW07_student.tex` and `Fall2026_HW07_solutions.tex`.
+  `assignments/2026-4_Fall/HW07/2026-4_Fall_HW07_student.tex` and `2026-4_Fall_HW07_solutions.tex`.
   In Overleaf, open one and press Recompile: Overleaf compiles the open file when it contains
   `\documentclass`, without changing the project's Main document, so collaborators can compile
   different homeworks at the same time. Root-file names are unique across the project (Overleaf
@@ -86,8 +86,10 @@ Key facts:
 
 ```
 assignments/
-  <Semester>/                 e.g. "Summer 2025", "Summer 2026", "Fall 2026"  (note the space)
-    course.tex                course code, title, instructor, header settings (required)
+  <Semester>/                 <year>-<n>_<Season>, n = 1 Winter, 2 Spring, 3 Summer, 4 Fall, so the
+                              folders sort chronologically: 2025-3_Summer, 2026-1_Winter, 2026-3_Summer,
+                              2026-4_Fall (checked by tools/check.py)
+    course.tex                printed semester name, course code, title, instructor, style, header settings
     HWxx/                     two-digit, zero-padded: HW00, HW01, ... HW09
       metadata.tex
       questions.tex           the manifest
@@ -139,6 +141,7 @@ secondary concepts are expressed with concept tags, section 4):
 Course-level metadata and header settings for one offering; every semester folder must have one:
 ```tex
 % Course metadata for this semester (shared by every HWxx in this folder)
+\newcommand{\SemesterName}{Fall 2026}  % printed name; must match the folder (2026-4_Fall)
 \newcommand{\CourseCode}{EE101A}
 \newcommand{\CourseTitle}{Circuits I}
 \newcommand{\Instructor}{Jeff Stribling}
@@ -494,7 +497,7 @@ Then:
 6. Run the checks in section 9 and regenerate the catalogs (`--catalog`), so the new questions
    appear in `questionbank/README.md` and in the question bank PDF.
 7. Create the homework's two root files: `python tools/check.py --fix-mains`. Tell the user which
-   file to open to compile (e.g. `Winter2026_HW03_solutions.tex`).
+   file to open to compile (e.g. `2026-1_Winter_HW03_solutions.tex`).
 8. Commit on a branch and report the full list of added / modified / moved files for mirroring into
    Overleaf (section 0).
 

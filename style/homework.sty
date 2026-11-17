@@ -4,6 +4,9 @@
 % =========================================================
 % Core packages
 % =========================================================
+% \SemesterName (course.tex) is the printed semester, e.g. "Fall 2026"; \Semester is the folder
+% name used for paths, e.g. "2026-4_Fall". The catalog defines no \SemesterName.
+\providecommand{\SemesterName}{\Semester}
 \RequirePackage{geometry}
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
@@ -53,7 +56,7 @@
     linkcolor=blue,
     filecolor=magenta,      
     urlcolor=blue,
-    pdftitle={\CourseCode{} \Semester{} Homework \HomeworkNumber},
+    pdftitle={\CourseCode{} \SemesterName{} Homework \HomeworkNumber},
     pdfpagemode=FullScreen,
     }
 
@@ -401,7 +404,7 @@
 {
     \pagestyle{fancy}
     \fancyhf{}
-    \fancyhead[L]{\CourseCode/\Semester}
+    \fancyhead[L]{\CourseCode/\SemesterName}
     \fancyfoot[L]{Compiled \DTMnow}
     \fancyfoot[R]{\thepage}
     \fancyhead[R]{\rightmark}

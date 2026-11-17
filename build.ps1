@@ -10,9 +10,9 @@
   and then on PATH. Intermediate files go to build\ (git-ignored); the PDF is copied to out.pdf.
 
 .EXAMPLE
-  .\build.ps1 -Semester "Fall 2026" -Assignment HW07                  # solutions (default)
-  .\build.ps1 -Semester "Fall 2026" -Assignment HW07 -Mode student
-  .\build.ps1 -File "assignments\Fall 2026\HW07\Fall2026_HW07_student.tex"
+  .\build.ps1 -Semester 2026-4_Fall -Assignment HW07                  # solutions (default)
+  .\build.ps1 -Semester "Fall 2026" -Assignment HW07 -Mode student     # printed name also works
+  .\build.ps1 -File assignments\2026-4_Fall\HW07\2026-4_Fall_HW07_student.tex
   .\build.ps1 -Mode questionbank                                       # catalog, with solutions
   .\build.ps1 -Mode questionbank-student                               # catalog, without solutions
 #>
@@ -63,10 +63,15 @@ if ($File) {
 } elseif ($Mode -eq 'questionbank-student') {
     $target = Join-Path $root 'main_questionbank_student.tex'
 } elseif ($Semester -and $Assignment) {
-    $name = "$($Semester -replace ' ', '')_$($Assignment)_$Mode.tex"
+    # Accept the folder name (2026-4_Fall) or the printed name ("Fall 2026")
+    if ($Semester -match '^(Winter|Spring|Summer|Fall) (\d{4})$') {
+        $n = @{ Winter = 1; Spring = 2; Summer = 3; Fall = 4 }[$Matches[1]]
+        $Semester = "$($Matches[2])-$($n)_$($Matches[1])"
+    }
+    $name = "$($Semester)_$($Assignment)_$Mode.tex"
     $target = Join-Path $root "assignments\$Semester\$Assignment\$name"
 } else {
-    throw 'Give -File <root .tex>, or -Semester "Fall 2026" -Assignment HW07 [-Mode student], or -Mode questionbank.'
+    throw 'Give -File <root .tex>, or -Semester 2026-4_Fall -Assignment HW07 [-Mode student], or -Mode questionbank.'
 }
 if (-not (Test-Path $target)) { throw "Not found: $target (run python tools\check.py --fix-mains?)" }
 $rel = Resolve-Path -Relative $target
