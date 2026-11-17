@@ -1,0 +1,102 @@
+\begin{mainquestion}{sourcetransform}{Source Transformations}
+
+\questionpoints Use source transformations to find the voltage $V_o$ in the circuit below.
+
+\begin{center}
+    \begin{circuitikz}[scale=1, american]
+        \draw (0,0) to[I, l=\SI{1}{\ampere}] (0,3);
+        
+        % Top wire shortened to stop at 6 (was 8) to avoid crossing the resistor
+        \draw (0,3) -- (6,3);
+        \draw (0,0) -- (8,0);
+        
+        % 3V Source: (+) at TOP
+        \draw (2,3) to[R=\SI{2}{\ohm}] (2,1.5) to[V, l=\SI{3}{\volt}] (2,0); 
+    
+        % 4V Source: (+) at BOTTOM
+        \draw (4,3) to[V, l=\SI{4}{\volt}, invert] (4,1.5) to[R=\SI{5}{\ohm}] (4,0); 
+        
+        \draw (6,3) to[R=\SI{6}{\ohm}] (6,0);
+        
+        % The 17 ohm resistor connects the top wire from 6 to 8
+        \draw (6,3) to[R=\SI{17}{\ohm}] (8,3) to[R=\SI{8}{\ohm}, v=$V_o$] (8,0);
+    \end{circuitikz}
+\end{center}
+
+\begin{answer}[5in]
+    We first transform the \SI{3}{\volt} source with the \SI{2}{\ohm} series resistance into its Norton equivalent with a Norton source current of $\frac{\SI{3}{\volt}}{\SI{2}{\ohm}} = \SI{1.5}{\ampere}$, and a Norton resistance of \SI{2}{\ohm}.
+    
+    Simultaneously, we can transform the \SI{4}{\volt} source with the \SI{5}{\ohm} series resistance into its Norton equivalent with a Norton source current of $\frac{\SI{4}{\volt}}{\SI{5}{\ohm}} = \SI{0.8}{\ampere}$, and a Norton resistance of \SI{5}{\ohm}. Note the polarity of the two sources are different, so the Norton current sources will be pointing in different directions! The resulting circuit looks like:
+
+    \begin{center}
+        \begin{circuitikz}[scale=0.8, american]
+            % Bottom wire runs the full length
+            \draw (0,0) -- (16,0);
+        
+            % Top wire connects the parallel branches (stops at the last parallel resistor)
+            \draw (0,3) -- (12.5,3);
+        
+            % 1. Source: 1A
+            \draw (0,0) to[I, l=\SI{1}{\ampere}] (0,3);
+        
+            % 2. Source: 1.5A (Spacing increased)
+            \draw (2.5,0) to[I, l=\SI{1.5}{\ampere}] (2.5,3);
+        
+            % 3. Resistor: 2 Ohm
+            \draw (5,3) to[R=\SI{2}{\ohm}] (5,0);
+        
+            % 4. Source: 800mA (Pointing down)
+            \draw (7.5,3) to[I, i=\SI{800}{\milli\ampere}] (7.5,0);
+        
+            % 5. Resistor: 5 Ohm
+            \draw (10,3) to[R=\SI{5}{\ohm}] (10,0);
+        
+            % 6. Resistor: 6 Ohm
+            \draw (12.5,3) to[R=\SI{6}{\ohm}] (12.5,0);
+        
+            % 7. Resistor: 17 Ohm (Series) connecting to the 8 Ohm Load
+            % Line stops at 12.5, then the resistor bridges the gap to 16
+            \draw (12.5,3) to[R=\SI{17}{\ohm}] (16,3) to[R, l=\SI{8}{\ohm}, v=$V_o$] (16,0);
+        \end{circuitikz}
+    \end{center}
+
+    We can simplify the circuit considerably by combining the current sources since they are in parallel to form a $1 + 1.5 - 0.8 = \SI{1.7}{\ampere}$ source. We can also combine the three parallel resistors with a single resistor of value:
+    \[ \frac{(2)(5)(6)}{(2)(5) + (2)(6) + (5)(6)} = \frac{60}{52} = \frac{15}{13} \si{\ohm}. \]
+    
+    The simplified circuit looks like:
+    \begin{center}
+        \begin{circuitikz}[scale=0.8, american]
+            \draw (0,0) to[I, l=\SI{1.7}{\ampere}] (0,3);
+            \draw (2,0) to[R, l=$\frac{15}{13}\si{\ohm}$] (2,3);
+            \draw (0,3) -- (2,3) -- (4,3) to[R=\SI{17}{\ohm}] (6,3) to[R=\SI{8}{\ohm}, v=$V_o$] (6,0) -- (0,0);
+        \end{circuitikz}
+    \end{center}
+
+    The next step is to apply another source transformation to a Thévenin equivalent with a Thévenin voltage source of $(1.7)(\frac{15}{13}) = \frac{51}{26} \si{\volt}$ with a Thévenin resistance of $\frac{15}{13} \si{\ohm}$.
+    
+    \begin{center}
+        \begin{circuitikz}[scale=1, american]
+            % Left Voltage Source: 51/26 V, (+) on top
+            \draw (0,0) to[V, l=$\frac{51}{26}$ V] (0,3);
+        
+            % Top Branch: Two resistors in series
+            % First resistor: 15/13 Ohms
+            \draw (0,3) to[R=$\frac{15}{13}\,\Omega$] (3,3) 
+            % Second resistor: 17 Ohms
+                        to[R=$17\,\Omega$] (6,3);
+        
+            % Right Branch: 8 Ohm resistor with Vo voltage drop
+            % 'v=Vo' adds the polarity (+ on top since we draw top-to-bottom)
+            \draw (6,3) to[R=$8\,\Omega$, v=$V_o$] (6,0);
+        
+            % Bottom wire closing the loop
+            \draw (6,0) -- (0,0);
+        \end{circuitikz}
+    \end{center}
+
+    The result is a simple voltage divider:
+
+    \[ V_o = \frac{51}{26} \left( \frac{8}{8 + \frac{15}{13} + 17} \right) = \frac{3}{5} \si{\volt}. \]
+\end{answer}
+
+\end{mainquestion}

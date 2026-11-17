@@ -1,0 +1,125 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage[american]{circuitikz}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\newenvironment{solution}
+  {\par\medskip\noindent\textbf{Solution.}\ }
+  {\par\medskip}
+
+\begin{document}
+
+\section*{Problem 4 \hfill (13 points total)}
+
+A black box filled with linear circuitry is connected to a variable resistor.
+An ideal ammeter (with zero resistance) and an ideal voltmeter (with infinite
+resistance) are used to measure current and voltage as shown below. The results
+of several sample readings are listed in the accompanying table.
+
+\begin{center}
+\begin{minipage}[c]{0.55\textwidth}
+\centering
+\begin{circuitikz}[scale=1.0, transform shape]
+  % Black box
+  \draw[fill=blue!8] (0,0) rectangle (2.2,3.6);
+  \node[align=center] at (1.1,2.75) {Black box\\(linear network)};
+
+  % Output terminals and load loop
+  \draw (2.2,2.5) -- (3.2,2.5)
+        to[ammeter, l=$I$] (4.4,2.5)
+        -- (5.25,2.5)
+        to[vR, l=$R$] (5.25,0.6)
+        -- (2.2,0.6);
+
+  % Voltmeter across output
+  \draw (3.2,2.5) to[voltmeter, l_=$V$] (3.2,0.6);
+\end{circuitikz}
+\end{minipage}%
+\begin{minipage}[c]{0.38\textwidth}
+\centering
+\begin{tabular}{ccc}
+\toprule
+$R\;(\Omega)$ & $V\;(\mathrm{V})$ & $I\;(\mathrm{A})$ \\
+\midrule
+4 & 6.0 & 1.5 \\
+6 & 8.0 & 1.333 \\
+8 & 9.6 & 1.2 \\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\begin{enumerate}[label=(\alph*), leftmargin=2em]
+  \item Find $I$ and $V$ when $R=17\,\Omega$. \hfill (7 points)
+
+  \begin{solution}
+  Replace the black box by its Th\'evenin equivalent, consisting of a source
+  $V_{\mathrm{th}}$ in series with a resistance $R_{\mathrm{th}}$. For a load
+  resistance $R$,
+  \[
+    \frac{V}{V_{\mathrm{th}}}=\frac{R}{R+R_{\mathrm{th}}}.
+  \]
+  Using the measurements for $R=4\,\Omega$ and $R=6\,\Omega$ gives
+  \[
+    \frac{6}{V_{\mathrm{th}}}=\frac{4}{4+R_{\mathrm{th}}},
+    \qquad
+    \frac{8}{V_{\mathrm{th}}}=\frac{6}{6+R_{\mathrm{th}}}.
+  \]
+  Eliminating $V_{\mathrm{th}}$,
+  \begin{align*}
+    \frac{6}{4}(4+R_{\mathrm{th}})
+      &= \frac{8}{6}(6+R_{\mathrm{th}}),\\
+    6+\frac{3}{2}R_{\mathrm{th}}
+      &= 8+\frac{4}{3}R_{\mathrm{th}},\\
+    R_{\mathrm{th}} &= 12\,\Omega.
+  \end{align*}
+  It follows that
+  \[
+    V_{\mathrm{th}}
+      =\frac{6}{4}(4+12)
+      =24\,\mathrm{V}.
+  \]
+  Therefore, with $R=17\,\Omega$,
+  \[
+    V=V_{\mathrm{th}}\frac{R}{R+R_{\mathrm{th}}}
+      =24\frac{17}{17+12}
+      =\frac{408}{29}\,\mathrm{V}
+      \approx 14.1\,\mathrm{V},
+  \]
+  and
+  \[
+    I=\frac{V}{R}
+      =\frac{24}{29}\,\mathrm{A}
+      \approx 0.83\,\mathrm{A}.
+  \]
+  \end{solution}
+
+  \item Determine the value of $R$ that achieves maximum power transfer from
+  the black box to the variable resistor. \hfill (2 points)
+
+  \begin{solution}
+  Maximum power transfer occurs when the load resistance equals the Th\'evenin
+  resistance:
+  \[
+    \boxed{R=R_{\mathrm{th}}=12\,\Omega.}
+  \]
+  \end{solution}
+
+  \item What is the maximum power transferred to the variable resistor?
+  \hfill (4 points)
+
+  \begin{solution}
+  With $R=R_{\mathrm{th}}$, the maximum load power is
+  \[
+    P_{\max}=\frac{V_{\mathrm{th}}^2}{4R_{\mathrm{th}}}
+      =\frac{(24\,\mathrm{V})^2}{4(12\,\Omega)}
+      =\boxed{12\,\mathrm{W}}.
+  \]
+  \end{solution}
+\end{enumerate}
+
+\end{document}
