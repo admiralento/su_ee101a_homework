@@ -1,0 +1,169 @@
+\begin{mainquestion}{residentialpower}{Mesh Analysis}
+The DC equivalent circuit of a simple residential power distribution is shown below. $R_{w}$ represents the hot wire (typically black) resistance, and $R_{n}$ represents the neutral wire (typically white) resistance. The other resistances represent loads that are drawing power.
+
+\begin{center}
+    \includegraphics[width=4in]{../v0/circuit.png}
+\end{center}
+
+\begin{partquestion}{load_estimate}
+{$R_{1}$ models a heavy duty \qty{2.88}{\kilo\watt} microwave built to run on 120V. \\ $R_{2}$ models a \qty{1.2}{\kilo\watt} blender that draws 10A when crunching ice. \\ $R_{3}$ models a 240V stovetop that draws $\approx\qty{18.5}{\ampere}$ with two of its burners on. \\
+Find $R_1$, $R_2$ and $R_3$ to the nearest ohm.}
+
+\begin{answer}
+    We can use Ohm's law and the definition of power to find the resistance for each load.
+    \[P = \frac{V^2}{R_1} \hspace{1cm} R_1=\frac{120^2}{2880}=\qty{5}{\ohm}\]
+    \[P = I^2R_2 \hspace{1cm} R_2=\frac{1200}{10^2}=\qty{12}{\ohm}\]
+    \[R_3 = \frac{V}{I}=\frac{240}{18.5}=\qty{13}{\ohm}\]
+\end{answer}
+\end{partquestion}
+
+\begin{partquestion}{meshanalysis}{Using your results from part (\cref{prob:residentialpower:load_estimate}), use mesh analysis to determine the voltage across each of the three loads given $R_{w}=R_{n}=\qty{0.2}{\ohm}$.}
+\begin{answer}
+Create three mesh loops in the clockwise direction for the three currents $i_{1}$ in the top-left loop, $i_{2}$ in the bottom-left loop, and $i_{3}$ in the right-hand loop. Using KVL around each loop gives:
+
+\begin{gather*}
+R_w i_1 + R_1 (i_1 - i_3) + R_n (i_1 - i_2) = 120 \\
+R_w i_2 + R_2 (i_2 - i_3) + R_n (i_2 - i_1) = 120 \\
+R_3 i_3 + R_1 (i_3 - i_1) + R_2 (i_3 - i_2) = 0
+\end{gather*}
+
+Then we gather like terms:
+
+\begin{gather*}
+(R_w + R_1 + R_n)i_1 - R_n i_2 - R_1 i_3 = 120 \\
+- R_n i_1 + (R_w + R_2 + R_n)i_2 - R_2 i_3 = 120 \\
+- R_1 i_1 - R_2 i_2 + (R_1 + R_2 + R_3)i_3 = 0
+\end{gather*}
+
+And this can be neatly written as a matrix:
+
+\[
+\begin{bmatrix}
+R_w + R_1 + R_n & -R_n & -R_1 \\
+-R_n & R_w + R_2 + R_n & -R_2 \\
+-R_1 & -R_2 & R_3 + R_1 + R_2
+\end{bmatrix}
+\begin{bmatrix}
+i_1 \\
+i_2 \\
+i_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+120 \\
+120 \\
+0
+\end{bmatrix}
+\]
+
+Substituting the given values produces:
+
+\[
+\begin{bmatrix}
+5.4 & -0.2 & -5 \\
+-0.2 & 12.4 & -12 \\
+-5 & -12 & 30
+\end{bmatrix}
+\begin{bmatrix}
+i_1 \\
+i_2 \\
+i_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+120 \\
+120 \\
+0
+\end{bmatrix}
+\]
+
+This can be solved quickly in MATLAB using matrix inversion, or you can solve by hand. Multiply the second equation by 25 and subtract from the third equation to give:
+\[-322i_2+330i_3=-3000\]
+Multiply the second equation by 27 and add to the first equation to give:
+\[334.6i_2-329i_3=3360\]
+From these last two equations, we can eliminate $i_3$ by multiplying the first by 329 and the second by 330 and adding the results.  We get:
+\[4480i_2 = 121800\]\[i_2 = \frac{435}{16}\unit{\ampere}\]
+	  
+Plugging this result back into either previous equation gives \[i_3=\frac{279}{16}\unit{\ampere}\] We can then solve for the first loop current using any of the three original equations, and it is calculated that \[i_1=\frac{315}{8}\unit{\ampere}\] 
+In summary:
+\begin{align*}
+    i_1 &= \frac{315}{8} \approx \qty{39.4}{\ampere}\\
+    i_2 &= \frac{435}{16} \approx \qty{27.2}{\ampere}\\
+    i_3 &= \frac{279}{16} \approx \qty{17.4}{\ampere}
+\end{align*}
+
+The voltages across the three loads are then:
+\begin{align*}
+v_{1} &= (i_{1}-i_{3}) R_{1} = \left( \frac{315}{8} - \frac{279}{16} \right) 5 = \frac{1755}{16} \approx \qty{109.7}{\volt} \\
+v_{2} &= (i_{2}-i_{3}) R_{2} = \left( \frac{435}{16} - \frac{279}{16} \right) 12 = \qty{117}{\volt} \\
+v_{3} &= i_{3} R_{3} = \frac{279}{16} \cdot 13 = \frac{3627}{16} \approx \qty{226.7}{\volt}
+\end{align*}
+\end{answer}
+\end{partquestion}
+
+\begin{partquestion}{openneutral}{If a wiring fault occurs such that the neutral becomes an open circuit, recalculate the voltages across the loads.}
+\begin{answer}
+With the neutral open, $R_{n}\to\infty$ and the left-hand and right-hand loops remain. Let $i_{1}$ be the clockwise current in the left loop and $i_{2}$ be the clockwise current in the right loop.
+
+The KVL system becomes:
+\begin{gather*}
+R_wi_1 + (R_1 + R_2)(i_1 - i_2) + R_wi_1 = 240 \\
+(R_1 + R_2)(i_2 - i_1) + R_3i_2 = 0
+\end{gather*}
+
+Gather like terms:
+\begin{gather*}
+(2R_w + R_1 + R_2)i_1 - (R_1 + R_2)i_2 = 240 \\
+- (R_1 + R_2)i_1 + (R_1 + R_2 + R_3)i_2 = 0
+\end{gather*}
+
+As a matrix:
+\[
+\begin{bmatrix}
+2R_w + R_1 + R_2 & -R_1 -R_2\\
+-R_1 -R_2 & R_1 + R_2 + R_3
+\end{bmatrix}
+\begin{bmatrix}
+i_1 \\
+i_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+240 \\
+0
+\end{bmatrix}
+\]
+
+Substituting values yields:
+\[
+\begin{bmatrix}
+17.4 & -17\\
+-17 & 30
+\end{bmatrix}
+\begin{bmatrix}
+i_1 \\
+i_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+240 \\
+0
+\end{bmatrix}
+\]
+
+Solving gives $i_{2} = \frac{4080}{233} \approx \qty{17.51}{\ampere}$ and $i_{1} = \frac{7200}{233} \approx \qty{30.90}{\ampere}$. The load voltages are:
+\begin{align*}
+v_{1} &= (i_{1}-i_{2})R_1 = \frac{15600}{233} \approx \qty{66.95}{\volt} \\
+v_{2} &= (i_{1}-i_{2})R_2 = \frac{13337}{83} \approx \qty{160.7}{\volt} \\
+v_{3} &= i_{2} R_3 = \frac{19577}{86} \approx \qty{227.6}{\volt}
+\end{align*}
+\end{answer}
+\end{partquestion}
+
+\begin{partquestion}{deviceimpact}{Suppose $R_2$ now represents a sensitive device. Postulate what might happen to it if it is plugged into this faulty circuit.}
+\begin{answer}
+Because $R_{2}$ now sees over 160 V instead of the expected 120 V, a sensitive device is likely to be exposed to an overvoltage condition. This can damage components, cause device failure, or lead to unsafe operation.
+\end{answer}
+\end{partquestion}
+
+\end{mainquestion}

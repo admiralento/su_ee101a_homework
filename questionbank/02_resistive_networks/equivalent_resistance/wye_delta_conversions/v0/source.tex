@@ -1,0 +1,369 @@
+\begin{mainquestion}{wyedeltaconversions}{Wye--Delta Conversions}
+
+\questionpoints
+
+% =========================================================
+\begin{partquestion}{seriesparallel}
+{Using the figure below, solve for the equivalent resistance by series--parallel reduction.
+
+    \begin{center}
+    \begin{circuitikz}
+    
+    % Top left terminal → resistor → right node
+    \draw
+    (0,2) node[left]{$\circ$}
+    to[short] (3,2)
+    to[R=2.0<\kilo\ohm>] (6,2);
+    
+    % Right vertical resistor
+    \draw
+    (6,2) to[R=3.5<\kilo\ohm>] (6,0)
+    to[short] (3,0);
+    
+    % Left vertical branch
+    \draw
+    (3,2) to[R=3.0<\kilo\ohm>] (3,0)
+    to[R=1.0<\kilo\ohm>] (3,-2);
+    
+    % Bottom terminal
+    \draw
+    (3,-2) to[short] (0,-2)
+    node[left]{$\circ$};
+    
+    \end{circuitikz}
+    \end{center}}
+
+\begin{answer}
+        The circuit can be reduced using series and parallel combinations.
+        
+         First, the two resistors on the right branch are in series:
+        \[
+        R_{\text{right}} = 2.0~\text{k}\Omega + 3.5~\text{k}\Omega = 5.5~\text{k}\Omega.
+        \]
+        
+        This branch is in parallel with the $3.0~\text{k}\Omega$ resistor:
+        \[
+        R_{\parallel} = \left( \frac{1}{3.0} + \frac{1}{5.5} \right)^{-1}
+        = \frac{3.0 \times 5.5}{3.0 + 5.5}
+        = \frac{16.5}{8.5}
+        \approx 1.94~\text{k}\Omega.
+        \]
+        
+        Finally, this equivalent resistance is in series with the $1.0~\text{k}\Omega$ resistor:
+        \[
+        R_{\text{eq}} = 1.94~\text{k}\Omega + 1.0~\text{k}\Omega
+        = \boxed{2.94~\text{k}\Omega}.
+        \]
+\end{answer}
+
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{sourcecurrent}
+{Solve for the current being drawn into the system from the power source using delta to wye conversions.
+
+    \begin{center}
+    \begin{circuitikz}[scale=1, transform shape]
+    
+    % Voltage source
+    \draw (0,4) to[V=$60\,\mathrm{V}$] (0,0);
+    \draw (0,0) node[ground]{};
+    
+    % Top rail
+    \draw (0,4) to[short] (8,4);
+    
+    % Bottom rail
+    \draw (0,0) to[short] (8,0);
+    
+    % Left vertical branch
+    \draw
+    (3,4) to[R=$3.5\,\mathrm{k}\Omega$] (3,2)
+    to[R=$6.0\,\mathrm{k}\Omega$] (3,0);
+    
+    % Right vertical branch (middle)
+    \draw
+    (5,4) to[R=$4.5\,\mathrm{k}\Omega$] (5,2)
+    to[R=$6.5\,\mathrm{k}\Omega$] (5,0);
+    
+    % Middle horizontal resistor
+    \draw
+    (3,2) to[R=$8.0\,\mathrm{k}\Omega$] (5,2);
+    
+    % Far right vertical resistor
+    \draw
+    (8,4) to[R=$4.0\,\mathrm{k}\Omega$] (8,0);
+    
+    \end{circuitikz}
+
+    \end{center}}
+
+\begin{answer}
+    
+    \medskip
+    \noindent
+    \textbf{Method 1: Reduce the bottom delta first.}
+
+    \begin{center}
+
+    We reduce the bottom delta network formed by the resistors
+    \[
+    R_{ab} = 6.0~\text{k}\Omega, \quad
+    R_{bc} = 6.5~\text{k}\Omega, \quad
+    R_{ac} = 8.0~\text{k}\Omega,
+    \]
+    which connect the bottom node and the two middle nodes.
+    
+    Using the delta-to-wye relations,
+    \[
+    R_a = \frac{R_{ab} R_{ac}}{R_{ab} + R_{bc} + R_{ac}}, \quad
+    R_b = \frac{R_{ab} R_{bc}}{R_{ab} + R_{bc} + R_{ac}}, \quad
+    R_c = \frac{R_{bc} R_{ac}}{R_{ab} + R_{bc} + R_{ac}},
+    \]
+    with
+    \[
+    R_{ab} + R_{bc} + R_{ac} = 6.0 + 6.5 + 8.0 = 20.5~\text{k}\Omega.
+    \]
+    
+    The equivalent wye resistances are
+    \[
+    R_a = \frac{(6.0)(8.0)}{20.5} \approx 2.34~\text{k}\Omega,
+    \]
+    \[
+    R_b = \frac{(6.0)(6.5)}{20.5} \approx 1.90~\text{k}\Omega,
+    \]
+    \[
+    R_c = \frac{(6.5)(8.0)}{20.5} \approx 2.54~\text{k}\Omega.
+    \]
+
+    \begin{circuitikz}[scale=1, transform shape]
+
+% Top and bottom rails
+\draw (0,3) to[short] (9,3);
+\draw (0,0) to[short] (9,0);
+
+% Left vertical resistor (top to left-mid node)
+\draw (2,3) to[R=$3.5~\text{k}\Omega$] (2,1.5);
+
+% Right vertical resistor (top to right-mid node)
+\draw (6,3) to[R=$4.5~\text{k}\Omega$] (6,1.5);
+
+% Wye-converted network (bottom delta -> wye)
+% left-mid to center node
+\draw (2,1.5) to[R=$2.34~\text{k}\Omega$] (4,1.5);
+
+% center node to right-mid
+\draw (4,1.5) to[R=$2.54~\text{k}\Omega$] (6,1.5);
+
+% center node down to bottom rail
+\draw (4,1.5) to[R=$1.90~\text{k}\Omega$] (4,0);
+
+% Far-right resistor still in parallel
+\draw (9,3) to[R=$4.0~\text{k}\Omega$] (9,0);
+
+% Optional node dots (for clarity)
+\fill (2,1.5) circle (2pt);
+\fill (4,1.5) circle (2pt);
+\fill (6,1.5) circle (2pt);
+
+\end{circuitikz}
+\end{center}
+
+    After conversion, the left branch becomes
+    \[
+    R_{\text{left}} = 3.5 + 2.34 = 5.84~\text{k}\Omega,
+    \]
+    and the right branch becomes
+    \[
+    R_{\text{right}} = 4.5 + 2.54 = 7.04~\text{k}\Omega.
+    \]
+    
+    These two parallel branches are in series with the middle branch $R_b = 1.90~\text{k}\Omega$, giving an equivalent resistance
+    \[
+    R_{\text{mid}} \approx 5.092049689~\text{k}\Omega.
+    \]
+    
+    This is in parallel with the $4.0~\text{k}\Omega$ resistor on the far right, so the total equivalent resistance is
+    \[
+    R_{\text{eq}} = \left( \frac{1}{5.092049689} + \frac{1}{4.0} \right)^{-1}
+    \approx 2.24~\text{k}\Omega,
+    \]
+    which is the same result obtained by reducing the top delta first.
+
+    Applying Ohm's law, the current drawn from the source is
+\[
+i = \frac{V}{R_{\text{eq}}}
+= \frac{60}{2240}
+\approx 26.8~\text{mA}.
+\]
+
+    
+\end{answer}
+
+    \qnewpage
+\end{partquestion}
+
+% =========================================================
+\begin{partquestion}{sourcepower}
+{\text{Solve for the power supplied by the power source using wye to delta conversions.}
+
+    \begin{center}
+    \begin{circuitikz}[scale=1, transform shape]
+    
+    % Voltage source
+    \draw (0,4) to[V=$50\,\mathrm{V}$] (0,0);
+    \draw (0,0) node[ground]{};
+    
+    % Top path (left wire → resistor → right wire)
+    \draw (0,4) to[short] (3,4)
+    to[R=$5.5\,\mathrm{k}\Omega$] (6,4);
+    
+    % Bottom path (left wire → resistor → right wire)
+    \draw (0,0) to[short] (3,0)
+    to[R=$7.5\,\mathrm{k}\Omega$] (6,0);
+    
+    % Center vertical branch
+    \draw (3,4) to[R=$4.5\,\mathrm{k}\Omega$] (3,2)
+    to[R=$6.5\,\mathrm{k}\Omega$] (3,0);
+    
+    % Middle horizontal resistor
+    \draw (3,2) to[R=$3.5\,\mathrm{k}\Omega$] (6,2);
+    
+    % Right vertical wire
+    \draw (6,4) to[short] (6,0);
+    
+    \end{circuitikz}
+    \end{center}}
+
+\begin{answer}
+We first identify the central wye (Y) network formed by the three resistors
+\[
+R_1 = 4.5~\text{k}\Omega, \quad
+R_2 = 6.5~\text{k}\Omega, \quad
+R_3 = 3.5~\text{k}\Omega,
+\]
+which connect the top node, bottom node, and right node through the central junction.
+
+We convert this wye to an equivalent delta using the wye-to-delta relations:
+\[
+R_{ab} = \frac{R_1 R_2 + R_2 R_3 + R_3 R_1}{R_3}, \quad
+R_{bc} = \frac{R_1 R_2 + R_2 R_3 + R_3 R_1}{R_1}, \quad
+R_{ac} = \frac{R_1 R_2 + R_2 R_3 + R_3 R_1}{R_2}.
+\]
+
+First compute the common numerator:
+\[
+R_1 R_2 + R_2 R_3 + R_3 R_1
+= (4.5)(6.5) + (6.5)(3.5) + (3.5)(4.5).
+\]
+
+Evaluating each term (in k$\Omega^2$):
+\[
+(4.5)(6.5) = 29.25, \quad
+(6.5)(3.5) = 22.75, \quad
+(3.5)(4.5) = 15.75,
+\]
+so
+\[
+R_1 R_2 + R_2 R_3 + R_3 R_1 = 29.25 + 22.75 + 15.75 = 67.75.
+\]
+
+Thus, the delta resistances are:
+\[
+R_{ab} = \frac{67.75}{3.5} \approx 19.36~\text{k}\Omega \quad (\text{Top-Left to Bottom-Left}),
+\]
+\[
+R_{bc} = \frac{67.75}{4.5} \approx 15.06~\text{k}\Omega \quad (\text{Bottom-Left to Right}),
+\]
+\[
+R_{ac} = \frac{67.75}{6.5} \approx 10.42~\text{k}\Omega \quad (\text{Top-Left to Right}).
+\]
+
+The circuit can be redrawn with the new delta resistors in parallel with the existing outer resistors:
+
+\begin{center}
+\begin{circuitikz}[scale=1, transform shape]
+    % Source connection points
+    \draw (0,4) node[ocirc]{} -- (2,4); 
+    \draw (0,0) node[ocirc]{} -- (2,0); 
+
+    % R_ab: The vertical delta resistor connected directly across the source nodes
+    \draw (2,4) to[R=$19.36~\text{k}\Omega$] (2,0);
+
+    % Top-Right Branch: R_ac is parallel to the original 5.5k
+    \draw (2,4) -- (4,4);
+    \draw (4,4) to[R=$5.5~\text{k}\Omega$] (7,4);
+    \draw (4,4) -- (4,3) to[R=$10.42~\text{k}\Omega$] (7,3) -- (7,4);
+    
+    % Connecting down the right side
+    \draw (7,4) -- (7,0);
+
+    % Bottom-Right Branch: R_bc is parallel to the original 7.5k
+    \draw (2,0) -- (4,0);
+    \draw (4,0) to[R=$7.5~\text{k}\Omega$] (7,0);
+    \draw (4,0) -- (4,1) to[R=$15.06~\text{k}\Omega$] (7,1) -- (7,0);
+
+    % Node dots
+    \fill (2,4) circle (2pt);
+    \fill (2,0) circle (2pt);
+    \fill (7,4) circle (2pt);
+    \fill (7,0) circle (2pt);
+\end{circuitikz}
+\end{center}
+
+We now simplify the parallel pairs on the top-right and bottom-right branches.
+
+\textbf{1. Top-Right Parallel Pair ($R_{top}$):}
+The $10.42~\text{k}\Omega$ and $5.5~\text{k}\Omega$ resistors are in parallel:
+\[
+R_{top} = \frac{10.42 \times 5.5}{10.42 + 5.5} = \frac{57.31}{15.92} \approx 3.60~\text{k}\Omega.
+\]
+
+\textbf{2. Bottom-Right Parallel Pair ($R_{bot}$):}
+The $15.06~\text{k}\Omega$ and $7.5~\text{k}\Omega$ resistors are in parallel:
+\[
+R_{bot} = \frac{15.06 \times 7.5}{15.06 + 7.5} = \frac{112.95}{22.56} \approx 5.01~\text{k}\Omega.
+\]
+
+The circuit simplifies to the vertical $19.36~\text{k}\Omega$ resistor in parallel with the series combination of $R_{top}$ and $R_{bot}$:
+
+\begin{center}
+\begin{circuitikz}[scale=1, transform shape]
+    % Terminals
+    \draw (0,4) node[left]{$+$} -- (2,4);
+    \draw (0,0) node[left]{$-$} -- (2,0);
+
+    % Left vertical branch (Delta resistor)
+    \draw (2,4) to[R=$19.36~\text{k}\Omega$] (2,0);
+
+    % Right vertical branch (Series combination of top and bottom pairs)
+    \draw (2,4) -- (5,4) to[R=$3.60~\text{k}\Omega$] (5,2) 
+        to[R=$5.01~\text{k}\Omega$] (5,0) -- (2,0);
+        
+    % Node dots
+    \fill (2,4) circle (2pt);
+    \fill (2,0) circle (2pt);
+\end{circuitikz}
+\end{center}
+
+\textbf{3. Combine Series Branch:}
+The right branch resistance is:
+\[
+R_{\text{branch}} = 3.60 + 5.01 = 8.61~\text{k}\Omega.
+\]
+
+\textbf{4. Total Equivalent Resistance:}
+Finally, we have $19.36~\text{k}\Omega$ in parallel with $8.61~\text{k}\Omega$:
+\[
+R_{\text{eq}} = \frac{19.36 \times 8.61}{19.36 + 8.61} = \frac{166.69}{27.97} \approx 5.96~\text{k}\Omega.
+\]
+
+\textbf{5. Power Calculation:}
+The power supplied by the source is:
+\[
+P = \frac{V^2}{R_{\text{eq}}} = \frac{50^2}{5960} = \frac{2500}{5960} \approx \boxed{0.419~\text{W}}.
+\]
+\end{answer}
+
+\end{partquestion}
+
+\end{mainquestion}
