@@ -1,0 +1,21 @@
+% Read by each homework root file (assignments/<Semester>/<HWxx>/<Semester>_<HWxx>_<mode>.tex) after it
+% defines \Semester and \AssignmentFolder, and before \documentclass.
+\ifdefined\AssignmentFolder\else
+    \errmessage{No homework selected: compile a homework root file such as
+        assignments/2026-4_Fall/HW07/2026-4_Fall_HW07_solutions.tex}
+\fi
+\newif\ifextracreditassignment
+\extracreditassignmentfalse
+\newif\ifshowinstructor
+\showinstructorfalse
+\newif\ifboxedsolutions
+\boxedsolutionstrue   % style-jeff solutions in a thin blue frame; \boxedsolutionsfalse in course.tex/metadata.tex turns it off
+% Homework style (see style/homework.sty): set in course.tex, may be overridden in metadata.tex
+\def\HwStyle{style-jeff}
+\newcommand{\HomeworkStyle}[1]{\def\HwStyle{#1}}
+% Course code, title, instructor, and header settings are per semester
+\input{assignments/\Semester/course}
+\input{assignments/\Semester/\AssignmentFolder/metadata}
+% Base font size for \documentclass (the root files read this file before \documentclass)
+\def\HwStyleMarkName{style-mark}
+\ifx\HwStyle\HwStyleMarkName \def\HwFontSize{10pt}\else \def\HwFontSize{11pt}\fi

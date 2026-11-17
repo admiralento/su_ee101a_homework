@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build the open root file -> out.pdf",
+      "detail": "Open a homework's <Semester>_<HWxx>_student.tex or _solutions.tex (or main_questionbank_*.tex) and press Ctrl+Shift+B",
+      "type": "shell",
+      "command": "powershell",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\build.ps1", "-File", "${file}"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build question bank catalog (solutions) -> out.pdf",
+      "type": "shell",
+      "command": "powershell",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\build.ps1", "-Mode", "questionbank"],
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

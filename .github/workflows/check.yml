@@ -1,0 +1,21 @@
+# Runs the project's static checks on every push and pull request, including the commits Overleaf
+# creates when someone presses Menu -> GitHub -> Push. A red X on GitHub means tools/check.py
+# found an error (e.g. points that don't match a problem's parts, or a missing figure); open the
+# run to see the message, fix it, and push again.
+name: check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Static checks (tools/check.py)
+        run: python tools/check.py

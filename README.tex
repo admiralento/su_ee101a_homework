@@ -1,0 +1,254 @@
+% README for the EE101A homework project. This is the project's Main document in Overleaf:
+% it is what you see when you press Recompile without opening a homework file.
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{listings}
+\usepackage[obeyspaces,spaces]{url}   % before hyperref, which loads url itself
+\usepackage[colorlinks=true,linkcolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+\setlist{nosep,leftmargin=1.5em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,frame=single,framesep=4pt,
+        backgroundcolor=\color{gray!8},rulecolor=\color{gray!40},keepspaces=true,
+        aboveskip=0.6em,belowskip=0.6em}
+\def\UrlBreaks{\do\/\do\_\do\-}
+\let\f\path                                     % file names and keys (line-breakable)
+\newcommand{\cmd}[1]{\texttt{\textbackslash\detokenize{#1}}}
+% Fill these in when the GitHub repository and Overleaf project are set up (see the "Syncing with GitHub" section):
+\newcommand{\RepoURL}{\url{https://github.com/admiralento/su_ee101a_homework}}
+\newcommand{\RepoOwner}{Ammon Wolfert (GitHub user \texttt{admiralento})}
+\newcommand{\OverleafOwner}{Ammon Wolfert}
+
+\title{EE101A Homework Project --- Start Here}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\vspace{-3em}
+
+This project holds every EE101A homework problem (the \emph{question bank}) and the homework
+assignments built from them. Problems are written once; each homework lists which problems it uses
+and how many points each part is worth. Every PDF comes in a student version and a solutions
+version.
+
+\tableofcontents
+
+\section{Compiling a PDF}
+
+\textbf{In Overleaf:} open the file you want in the file tree and press \textbf{Recompile}.
+Overleaf compiles the open file, so everyone on the project can compile a different homework at
+the same time. (This page is the project's Main document: it is what Recompile shows when the open
+file is not one of the files below.)
+
+\begin{center}
+\begin{tabular}{>{\raggedright}p{0.30\linewidth} p{0.62\linewidth}}
+\hline
+\textbf{To get\ldots} & \textbf{open and Recompile} \\ \hline
+A homework, student version & \f{assignments/<Semester>/<HWxx>/<Semester>_<HWxx>_student.tex}\newline
+                              e.g.\ \f{assignments/2026-4_Fall/HW07/2026-4_Fall_HW07_student.tex} \\
+A homework, solutions & the \f{..._solutions.tex} file next to it \\
+Every problem in the bank & \f{main_questionbank_student.tex} or \f{main_questionbank_solutions.tex} \\
+\hline
+\end{tabular}
+\end{center}
+
+The compiler must be \textbf{XeLaTeX} (Menu $\rightarrow$ Compiler). The first compile of a
+homework can show 0 points; compiling again fixes it (Overleaf usually does this automatically).
+
+\section{Where things are}
+
+\begin{lstlisting}
+assignments/<Semester>/          one folder per offering, sorted in time order:
+                                 <year>-<n>_<Season>; n: 1 Winter ... 4 Fall
+                                 e.g. 2026-1_Winter, 2026-4_Fall
+    course.tex                   printed name ("Fall 2026"), instructor, style
+    HW07/
+        metadata.tex             homework number and due date
+        questions.tex            which problems, in what order, with what points
+        2026-4_Fall_HW07_student.tex / ..._solutions.tex   <- compile these
+questionbank/
+    04_diode_circuits/           one folder per syllabus topic (numbered in course order)
+        load_line/               subtopic: the main concept a problem teaches
+            led_iv_curve/        one problem; this folder name is its "id"
+                v0/ v1/          versions of the problem (source.tex + figures)
+                version_history.md   author, date, notes, concept tags
+    README.md                    table of every problem (generated)
+    tags.md                      the list of concept tags
+config/  style/                  shared setup and layout -- rarely edited
+tools/                           scripts (see "Scripted tools")
+\end{lstlisting}
+
+\section{Common tasks}
+
+\subsection{Put an existing problem in a homework}\label{sec:use}
+Find it in the question bank PDF (\f{main_questionbank_solutions.tex}): each version's box shows
+its \emph{id}, \emph{version} and \emph{part keys}. Add a block to the homework's
+\f{questions.tex}:
+\begin{lstlisting}
+% Problem 3 - LED I-V Curve Load-Line Analysis (15 points)
+\clearpage
+\UseQuestion{led_iv_curve}{v1}{
+    basicloadline     = 3,
+    ledbrightness     = 2,
+    resistorselection = 5,
+    ambienthot        = 5 extra,     % "extra" = extra credit
+}
+\end{lstlisting}
+Every part must get points. If a problem has no parts, or its points are only given as a total,
+write \f{total = 10,} instead of the part list.
+
+\subsection{Add a new problem}
+\begin{enumerate}
+  \item Pick the subtopic folder for the concept the problem mainly teaches, and create
+        \f{<id>/v0/source.tex} with a short, descriptive snake\_case id (e.g.\
+        \f{questionbank/04_diode_circuits/load_line/zener_load_line/v0/source.tex}). Put its
+        figures in the same \f{v0/} folder.
+  \item Write the problem in this shape:
+\begin{lstlisting}
+\begin{mainquestion}{zenerloadline}{Zener Load Line}
+Problem statement, given values, figures...
+\begin{center}\includegraphics[width=3in]{circuit.png}\end{center}
+
+\begin{partquestion}{findcurrent}
+{Prompt for part (a). Letters and points are added automatically.}
+\begin{answer}[2in]
+Solution for part (a).
+\end{answer}
+\end{partquestion}
+\end{mainquestion}
+\end{lstlisting}
+        Keep \cmd{begin{answer}} and \cmd{end{answer}} on their own lines with no indentation;
+        figures are referred to by file name only.
+  \item Add \f{<id>/version_history.md} (copy one from a neighbouring problem): title, a
+        \f{Concepts:} line using tags from \f{questionbank/tags.md}, and a \texttt{\#\#\# v0} entry with
+        author, date and a one-line description.
+  \item Use it in a homework (section~\ref{sec:use}), then \textbf{update the catalog}: run
+        \f{python tools/check.py --fix-index --catalog} and \f{python tools/check.py}
+        (section~\ref{sec:tools}). Without this step the new problem is not found and does not appear in the
+        question bank PDF.
+\end{enumerate}
+
+\subsection{Change an existing problem}\label{sec:change}
+If students have already received it, do not edit it: copy \f{v0/} to \f{v1/}, change the copy,
+add a \texttt{\#\#\# v1} entry to \f{version_history.md}, and point the new homework at \f{v1}. Typos
+may be fixed in place.
+
+\subsection{Create a new homework or semester}
+Copy an existing \f{HWxx/} folder, edit \f{metadata.tex} (number, due date) and
+\f{questions.tex}, then run \f{python tools/check.py --fix-mains} to create the two files you
+compile. For a new semester, create its folder with the dated name (e.g.\ \f{2027-1_Winter}),
+copy a \f{course.tex} into it, and set \cmd{SemesterName} (e.g.\ \f{Winter 2027}) and the
+instructor.
+
+\subsection{Change the look}
+In a semester's \f{course.tex}:
+\begin{itemize}
+  \item \cmd{HomeworkStyle{style-jeff}} --- the standard layout;
+  \item \cmd{HomeworkStyle{style-mark}} --- Mark Horowitz's Winter 2026 layout;
+  \item \cmd{boxedsolutionsfalse} --- removes the blue frame around style-jeff solutions.
+\end{itemize}
+A single homework can override these in its \f{metadata.tex}.
+
+\subsection{Move or rename a problem}
+Move its folder, then run \f{python tools/check.py --fix-index --catalog}. Homeworks refer to
+problems by id, so a move needs nothing else; a rename also needs the id changed in every
+\f{questions.tex} that uses it.
+
+\section{Quick answers}
+\begin{description}[style=nextline,leftmargin=1.5em]
+  \item[A part shows 0 points or a total looks wrong.] Compile again (totals need two passes);
+        if it persists, a part key in \f{questions.tex} doesn't match the problem's
+        \cmd{begin{partquestion}{...}} --- \f{tools/check.py} lists every mismatch.
+  \item[``Unknown question id''.] The id isn't in \f{questionbank/index.tex}: run
+        \f{python tools/check.py --fix-index}.
+  \item[Where did a problem get used before?] The question bank PDF and
+        \f{questionbank/README.md} list every homework that used each version.
+  \item[Can I break a past homework?] Only by editing a version it uses. Make a new version
+        instead (section~\ref{sec:change}).
+  \item[More detail?] \f{import/import_instructions_for_LLM.md} documents every convention;
+        it is also what an AI assistant follows when importing new problems.
+\end{description}
+
+\section{Syncing with GitHub, and keeping the project alive}
+
+\textbf{The GitHub repository is the permanent copy} of this project (private):
+\begin{center}\RepoURL\end{center}
+It currently belongs to \RepoOwner; it should eventually move to a course
+GitHub organization (see below). This Overleaf project is a working copy linked to it with
+Overleaf's GitHub synchronization.
+
+\textbf{Every time you work in Overleaf:}
+\begin{enumerate}
+  \item \emph{Before editing:} Menu $\rightarrow$ GitHub $\rightarrow$ \textbf{Pull GitHub changes
+        into Overleaf}, so you start from the latest version.
+  \item \emph{After editing:} Menu $\rightarrow$ GitHub $\rightarrow$ \textbf{Push Overleaf
+        changes to GitHub}, with a short message (e.g.\ ``HW05 due date'').
+\end{enumerate}
+Sync is never automatic. If a pull reports a conflict, Overleaf puts its changes on a separate
+branch on GitHub; merge it there with a pull request (or ask someone who uses git). After each
+push GitHub runs \f{tools/check.py}; a red \textbf{X} next to the commit on GitHub means it found
+a problem --- open it to see what.
+
+\textbf{People with a local copy} use ordinary git: \f{git pull}, work on a branch, merge into
+\f{main}, \f{git push}. Then press \emph{Pull} in Overleaf.
+
+\textbf{Who owns what.} GitHub sync only works while the Overleaf project's \emph{owner} has
+Overleaf premium (Stanford's license ends when they leave Stanford). Keep:
+\begin{itemize}
+  \item the repository in a \textbf{GitHub organization} for the course with at least two owners,
+        at least one of whom will stay (a personal repository can be moved there with GitHub's
+        Settings $\rightarrow$ Transfer ownership; GitHub redirects the old URL);
+  \item the \textbf{Overleaf project owned by someone who will stay} at Stanford (e.g.\ the
+        course instructor). Current: \OverleafOwner.
+\end{itemize}
+
+\textbf{When someone leaves} (do this before their Stanford access ends):
+\begin{enumerate}
+  \item GitHub: if the repository is still on the leaver's personal account, transfer it to a
+        course organization (or to the successor); add the successor as an organization owner;
+        the leaver can then step down. Afterwards check that Overleaf's Menu $\rightarrow$ GitHub
+        still pulls and pushes (if not, re-import as in the next step).
+  \item Overleaf, if the leaver owns the project: transfer ownership to the successor
+        (Share $\rightarrow$ make them owner), then check that Menu $\rightarrow$ GitHub still
+        pulls and pushes. If it doesn't, the successor creates a fresh project with
+        New Project $\rightarrow$ Import from GitHub (choose the repository above), sets the
+        compiler to XeLaTeX and the Main document to \f{README.tex}, re-invites collaborators, and
+        the old project is archived. Nothing is lost: the repository has everything.
+  \item Update the names on this page and push.
+\end{enumerate}
+
+\section{Scripted tools}\label{sec:tools}
+
+The scripts run on a local copy of the project (git checkout with Python), not inside Overleaf.
+After running them, upload the changed files to Overleaf.
+
+\begin{center}
+\begin{tabular}{>{\raggedright}p{0.36\linewidth} p{0.56\linewidth}}
+\hline
+\textbf{Command} & \textbf{When to use it} \\ \hline
+\f{python tools/check.py} & \textbf{After any change}, before uploading. Checks points vs.\
+    parts, ids, figures, cross-references, version histories and tags without compiling.
+    Must report 0 errors. \\
+\f{python tools/check.py --fix-index} & After adding, moving or renaming a problem folder
+    (rewrites \f{questionbank/index.tex}). \\
+\f{python tools/check.py --catalog} & After adding problems, editing \f{version_history.md}
+    or tags, or changing a homework's problems: refreshes the question bank PDF contents and
+    \f{questionbank/README.md}. \\
+\f{python tools/check.py --fix-mains} & After creating a homework folder: writes its
+    \f{_student.tex} / \f{_solutions.tex} files. \\
+\f{python tools/check.py --rename-tag old new} & Renames a concept tag everywhere. \\
+\texttt{.\textbackslash build.ps1 -Semester 2026-4\_Fall -Assignment HW07 [-Mode student]} & Compiles one
+    homework locally to \f{out.pdf} (Windows; one-time setup \texttt{.\textbackslash build.ps1 -Install}). In VS
+    Code: open a \f{_student/_solutions.tex} file and press Ctrl+Shift+B. \\
+\f{python tools/build_all.py} & Compiles every homework and the question bank. Use after
+    changing shared files (\f{style/}, \f{config/}); \f{--only 2026-4_Fall/HW07} for one
+    homework, \f{--save}/\f{--compare} to check nothing else changed. \\
+\hline
+\end{tabular}
+\end{center}
+
+\end{document}

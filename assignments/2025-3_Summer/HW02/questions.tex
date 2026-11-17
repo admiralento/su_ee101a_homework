@@ -1,0 +1,60 @@
+% Problem 1
+\UseQuestion{kcl_kvl_equations}{v0}{
+    unknowns = 1,
+    kcl      = 1,
+    kvl      = 1,
+    ohm      = 1,
+    solve    = 13,
+}
+
+% Problem 2
+\clearpage
+\UseQuestion{resistor_search}{v0}{
+    findvalue = 10,
+    deviation = 3,
+    power     = 3,
+}
+
+% Problem 3
+\clearpage
+\UseQuestion{nodal_analysis_power}{v0}{
+    nodal    = 9,
+    findx    = 2,
+    branch   = 8,
+    power    = 3,
+    tellegen = 1,
+}
+
+% Problem 4
+\clearpage
+\UseQuestion{pn_junction_concepts}{v0}{
+    side    = 2,
+    doped   = 2,
+    groupiv = 3,
+    excess  = 2,
+    charges = 2,
+    field   = 2,
+    flow    = 2,
+}
+
+% Problem 5
+\clearpage
+\UseQuestion{diode_model_comparison}{v0}{
+    ideal    = 6,
+    drop     = 6,
+    level    = 5,
+    symbolic = 5 extra,
+}
+
+% Problem 6
+\clearpage
+\UseQuestion{diode_hogging}{v0}{
+    current    = 2,
+    currenthot = 6,
+    heat       = 2,
+    hogging    = 4,
+    solver     = 5,
+    findr      = 5,
+    voltage    = 2,
+    power      = 2,
+}

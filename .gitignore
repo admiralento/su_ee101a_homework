@@ -1,0 +1,30 @@
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.xdv
+*.bbl
+*.blg
+main_questionbank_*.pdf
+out.pdf
+build/
+
+# Local toolchain (Tectonic binary)
+.tools/
+
+# Draw.io autosave/backup files
+*.drawio.bkp
+.$*.drawio*
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python bytecode
+__pycache__/

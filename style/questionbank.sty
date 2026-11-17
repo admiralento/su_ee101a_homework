@@ -1,0 +1,117 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{style/questionbank}[2026/11/16 Question bank catalog layout]
+% Layout for main_questionbank_student.tex and main_questionbank_solutions.tex. Load after style/homework. The content itself is generated into
+% questionbank/catalog.tex by "python tools/check.py --catalog".
+
+\hwcatalogtrue
+\hypersetup{pdftitle={\CourseCode{} Question Bank}, bookmarksnumbered=true, bookmarksopen=true}
+\setcounter{tocdepth}{3}   % ToC: topic folders, subtopic folders, question folders
+\setcounter{secnumdepth}{3}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\CourseCode{} Question Bank}
+\fancyhead[R]{\rightmark}
+\fancyfoot[L]{Compiled \DTMnow}
+\fancyfoot[R]{\thepage}
+
+\newcommand{\CatalogQuestionCount}{?}
+\newcommand{\CatalogVersionCount}{?}
+% \CatalogCounts{questions}{versions}
+\newcommand{\CatalogCounts}[2]{\gdef\CatalogQuestionCount{#1}\gdef\CatalogVersionCount{#2}}
+
+\newcommand{\MakeQuestionBankTitle}{%
+    \thispagestyle{fancy}%
+    \begin{center}
+        {\LARGE\bfseries \CourseCode{} Question Bank}\par
+        \vspace{0.5em}
+        {\large \CourseTitle}\par
+        \vspace{0.5em}
+        Every version of every question in \texttt{questionbank/},
+        \ifsolutions with solutions\else without solutions\fi.\par
+    \end{center}
+    \vspace{0.5em}
+    \noindent To use a question, add it to a homework manifest
+    (\texttt{assignments/<Semester>/HWxx/questions.tex}) with its id, version, and the points for
+    each part listed in its info box:
+    \begin{center}
+        \texttt{\textbackslash UseQuestion\{<id>\}\{<version>\}\{<part> = <points>, ...\}}
+    \end{center}
+    Authors marked ``(assumed)'' are not recorded in the question's \texttt{version\_history.md}.
+    \tableofcontents
+}
+
+\newif\ifcatalog@freshpage
+\newif\ifcatalog@insubtopic
+% \CatalogTopic{display name}: one section per top-level (syllabus) folder.
+\newcommand{\CatalogTopic}[1]{%
+    \clearpage
+    \section{#1}%
+    \catalog@freshpagetrue
+    \catalog@insubtopicfalse
+}
+% \CatalogSubtopic{display name}: one subsection per subtopic folder.
+\newcommand{\CatalogSubtopic}[1]{%
+    \ifcatalog@freshpage\else\clearpage\fi
+    \subsection{#1}%
+    \catalog@freshpagetrue
+    \catalog@insubtopictrue
+}
+% Concept index (generated from questionbank/tags.md and each question's Concepts line).
+\newcommand{\CatalogConceptIndexBegin}{%
+    \clearpage
+    \section*{Questions by concept}%
+    \addcontentsline{toc}{section}{Questions by concept}%
+    \markright{Questions by concept}%
+    \small
+    \noindent Tags are defined in \texttt{questionbank/tags.md}; each question lists its tags on the
+    \texttt{Concepts:} line of its \texttt{version\_history.md}. Page numbers link to the question.\par
+}
+\newcommand{\CatalogConceptIndexEnd}{\normalsize}
+\newcommand{\CatalogConceptGroup}[1]{\subsection*{#1}}
+% \CatalogConcept{tag id}{description}{list of \CatalogRef}
+\newcommand{\CatalogConcept}[3]{%
+    \par\noindent\hangindent=1.5em\hangafter=1
+    \textbf{#2} {\footnotesize\ttfamily(#1)}: #3\par\smallskip
+}
+% \CatalogRef{id}{title}: link to a question's first page
+\newcommand{\CatalogRef}[2]{\hyperref[catalog:#1]{#2}~(p.\,\pageref{catalog:#1})}
+
+% \CatalogQuestion{plain title for bookmarks}{typeset title}{escaped id}{id}: one heading per
+% question folder (subsubsection under a subtopic, else subsection); the ToC entry shows the title
+% and the folder name (= question id).
+\newcommand{\CatalogQuestion}[4]{%
+    \ifcatalog@freshpage\else\clearpage\fi
+    \ifcatalog@insubtopic
+        \subsubsection[\texorpdfstring{#2\quad{\normalfont\small\ttfamily #3}}{#1}]{#2}%
+    \else
+        \subsection[\texorpdfstring{#2\quad{\normalfont\small\ttfamily #3}}{#1}]{#2}%
+    \fi
+    \label{catalog:#4}%
+    \catalog@freshpagetrue
+}
+% \CatalogVersion{id}{folder}{version}{author}{date}{used in}{parts}{notes}{concepts}
+\newcommand{\CatalogVersion}[9]{%
+    \ifcatalog@freshpage\else\clearpage\fi
+    \catalog@freshpagefalse
+    \markright{\texttt{\detokenize{#1}} \textperiodcentered{} #3}%
+    \par\medskip
+    \noindent\fcolorbox{gray!60}{gray!8}{%
+        \begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+            \small
+            \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.14\linewidth}@{}%
+                               >{\raggedright\arraybackslash}p{0.84\linewidth}@{}}
+                \textbf{ID}      & \texttt{\detokenize{#1}} \quad\textbf{Version}\enspace\texttt{#3} \\
+                \textbf{Folder}  & \texttt{\detokenize{questionbank/#2/#3/}} \\
+                \textbf{Author}  & #4 \quad\textbf{Date}\enspace #5 \\
+                \textbf{Used in} & #6 \\
+                \textbf{Concepts}& \texttt{#9} \\
+                \textbf{Parts}   & \texttt{#7} \\
+                \textbf{Notes}   & #8 \\
+            \end{tabular}
+        \end{minipage}%
+    }%
+    \par
+    \def\HwCatalogTag{\normalsize\texttt{#3}}%
+    \ShowQuestion{#1}{#3}%
+}

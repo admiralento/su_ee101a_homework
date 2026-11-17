@@ -1,0 +1,9 @@
+% The body of every homework document. Each homework has two small root files in its folder,
+% <Semester>_<HWxx>_student.tex and <Semester>_<HWxx>_solutions.tex, which select the homework and
+% the mode, read config/shared.tex, call \documentclass, and then \input this file.
+\input{style/shared.sty}
+\usepackage{style/homework}
+\begin{document}
+\MakeHomeworkHeader
+\input{assignments/\Semester/\AssignmentFolder/questions.tex}
+\end{document}

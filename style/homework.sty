@@ -1,0 +1,640 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{style/homework}[2026/06/27 Homework system]
+
+% =========================================================
+% Core packages
+% =========================================================
+% \SemesterName (course.tex) is the printed semester, e.g. "Fall 2026"; \Semester is the folder
+% name used for paths, e.g. "2026-4_Fall". The catalog defines no \SemesterName.
+\providecommand{\SemesterName}{\Semester}
+\RequirePackage{geometry}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{xparse}
+\RequirePackage{comment}
+\RequirePackage{fancyhdr}
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+\RequirePackage{datetime2}
+\RequirePackage{expl3}
+\RequirePackage{siunitx}
+% Drawing and plotting (used by the Winter 2026 problems; options as in Mark Horowitz's project so
+% his circuitikz drawings render identically).
+\RequirePackage{tikz}
+\RequirePackage[american,siunitx,nooldvoltagedirection]{circuitikz}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\RequirePackage{enumitem}
+\RequirePackage{mdframed}
+\RequirePackage{float}
+\RequirePackage{hyperref}
+\RequirePackage{cleveref}
+\RequirePackage{pgfkeys}
+\RequirePackage{listings}
+\RequirePackage{verbatim}
+\RequirePackage{caption}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{teal},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single
+}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    pdftitle={\CourseCode{} \SemesterName{} Homework \HomeworkNumber},
+    pdfpagemode=FullScreen,
+    }
+
+% =========================================================
+% Homework style: style-jeff (default) or style-mark
+% =========================================================
+% Selected with \HomeworkStyle{...} in assignments/<Semester>/course.tex (or metadata.tex to override
+% one homework). style-mark reproduces the look of Mark Horowitz's Winter 2026 homework (his
+% exam.cls): centered header, "Question n: Title", [N pts] markers, framed sans-serif solutions,
+% blank answer space in the student version. The base font size (11pt / 10pt) is chosen in
+% config/shared.tex before \documentclass.
+\ifdefined\HwStyle\else\def\HwStyle{style-jeff}\fi  % (\def, not \providecommand: compared with \ifx)
+% Boxed style-jeff solutions (thin blue frame) are the default; \boxedsolutionsfalse in course.tex
+% or metadata.tex turns them off. (Defined in config/shared.tex; this default covers the catalog.)
+\makeatletter
+\@ifundefined{ifboxedsolutions}{\newif\ifboxedsolutions\boxedsolutionstrue}{}
+% \HwNoFloats: within the current group, figure/table environments are typeset in place (no
+% floating), so they work inside boxes; \caption still works.
+\newcommand{\HwNoFloats}{%
+    \RenewDocumentEnvironment{figure}{o}{\par\medskip\noindent\begin{minipage}{\linewidth}\def\@captype{figure}}{\end{minipage}\par\medskip}%
+    \RenewDocumentEnvironment{table}{o}{\par\medskip\noindent\begin{minipage}{\linewidth}\def\@captype{table}}{\end{minipage}\par\medskip}%
+}
+\makeatother
+\newif\ifhwstylemark
+\def\HwStyleMarkName{style-mark}
+\def\HwStyleJeffName{style-jeff}
+\ifx\HwStyle\HwStyleMarkName
+    \hwstylemarktrue
+\else\ifx\HwStyle\HwStyleJeffName\else
+    \PackageError{homework}{Unknown \string\HomeworkStyle\space'\HwStyle'}{Use style-jeff or style-mark.}
+\fi\fi
+
+% Page layout
+\geometry{margin=1in}
+\ifhwstylemark
+    \setlength{\headheight}{45pt}
+    \setlength{\parskip}{\medskipamount}
+    \setlength{\parindent}{0pt}
+    \setlist[enumerate]{label=(\alph*)}   % as Mark's \setenumerate{label=(\alph*)}
+\else
+    \setlength{\headheight}{14pt}
+\fi
+% =========================================================
+% Counters
+% =========================================================
+\newcounter{questionCnt}
+\newcounter{partquestionCnt}[questionCnt]
+
+\renewcommand{\thepartquestionCnt}{\alph{partquestionCnt}}
+\crefname{partquestionCnt}{}{}
+\Crefname{partquestionCnt}{}{}
+
+\newcounter{problempoints}
+\newcounter{assignmentpoints}
+\newcounter{extracreditpoints}
+
+\newcommand{\currquestionkey}{}
+% style-mark keeps fontspec's default Latin Modern (the Computer Modern look of Mark's pdfLaTeX PDFs)
+\ifhwstylemark\else
+    \setmainfont{Times New Roman}
+\fi
+
+% =========================================================
+% Aux storage for per-question totals
+% =========================================================
+\makeatletter
+
+\newcommand{\StoreAssignmentTotal}{%
+    \ifnum\value{assignmentpoints}>0
+        \protected@write\@auxout{}{%
+            \string\gdef
+            \string\AssignmentTotal
+            {\arabic{assignmentpoints}}%
+        }%
+    \fi
+}
+
+\newcommand{\StoreProblemTotal}{%
+    % (not in catalog mode: no points there, and \alph only goes up to 26 questions)
+    \ifhwcatalog\else\ifnum\value{questionCnt}>0
+        \protected@write\@auxout{}{%
+            \string\gdef
+            \string\ProblemTotal\alph{questionCnt}%
+            {\arabic{problempoints}}%
+        }%
+    \fi\fi
+}
+
+\newcommand{\StoreProblemCount}{%
+    \ifnum\value{questionCnt}>0
+        \protected@write\@auxout{}{%
+            \string\gdef
+            \string\ProblemCount
+            {\arabic{questionCnt}}%
+        }%
+    \fi
+}
+
+\newcommand{\StoreExtraCreditTotal}{%
+    \ifnum\value{extracreditpoints}>0
+        \protected@write\@auxout{}{%
+            \string\gdef
+            \string\ExtraCreditTotal
+            {\arabic{extracreditpoints}}%
+        }%
+    \fi
+}
+
+\makeatother
+
+% =========================================================
+% QUESTION BANK: \RegisterQuestion and \UseQuestion
+% =========================================================
+% questionbank/index.tex maps each question id (= its folder name) to its folder:
+%     \RegisterQuestion{led_iv_curve}{04_diode_circuits/load_line/led_iv_curve}
+% Assignment manifests then load a version of a question and assign its points:
+%     \UseQuestion{led_iv_curve}{v1}{
+%         basicloadline = 3,
+%         ambienthot    = 5 extra,     % "extra" marks an extra-credit part
+%     }
+% The source is loaded with \subimport (import package), so \includegraphics paths inside it
+% are relative to its version folder: {fig.png}, or {../v0/fig.png} for an earlier version.
+\RequirePackage{import}
+\newif\ifhwextrapart
+\newif\ifhwtotalonly   % current question has "total = N" instead of per-part points
+\newif\ifhwmarkheading % style-mark question heading (not in catalog mode)
+% Catalog mode (main_questionbank_*.tex): questions are shown without points, every version of a
+% question may appear in one document, and labels are scoped per version (see \ShowQuestion).
+\newif\ifhwcatalog
+\providecommand{\HwCatalogTag}{}  % printed at the right of the question title in catalog mode
+
+% \HwPrefixRefs{prefix}: within the current group, prepend prefix to every \label, \ref, \cref and
+% \Cref, so v0 and v1 of the same question (which share part labels) can coexist in one document.
+\makeatletter
+\newcommand{\HwPrefixRefs}[1]{%
+    \edef\hw@pfx{#1}%
+    \let\hw@orig@label\label
+    \let\hw@orig@ref\ref
+    \let\hw@orig@cref\cref
+    \let\hw@orig@Cref\Cref
+    \renewcommand{\label}[1]{\hw@orig@label{\hw@pfx##1}}%
+    \renewcommand{\ref}[1]{\hw@orig@ref{\hw@pfx##1}}%
+    \renewcommand{\cref}[1]{\hw@orig@cref{\hw@pfx##1}}%
+    \renewcommand{\Cref}[1]{\hw@orig@Cref{\hw@pfx##1}}%
+}
+\makeatother
+
+\ExplSyntaxOn
+\prop_new:N \g__hw_qpath_prop    % question id -> folder below questionbank/
+\prop_new:N \g__hw_points_prop   % part key -> points, for the question being loaded
+\seq_new:N  \g__hw_extra_seq     % extra-credit part keys, for the question being loaded
+\seq_new:N  \g__hw_unused_seq    % parts given points but not (yet) found in the source
+\seq_new:N  \g__hw_used_ids_seq  % question ids used in this homework
+\seq_new:N  \g__hw_used_keys_seq % mainquestion keys used in this homework
+\tl_new:N   \g__hw_qid_tl        % id of the question being loaded (empty outside \UseQuestion)
+\tl_new:N   \l__hw_dir_tl
+\tl_new:N   \l__hw_extra_tl
+\tl_new:N   \g__hw_total_tl      % question-level points ("total = N"), empty if points are per part
+\seq_new:N  \l__hw_match_seq
+\regex_const:Nn \c__hw_points_regex { \A \s* (\d+) \s* (extra)? \s* \Z }
+% Older expl3 releases (e.g. Tectonic's bundle) lack some message variants.
+\cs_generate_variant:Nn \msg_warning:nnnn { nnnx }
+\cs_generate_variant:Nn \msg_error:nnnn { nnnx }
+
+\msg_new:nnn {homework} {dup-id}
+  { Question~id~'#1'~is~registered~twice~in~questionbank/index.tex. }
+\msg_new:nnn {homework} {unknown-id}
+  { Unknown~question~id~'#1'.~Check~the~spelling~or~add~it~to~questionbank/index.tex. }
+\msg_new:nnn {homework} {id-twice}
+  { Question~'#1'~is~used~twice~in~this~homework. }
+\msg_new:nnn {homework} {key-twice}
+  { Question~key~'#1'~(question~'#2')~is~already~used~by~another~question~in~this~homework;~
+    points~and~labels~would~collide.~Give~one~of~them~a~different~mainquestion~key. }
+\msg_new:nnn {homework} {bad-points}
+  { Invalid~points~'#2'~for~part~'#1'~of~question~'#3'.~Use~a~whole~number,~
+    optionally~followed~by~'extra'~(for~example~'5~extra'). }
+\msg_new:nnn {homework} {no-value}
+  { Part~'#1'~of~question~'#2'~has~no~points~value~(write~'#1~=~<points>'). }
+\msg_new:nnn {homework} {no-points}
+  { Part~'#1'~of~question~'#2'~has~no~points~in~the~manifest;~counting~it~as~0. }
+\msg_new:nnn {homework} {unused-points}
+  { Points~were~given~for~part~'#1'~of~question~'#2',~but~its~source~has~no~such~part. }
+\msg_new:nnn {homework} {total-and-parts}
+  { Question~'#1'~gives~both~'total'~and~per-part~points;~use~one~or~the~other. }
+\msg_new:nnn {homework} {no-usequestion}
+  { Question~'#1'~was~not~loaded~with~\iow_char:N\\UseQuestion;~its~points~cannot~be~found. }
+\msg_new:nnn {homework} {old-macro}
+  { \iow_char:N\\#1~is~no~longer~supported:~give~points~in~the~third~argument~of~
+    \iow_char:N\\UseQuestion~(see~import/import_instructions_for_LLM.md). }
+
+\NewDocumentCommand {\RegisterQuestion} {mm}
+  {
+    \prop_if_in:NnT \g__hw_qpath_prop {#1} { \msg_error:nnn {homework} {dup-id} {#1} }
+    \prop_gput:Nnn \g__hw_qpath_prop {#1} {#2}
+  }
+
+\cs_new_protected:Npn \__hw_add_part:nn #1#2
+  {
+    \str_if_eq:nnTF {#1} {total}
+      { \__hw_set_total:n {#2} }
+      { \__hw_add_part_points:nn {#1} {#2} }
+  }
+% "total = N": points for the whole question (its parts then show no points)
+\cs_new_protected:Npn \__hw_set_total:n #1
+  {
+    \regex_extract_once:NnNTF \c__hw_points_regex {#1} \l__hw_match_seq
+      { \tl_gset:Nx \g__hw_total_tl { \seq_item:Nn \l__hw_match_seq {2} } }
+      { \msg_error:nnxxx {homework} {bad-points} {total} {#1} { \g__hw_qid_tl } }
+  }
+\cs_new_protected:Npn \__hw_add_part_points:nn #1#2
+  {
+    \regex_extract_once:NnNTF \c__hw_points_regex {#2} \l__hw_match_seq
+      {
+        \prop_gput:Nnx \g__hw_points_prop {#1} { \seq_item:Nn \l__hw_match_seq {2} }
+        \tl_set:Nx \l__hw_extra_tl { \seq_item:Nn \l__hw_match_seq {3} }
+        \tl_if_empty:NF \l__hw_extra_tl { \seq_gput_right:Nn \g__hw_extra_seq {#1} }
+        \seq_gput_right:Nn \g__hw_unused_seq {#1}
+      }
+      { \msg_error:nnxxx {homework} {bad-points} {#1} {#2} { \g__hw_qid_tl } }
+  }
+\cs_new_protected:Npn \__hw_part_no_value:n #1
+  { \msg_error:nnnx {homework} {no-value} {#1} { \g__hw_qid_tl } }
+
+\cs_new_protected:Npn \__hw_subimport:n #1 { \subimport {#1} {source} }
+\cs_generate_variant:Nn \__hw_subimport:n { x }
+
+% \UseQuestion{id}{version}{part = points, ...}
+\NewDocumentCommand {\UseQuestion} {mm+m}
+  {
+    \prop_get:NnNTF \g__hw_qpath_prop {#1} \l__hw_dir_tl
+      {
+        \seq_if_in:NnTF \g__hw_used_ids_seq {#1}
+          { \msg_error:nnn {homework} {id-twice} {#1} }
+          { \seq_gput_right:Nn \g__hw_used_ids_seq {#1} }
+        \tl_gset:Nn \g__hw_qid_tl {#1}
+        \prop_gclear:N \g__hw_points_prop
+        \seq_gclear:N \g__hw_extra_seq
+        \seq_gclear:N \g__hw_unused_seq
+        \tl_gclear:N \g__hw_total_tl
+        \keyval_parse:NNn \__hw_part_no_value:n \__hw_add_part:nn {#3}
+        \bool_lazy_and:nnT
+          { ! \tl_if_empty_p:N \g__hw_total_tl }
+          { ! \prop_if_empty_p:N \g__hw_points_prop }
+          { \msg_error:nnn {homework} {total-and-parts} {#1} }
+        \__hw_subimport:x { questionbank/\l__hw_dir_tl/#2/ }
+        \seq_map_inline:Nn \g__hw_unused_seq
+          { \msg_warning:nnnn {homework} {unused-points} {##1} {#1} }
+        \tl_gclear:N \g__hw_qid_tl
+      }
+      { \msg_error:nnn {homework} {unknown-id} {#1} }
+  }
+
+% Called by mainquestion with its key.
+\cs_new_protected:Npn \hw_begin_question:n #1
+  {
+    \tl_if_empty:NT \g__hw_qid_tl { \msg_error:nnn {homework} {no-usequestion} {#1} }
+    \ifhwcatalog \else
+      \seq_if_in:NnTF \g__hw_used_keys_seq {#1}
+        { \msg_error:nnnx {homework} {key-twice} {#1} { \g__hw_qid_tl } }
+        { \seq_gput_right:Nn \g__hw_used_keys_seq {#1} }
+    \fi
+    % question-level points: count them once here; parts then carry no points
+    \tl_if_empty:NTF \g__hw_total_tl
+      { \global\hwtotalonlyfalse }
+      {
+        \global\hwtotalonlytrue
+        \addtocounter{problempoints}{\g__hw_total_tl}
+        \addtocounter{assignmentpoints}{\g__hw_total_tl}
+      }
+  }
+% Called by partquestion with its part key: sets \partpoints and \ifhwextrapart.
+\cs_new_protected:Npn \hw_lookup_part:n #1
+  {
+    \prop_get:NnNTF \g__hw_points_prop {#1} \l_tmpa_tl
+      { \cs_set:Npx \partpoints { \l_tmpa_tl } }
+      {
+        \ifhwcatalog \else \ifhwtotalonly \else
+          \tl_if_empty:NF \g__hw_qid_tl
+            { \msg_warning:nnnx {homework} {no-points} {#1} { \g__hw_qid_tl } }
+        \fi \fi
+        \cs_set:Npn \partpoints {0}
+      }
+    \seq_gremove_all:Nn \g__hw_unused_seq {#1}
+    \seq_if_in:NnTF \g__hw_extra_seq {#1} { \hwextraparttrue } { \hwextrapartfalse }
+  }
+% \ShowQuestion{id}{version}: catalog mode only. Loads a question version without points, with its
+% labels and references scoped to that version.
+\NewDocumentCommand {\ShowQuestion} {mm}
+  {
+    \prop_get:NnNTF \g__hw_qpath_prop {#1} \l__hw_dir_tl
+      {
+        \group_begin:
+        \tl_gset:Nn \g__hw_qid_tl {#1}
+        \prop_gclear:N \g__hw_points_prop
+        \seq_gclear:N \g__hw_extra_seq
+        \seq_gclear:N \g__hw_unused_seq
+        \tl_gclear:N \g__hw_total_tl
+        \HwPrefixRefs {#1/#2:}
+        \__hw_subimport:x { questionbank/\l__hw_dir_tl/#2/ }
+        \group_end:
+        \tl_gclear:N \g__hw_qid_tl
+      }
+      { \msg_error:nnn {homework} {unknown-id} {#1} }
+  }
+\NewDocumentCommand {\HwBeginQuestion} {m} { \hw_begin_question:n {#1} }
+\NewDocumentCommand {\HwLookupPart} {m} { \hw_lookup_part:n {#1} }
+
+% The old manifest macros: fail loudly instead of silently doing nothing.
+\NewDocumentCommand {\Point} {mmm} { \msg_error:nnn {homework} {old-macro} {Point} }
+\NewDocumentCommand {\MarkExtraCredit} {mm} { \msg_error:nnn {homework} {old-macro} {MarkExtraCredit} }
+\ExplSyntaxOff
+
+\newcommand{\PartPoints}{\pluralize{\partpoints}{point}{points}}
+
+% =========================================================
+% Homework header
+% =========================================================
+\providecommand{\AssignmentTotal}{0}
+\providecommand{\ExtraCreditTotal}{0}
+\providecommand{\ProblemCount}{0}
+% Per-semester header settings; assignments/<Semester>/course.tex may override these.
+\providecommand{\DueTime}{11:59PM}
+\providecommand{\NameReminder}{Please be sure to write your name on the front page!}
+% Per-question total from the .aux file; 0 on the first pass, before the .aux exists.
+\newcommand{\GetProblemTotal}{%
+    \ifcsname ProblemTotal\alph{questionCnt}\endcsname
+        \csname ProblemTotal\alph{questionCnt}\endcsname
+    \else
+        0%
+    \fi
+}
+% Mark's points marker: [N pt] / [N pts]
+\newcommand{\HwMarkPoints}[1]{[#1\,pt\ifnum1=#1\relax\else s\fi]}
+
+\ifhwstylemark
+% style-mark: centered three-line page header on every page (as in Mark's hwN.tex), no title block
+\newcommand{\MakeHomeworkHeader}{%
+    \pagestyle{fancy}%
+    \fancyhf{}%
+    \fancyhead[C]{\Large Homework \HomeworkNumber \\ \large \CourseCode \\[5pt] \small Due \DueTime, \DueDate}%
+    \renewcommand{\headrulewidth}{0pt}%
+}
+\else
+\newcommand{\MakeHomeworkHeader}
+{
+    \pagestyle{fancy}
+    \fancyhf{}
+    \fancyhead[L]{\CourseCode/\SemesterName}
+    \fancyfoot[L]{Compiled \DTMnow}
+    \fancyfoot[R]{\thepage}
+    \fancyhead[R]{\rightmark}
+
+    \begin{center}
+
+        \ifsolutions
+            {\Large\bfseries Homework \#\HomeworkNumber{} Solutions}
+            
+        \else
+            {\Large\bfseries Homework \#\HomeworkNumber}
+            
+        \fi
+        \ifshowinstructor
+        \vspace{0.3em}
+        Instructor: \Instructor
+
+        \fi
+        \ifextracreditassignment
+        \vspace{0.3em}
+        {\Large\bfseries EXTRA CREDIT ASSIGNMENT}
+
+        \fi
+        \vspace{0.3em}
+        Due \DueTime{} \DueDate
+
+        \ifnum\ExtraCreditTotal>0
+            Total: \pluralize{\AssignmentTotal}{Point}{Points} (\pluralize{\ExtraCreditTotal}{Point}{Points} Extra Credit)
+        \else
+            Total: \pluralize{\AssignmentTotal}{Point}{Points}
+        \fi
+
+        \vspace{0.5em}
+
+        \ifsolutions
+        \else
+            \ifx\NameReminder\empty\else
+                \textbf{\NameReminder}
+            \fi
+        \fi
+
+    \end{center}
+}
+\fi
+
+% =========================================================
+% QUESTION ENVIRONMENT
+% =========================================================
+% FORMAT:
+% \begin{mainquestion}{TITLE}
+\NewDocumentEnvironment{mainquestion}{m +m}
+{
+    % save previous question before starting new one
+    \StoreProblemTotal
+
+    \stepcounter{questionCnt}
+    \setcounter{partquestionCnt}{0}
+    \setcounter{problempoints}{0}
+
+    % store current key
+    \gdef\currquestionkey{#1}
+    \HwBeginQuestion{#1}
+
+    \hwmarkheadingfalse
+    \ifhwstylemark\ifhwcatalog\else\hwmarkheadingtrue\fi\fi
+    \ifhwmarkheading
+        % style-mark: "Question n: Title" (Mark's titlesec format), then "[N pts]" at the start of
+        % the first paragraph of the question, which \questionpoints marks in converted sources.
+        \par\addvspace{2ex}%
+        \noindent{\bfseries\large Question \thequestionCnt: #2}\par
+        \vspace{\smallskipamount}%
+        \gdef\HwQuestionPointsHook{\gdef\HwQuestionPointsHook{}\HwMarkPoints{\GetProblemTotal}\ }%
+        \everypar{\HwQuestionPointsHook}%
+    \else
+    % Make the Upper Right Corner Display which question we are on
+    \ifhwcatalog\else
+        \markright{Question \arabic{questionCnt}/\ProblemCount}
+    \fi
+
+    \bigskip
+    \noindent
+    {\Large\bfseries
+        \ifhwcatalog
+            #2
+            \hfill
+            \HwCatalogTag
+        \else
+            Question \thequestionCnt{} - #2
+            \hfill
+            (\pluralize{\GetProblemTotal}{point}{points})
+        \fi
+    }
+
+    \medskip
+    \fi
+}
+{
+    \ifhwstylemark\gdef\HwQuestionPointsHook{}\else\bigskip\fi
+}
+% \questionpoints: where a problem's total is printed in style-mark (it starts the paragraph that
+% receives "[N pts]"); ignored in style-jeff, which prints the total in the question heading.
+\newcommand{\HwQuestionPointsHook}{}
+\ifhwstylemark
+    \newcommand{\questionpoints}{\leavevmode}
+\else
+    \newcommand{\questionpoints}{\relax}
+\fi
+% \qnewpage: page break in the student version of style-mark (room to write); ignored otherwise.
+\newcommand{\qnewpage}{\ifhwstylemark\ifsolutions\else\newpage\fi\fi}
+
+% =========================================================
+% PART QUESTION ENVIRONMENT
+% =========================================================
+\NewDocumentEnvironment{partquestion}{m +m}
+{
+    \refstepcounter{partquestionCnt}
+
+    % lookup points assigned in \UseQuestion (sets \partpoints and \ifhwextrapart)
+    \HwLookupPart{#1}
+
+    % Make a label to this portion of the question
+    \edef\labelname{prob:\currquestionkey:#1}
+    \label{\labelname}
+
+    % accumulate points
+    \ifhwextrapart
+        \addtocounter{extracreditpoints}{\partpoints}
+    \else
+        \addtocounter{problempoints}{\partpoints}
+        \addtocounter{assignmentpoints}{\partpoints}
+    \fi
+    \ifhwstylemark
+        % style-mark: an (a)-labelled list item, "[n pts]" first (Mark's "\item \points{n} ...")
+        \begin{enumerate}[start=\value{partquestionCnt}]
+        \item
+        \ifhwcatalog\else\ifhwtotalonly\else
+            \HwMarkPoints{\partpoints}\ %
+        \fi\fi
+        \ifhwextrapart\textbf{EXTRA CREDIT}\hspace{0.5em}\fi
+        #2
+    \else
+        \medskip
+        \noindent
+        \textbf{(\alph{partquestionCnt})}\hspace{0.5em}%
+        \ifhwextrapart\textbf{EXTRA CREDIT}\hspace{0.5em}\fi
+        #2
+        \ifhwcatalog\else\ifhwtotalonly\else
+            \textbf{(\PartPoints)}
+        \fi\fi
+    \fi
+}
+{
+    \ifhwstylemark\end{enumerate}\else\medskip\fi
+}
+
+\NewDocumentEnvironment{kaitlyn}{}
+{
+    \begingroup
+    \color{green!70!black}
+}
+{
+    \endgroup
+}
+
+% =========================================================
+% ANSWER ENVIRONMENT
+% =========================================================
+% \begin{answer}[<height>] ... \end{answer}. The optional height is the writing space left in the
+% student version of style-mark (default 1in, as in Mark's exam.cls); style-jeff ignores it.
+\ifsolutions
+    \ifhwstylemark
+        % Mark's solution box: sans-serif text in an mdframed frame
+        \NewDocumentEnvironment{answer}{o}
+        {
+            \par
+            \vspace{1ex}
+            \begin{mdframed}
+            \setlength{\parskip}{\medskipamount}
+            \sffamily
+        }
+        {
+            \end{mdframed}
+            \vspace{1ex}
+        }
+    \else
+        \NewDocumentEnvironment{answer}{o}
+        {
+            \par
+            \vspace{1\baselineskip}
+            \begingroup
+            \ifboxedsolutions
+                % default (\boxedsolutionsfalse turns it off): solution in a thin blue frame.
+                % Floats can't live inside a box, so figure/table are placed "here" (like [H]).
+                \HwNoFloats
+                \begin{mdframed}[linecolor=blue!70!black, linewidth=0.6pt,
+                    innerleftmargin=8pt, innerrightmargin=8pt,
+                    innertopmargin=6pt, innerbottommargin=6pt]
+            \fi
+            \color{blue!70!black}
+            % drawings (circuitikz, tikz, pgfplots) inside answers stay black, like image figures;
+            % otherwise their wires, labels and axes would take the blue text color while
+            % circuitikz components stay black
+            \tikzset{every picture/.append style={black}}
+        }
+        {
+            \ifboxedsolutions\end{mdframed}\fi
+            \endgroup
+        }
+    \fi
+\else
+    \ifhwstylemark
+        % student version: drop the answer, leave blank space of the given height
+        \NewDocumentEnvironment{answer}{O{1in} +b}{\par\vspace*{#1}}{}
+    \else
+        % student version: drop the answer entirely (the comment package also copes with verbatim
+        % code inside answers; anything after \begin{answer} on its line, e.g. [2in], is skipped)
+        \excludecomment{answer}
+    \fi
+\fi
+
+% =========================================================
+% Final flush at end of document
+% =========================================================
+\AtEndDocument{%
+    \StoreProblemTotal
+    \StoreAssignmentTotal
+    \StoreProblemCount
+    \StoreExtraCreditTotal
+}
+% =========================================================
+% Question index (question id -> folder); see \UseQuestion above
+% =========================================================
+\input{questionbank/index}
